@@ -8,8 +8,10 @@ function LoginPage() {
   return (
     <div>
       <LoginForm />
+      
 
       <center>
+        Dont have an account? <p></p>
         <button
           type="button"
           className="btn btn_asLink"
@@ -17,10 +19,36 @@ function LoginPage() {
             history.push('/registration');
           }}
         >
-          Register
+          
+          Signup
+        </button>
+        <p></p>
+        <button
+          type="button"
+          className="btn btn_asLink"
+          onClick={() => {
+            history.push('/registration');
+          }}
+        >
+          
+          Skip login
+        </button>
+        <p></p>
+               <button
+          type="button"
+          className="btn btn_asLink"
+          onClick={() => {
+            history.push('/registration');
+          }}
+        >
+          
+          Access Business Portal
         </button>
       </center>
+
+      
     </div>
+    
   );
 }
 

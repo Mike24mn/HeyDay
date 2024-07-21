@@ -39,4 +39,5 @@
 
 .navLink:hover {
   background-color: #008183;
+  background-image: url(/public/image.png);
 }
