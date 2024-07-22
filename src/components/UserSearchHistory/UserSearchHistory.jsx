@@ -3,7 +3,7 @@ import React from 'react';
 function UserSearchHistory() {
   return (
     <div>
-      UserSearchHistory
+      UserSearchHistoryList
     </div>
   );
 }
