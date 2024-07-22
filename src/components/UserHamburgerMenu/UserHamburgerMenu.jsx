@@ -43,8 +43,8 @@ export default function UserHamburgerMenu() {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, backgroundColor: "#507D80" }}
-            onClick={handleMenuOpen}
+            sx={{ mr: 2, backgroundColor: "#000000" }}
+            onClick={handleMenuOpen} 
           >
             <MenuIcon />
           </IconButton>
@@ -74,7 +74,7 @@ export default function UserHamburgerMenu() {
                   <StyledLink to="/user-landing">User Landing</StyledLink>
                 </MenuItem>
 
-                
+
                 <MenuItem onClick={handleMenuClose}>
                   <StyledLink to="/favorite-locations">
                     Favorite Locations

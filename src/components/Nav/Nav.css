@@ -3,8 +3,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  margin: 0 0 30px;
+  background-image: url(/public/image.png);
+  margin: 0 0 px;
   background-color: #00acb0;
   overflow: hidden;
 }
@@ -39,5 +39,5 @@
 
 .navLink:hover {
   background-color: #008183;
-  background-image: url(/public/image.png);
 }
+

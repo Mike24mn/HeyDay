@@ -32,6 +32,24 @@ router.post('/register', (req, res, next) => {
     });
 });
 
+// Need to adjust this route below to create an access level 2 user (business user)
+
+
+router.post('/register/business', (req, res, next) => {
+  const username = req.body.username;
+  const password = encryptLib.encryptPassword(req.body.password);
+
+  const queryText = `INSERT INTO "user" (username, password)
+    VALUES ($1, $2) RETURNING id`;
+  pool
+    .query(queryText, [username, password])
+    .then(() => res.sendStatus(201))
+    .catch((err) => {
+      console.log('User registration failed: ', err);
+      res.sendStatus(500);
+    });
+});
+
 // Handles login form authenticate/login POST
 // userStrategy.authenticate('local') is middleware that we run on this route
 // this middleware will run our POST if successful
