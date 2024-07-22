@@ -11,6 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import LogOutButton from "../LogOutButton/LogOutButton";
 import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
 const StyledLink = styled(Link)({
   color: "#FFFFFF",
@@ -21,8 +22,9 @@ const StyledLink = styled(Link)({
   textDecoration: "underline",
 });
 
-export default function UserButtonAppBar({ user }) {
+export default function UserHamburgerMenu() {
   const [anchorEl, setAnchorEl] = useState(null); // anchor point for our menu
+  const user = useSelector((store) => store.user);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,7 +56,6 @@ export default function UserButtonAppBar({ user }) {
               "& .MuiPaper-root": {
                 backgroundColor: "#777",
               },
-
               "& .MuiMenuItem-root": {
                 color: "#00CED1",
                 "&:hover": {
@@ -63,26 +64,34 @@ export default function UserButtonAppBar({ user }) {
               },
             }}
           >
-            {/* if no user id, route to login, cond render check */}
             {!user.id ? (
               <MenuItem onClick={handleMenuClose}>
                 <StyledLink to="/login">Login</StyledLink>
               </MenuItem>
             ) : (
               <>
-                {/* if user id, allow routes to acc overview, curr pos, and notes, also render that logout button! */}
                 <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/overview">Account Overview</StyledLink>
+                  <StyledLink to="/user-landing">User Landing</StyledLink>
                 </MenuItem>
+
+                
                 <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/currentpos">Current Positions</StyledLink>
+                  <StyledLink to="/favorite-locations">
+                    Favorite Locations
+                  </StyledLink>
                 </MenuItem>
+
                 <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/notes">Notes</StyledLink>
+                  <StyledLink to="/user-search-history">
+                    Search History
+                  </StyledLink>
+                </MenuItem>
+
+                <MenuItem onClick={handleMenuClose}>
+                  <StyledLink to="/user-details">User Details</StyledLink>
                 </MenuItem>
               </>
             )}
-            {/* if no user id allow route to about as well */}
             <MenuItem onClick={handleMenuClose}>
               <StyledLink to="/about">About</StyledLink>
             </MenuItem>
@@ -97,7 +106,6 @@ export default function UserButtonAppBar({ user }) {
           ) : (
             <span></span>
           )}
-          {/* span above is for rendering nothing if user not logged in */}
         </Toolbar>
       </AppBar>
     </Box>
