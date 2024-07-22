@@ -19,10 +19,7 @@ export default function UserNavBar() {
 
 let history = useHistory()
 
-const handleClick = () => {
-    console.log("clickity click");
-    history.push('/')
-}
+
 
 
   return (
@@ -34,7 +31,7 @@ const handleClick = () => {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction label="Back" onClick={handleClick} icon={<ArrowBackIosIcon />} />
+        <BottomNavigationAction label="Back" onClick={() => history.goBack()} icon={<ArrowBackIosIcon />} />
         <BottomNavigationAction label="Favorites" to="/favorite-locations" component={Link} icon={<FavoriteIcon />} />
         <BottomNavigationAction label="Home" to="/user-landing" component={Link} icon={<HomeIcon />} />
       </BottomNavigation>
