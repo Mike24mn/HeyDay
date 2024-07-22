@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css';
+import UserNavBar from '../UserNavBar/UserNavBar';
 
 // This is one of our simplest components
 // It doesn't have local state, so it can be a function component.
@@ -7,7 +8,9 @@ import './Footer.css';
 // or even care what the redux state is, so it doesn't need 'connect()'
 
 function Footer() {
-  return <footer>&copy; Heyday, 2024</footer>;
+  return <div>
+    <center><UserNavBar />
+    <footer>&copy; Heyday, 2024</footer></center></div>
 }
 
 export default Footer;
