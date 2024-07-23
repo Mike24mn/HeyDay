@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react"; // Note to self, useRef allows
 import L from "leaflet"; // importing leaflet as L, could import it as Leaflet too but this is easier
 import "leaflet/dist/leaflet.css";
 
+import UserNavBar from '../UserNavBar/UserNavBar';
+
 import { Wrapper, Status } from "@googlemaps/react-wrapper"; // google wrapper
 
 
@@ -88,6 +90,7 @@ const renderGoogleMap = (status) => {
         {/* Heyday team mates, Check the .env file and make sure you have a VITE_GOOGLE_MAPS_API_KEY variable and Google API key if you want to test with this map */}
         <Wrapper apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY} render={renderGoogleMap} />
       </div>
+      <center><UserNavBar /></center>
     </div>
   );
 }

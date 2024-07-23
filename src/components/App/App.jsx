@@ -8,7 +8,6 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import InfoPage from "../InfoPage/InfoPage";
-import LandingPage from "../LandingPage/LandingPage";
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import Nav from "../Nav/Nav";
@@ -68,13 +67,13 @@ function App() {
             {user.id ? <Redirect to="/user" /> : <RegisterPage />}
           </Route>
 
-          <Route exact path="/home">
-            {user.id ? <Redirect to="/user" /> : <LandingPage />}
-          </Route>
-
           {/* new Heyday routes (not Prime's routes) */}
           <Route exact path="/business-login">
             <BusinessLogin />
+          </Route>
+
+          <Route exact path="/user-landing-nonlogin">
+            <UserLanding />
           </Route>
 
           <ProtectedRoute exact path="/business-landing">
