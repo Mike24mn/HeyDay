@@ -26,7 +26,8 @@ export default AboutPage;
 
 /*
 // Misc. Code for a Leaflet Style Map Below:
-
+  const leafletMapRef = useRef(null); // create a reference point using the hook, set it null initially since we don't have a DOM at this point (after mount and dom is created apply .current to the DOM element)
+  // this references the DOM element in the html below, where we will render a map for HeyDay!
 useEffect(() => {
   if (leafletMapRef.current) {
     // run the map when our component mounts (AKA using useEffect)

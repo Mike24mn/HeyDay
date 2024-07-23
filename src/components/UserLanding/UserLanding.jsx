@@ -12,8 +12,7 @@ import { Wrapper, Status } from "@googlemaps/react-wrapper"; // google wrapper
 
 function UserLanding() {
   const user = useSelector((store) => store.user);
-  const leafletMapRef = useRef(null); // create a reference point using the hook, set it null initially since we don't have a DOM at this point (after mount and dom is created apply .current to the DOM element)
-  // this references the DOM element in the html below, where we will render a map for HeyDay!
+
 
   const googleMapRef = useRef(null);
 
