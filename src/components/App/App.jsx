@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import InfoPage from "../InfoPage/InfoPage";
+
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import Nav from "../Nav/Nav";
@@ -16,10 +16,10 @@ import Footer from "../Footer/Footer";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import AboutPage from "../AboutPage/AboutPage";
-import UserPage from "../UserPage/UserPage"; // merged with UserLanding
+
 
 import BusinessViewAsUser from "../BusinessViewAsUser/BusinessViewAsUser";
-import UserLanding from "../UserLanding/UserLanding"; // combine logic w UserPage eventually
+import UserLanding from "../UserLanding/UserLanding"; 
 import DetailsPage from "../DetailsPage/DetailsPage";
 import UserFavoriteLocations from "../UserFavoriteLocations/UserFavoriteLocations";
 import BusinessLogin from "../BusinessLogin/BusinessLogin";
@@ -50,14 +50,6 @@ function App() {
           <Route exact path="/about">
             <AboutPage />
           </Route>
-
-          <ProtectedRoute exact path="/user">
-            <UserPage />
-          </ProtectedRoute>
-
-          <ProtectedRoute exact path="/info">
-            <InfoPage />
-          </ProtectedRoute>
 
           <Route exact path="/login">
             {user.id ? <Redirect to="/user" /> : <LoginPage />}

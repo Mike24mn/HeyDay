@@ -93,7 +93,7 @@ export default function UserHamburgerMenu() {
               </>
             )}
             <MenuItem onClick={handleMenuClose}>
-              <StyledLink to="/about">About</StyledLink>
+              <StyledLink to="/about">Getting Started (THE ABOUT COMPONENT)</StyledLink>
             </MenuItem>
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
