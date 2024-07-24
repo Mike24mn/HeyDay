@@ -3,16 +3,17 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button"; // Import Button here
 import { Link } from "react-router-dom";
 import LogOutButton from "../LogOutButton/LogOutButton";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 
+// Styled link for menu items
 const StyledLink = styled(Link)({
   color: "#FFFFFF",
   textDecoration: "none",
@@ -23,13 +24,15 @@ const StyledLink = styled(Link)({
 });
 
 export default function UserHamburgerMenu() {
-  const [anchorEl, setAnchorEl] = useState(null); // anchor point for our menu
+  const [anchorEl, setAnchorEl] = useState(null); // Anchor point for the menu
   const user = useSelector((store) => store.user);
 
+  // Open the menu
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Close the menu
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
@@ -44,7 +47,7 @@ export default function UserHamburgerMenu() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2, backgroundColor: "#000000" }}
-            onClick={handleMenuOpen} 
+            onClick={handleMenuOpen}
           >
             <MenuIcon />
           </IconButton>
@@ -73,20 +76,12 @@ export default function UserHamburgerMenu() {
                 <MenuItem onClick={handleMenuClose}>
                   <StyledLink to="/user-landing">User Landing</StyledLink>
                 </MenuItem>
-
-
                 <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/favorite-locations">
-                    Favorite Locations
-                  </StyledLink>
+                  <StyledLink to="/favorite-locations">Favorite Locations</StyledLink>
                 </MenuItem>
-
                 <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/user-search-history">
-                    Search History
-                  </StyledLink>
+                  <StyledLink to="/user-search-history">Search History</StyledLink>
                 </MenuItem>
-
                 <MenuItem onClick={handleMenuClose}>
                   <StyledLink to="/user-details">User Details</StyledLink>
                 </MenuItem>
@@ -96,18 +91,16 @@ export default function UserHamburgerMenu() {
               <StyledLink to="/about">Getting Started (THE ABOUT COMPONENT)</StyledLink>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-            <LogOutButton />
+              <LogOutButton />
             </MenuItem>
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Menu
           </Typography>
-          {user.id ? (
+          {user.id && (
             <Button color="inherit">
-              
+              {/* Add Button Content Here */}
             </Button>
-          ) : (
-            <span></span>
           )}
         </Toolbar>
       </AppBar>
