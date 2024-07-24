@@ -13,6 +13,7 @@
     height: auto;
     position: relative; /* Keep it relative within thee loader-container */
     z-index: 1;
+    
 }
 
 .ripple {

@@ -5,7 +5,7 @@ import UserNavBar from "../UserNavBar/UserNavBar";
 import Buttons from "../Buttons/Buttons";
 import { Button } from "bootstrap";
 import LogOutButton from "../LogOutButton/LogOutButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 // Note to self, useRef allows for  a single render of the SAME content, meaning that its can PERSIST values between render events basically
 import L from "leaflet"; // importing leaflet as L, could import it as Leaflet too but this is easier
 import "leaflet/dist/leaflet.css";
@@ -21,6 +21,7 @@ function UserLanding() {
   }, [dispatch]);
 
   function handleSearch() {
+    console.log("handleSearch clicked");
     dispatch({ type: 'ADD_HISTORY', payload: { search_history: searchTerm } });
     setSearchTerm(''); 
   }
@@ -49,7 +50,8 @@ function UserLanding() {
         return <GoogMap />;
       default:
         return null;
-
+    }
+}
 
 const renderStatus = (status) => {
   switch (status) {
@@ -145,8 +147,7 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
         });
       }
     });
-  };
-  
+}
   return (
     <div style={{ height: "500px", width: "100%" }}>
       <input
@@ -209,13 +210,21 @@ const MapWrapper = () => {
   ];
   return (
     <div>
-      <h2>Welcome to Heyday, {user.username}!</h2>
+    <center> <h2>Welcome to Heyday, {user.username}!</h2></center> 
+      <center>
+        <button onClick={handleGetCurrentLocation}>Get Current Location</button>
+      </center>
 
-      <div>
-        {/* Ensure you have a valid Google Maps API key */}
-        <Wrapper apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY} render={renderGoogleMap} />
-      </div>
-      <div style={{ margin: "20px 0" }}>
+      <Wrapper
+        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+        libraries={["places", "marker"]}
+        render={renderStatus}
+      >
+        <form onSubmit={(e) => {
+            e.preventDefault()
+            handleSearch()
+        }}
+        >
         <input
           type="text"
           placeholder="Search..."
@@ -226,28 +235,22 @@ const MapWrapper = () => {
         <button onClick={handleSearch} style={{ padding: "5px 10px" }}>
           Search
         </button>
-      </div>
-      <Buttons />
-
-      <center>
-        <button onClick={handleGetCurrentLocation}>Get Current Location</button>
-      </center>
-
-      <Wrapper
-        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-        libraries={["places", "marker"]}
-        render={renderStatus}
-      >
+      </form>
+        
         <GoogleMapComponent
           center={{ lat: 32.5252, lng: -93.763504 }}
           zoom={15}
           boundaries={boundaries}
           currentLocation ={currentLocation}
+          
         />
+        
       </Wrapper>
       <Buttons />
       <UserNavBar />
     </div>
   );
 };
-export default MapWrapper;
+return <MapWrapper />
+}
+export default UserLanding;
