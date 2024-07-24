@@ -24,10 +24,24 @@ function* addFav(action) {
   }
 }
 
+function* deleteFav(action){
+    try{
+        console.log("Action received in saga:", action);
+        const {id} = action.payload
+        console.log("Checking id in saga:", id);
+        yield axios.delete(`/api/favorites/${id}`)
+        yield put({ type: "DELETE_FAVS", payload: id})
+
+    } catch(error){
+        console.log("failed in delete fav saga ", error)
+    }
+}
+
 // Watcher saga
 function* favsSaga() {
   yield takeLatest("SET_FAVS", getFavs);
   yield takeLatest("ADD_FAV", addFav);
+  yield takeLatest("DELETE_FAVS", deleteFav)
 }
 
 export default favsSaga;
