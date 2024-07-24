@@ -7,16 +7,21 @@ require('dotenv').config();
 
 
 const scraperRouter = require("./routes/scraper.router.js"); // scraping router
-require("dotenv").config();
-
 const PORT = process.env.PORT || 5001;
 
 // Middleware Includes
 const sessionMiddleware = require("./modules/session-middleware");
 const passport = require("./strategies/user.strategy");
 
+
+
 // Route Includes
-const userRouter = require("./routes/user.router");
+
+const userRouter = require('./routes/user.router');
+ const historyRouter = require('./routes/history.router')
+ 
+
+
 
 app.use(
   cors({
@@ -38,6 +43,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
+
+
+app.use('/api/history', historyRouter )
+
 
 app.use("/api/user", userRouter);
 app.use("/api/favorites", favoritesRouter);
@@ -68,6 +77,7 @@ app.get("/api/search", (req, res) => {
     });
 
 });
+
 
 // Listen Server & Port
 app.listen(PORT, () => {

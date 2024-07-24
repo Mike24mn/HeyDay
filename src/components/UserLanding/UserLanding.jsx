@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react"; // Note to self, useRef allows for  a single render of the SAME content, meaning that its can PERSIST values between render events basically
 import { Wrapper, Status } from "@googlemaps/react-wrapper"; // import google maps wrapper and status
 import UserNavBar from "../UserNavBar/UserNavBar";
@@ -8,6 +9,47 @@ import { useSelector } from "react-redux";
 // Note to self, useRef allows for  a single render of the SAME content, meaning that its can PERSIST values between render events basically
 import L from "leaflet"; // importing leaflet as L, could import it as Leaflet too but this is easier
 import "leaflet/dist/leaflet.css";
+
+function UserLanding() {
+  const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const googleMapRef = useRef(null);
+
+  useEffect(() => {
+    dispatch({ type: 'FETCH_HISTORY' });
+  }, [dispatch]);
+
+  function handleSearch() {
+    dispatch({ type: 'ADD_HISTORY', payload: { search_history: searchTerm } });
+    setSearchTerm(''); 
+  }
+
+
+  function GoogMap() {
+    useEffect(() => {
+      if (googleMapRef.current) {
+        new window.google.maps.Map(googleMapRef.current, {
+          center: { lat: 32.5252, lng: -93.763504 },
+          zoom: 15,
+        });
+      }
+    }, []);
+
+    return <div ref={googleMapRef} style={{ height: "500px", width: "100%" }}></div>;
+  }
+
+  const renderGoogleMap = (status) => {
+    switch (status) {
+      case Status.LOADING:
+        return <div>Loading Google map...</div>;
+      case Status.FAILURE:
+        return <div>Error loading Google map</div>;
+      case Status.SUCCESS:
+        return <GoogMap />;
+      default:
+        return null;
+
 
 const renderStatus = (status) => {
   switch (status) {
@@ -168,6 +210,24 @@ const MapWrapper = () => {
   return (
     <div>
       <h2>Welcome to Heyday, {user.username}!</h2>
+
+      <div>
+        {/* Ensure you have a valid Google Maps API key */}
+        <Wrapper apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY} render={renderGoogleMap} />
+      </div>
+      <div style={{ margin: "20px 0" }}>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ marginRight: "10px", padding: "5px" }}
+        />
+        <button onClick={handleSearch} style={{ padding: "5px 10px" }}>
+          Search
+        </button>
+      </div>
+      <Buttons />
 
       <center>
         <button onClick={handleGetCurrentLocation}>Get Current Location</button>

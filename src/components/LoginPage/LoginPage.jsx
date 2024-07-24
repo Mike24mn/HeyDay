@@ -13,6 +13,7 @@ function LoginPage() {
       
 
       <center>
+        
         Dont have an account? <p></p>
         <button
           type="button"
@@ -44,6 +45,7 @@ function LoginPage() {
           }}
         >
           
+        
           Access Business Portal
         </button>
       </center>
