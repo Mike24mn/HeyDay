@@ -77,9 +77,6 @@ function DetailsPage() {
         ) : (
           <p>No details available</p>
         )}
-        <center>
-          <UserNavBar />
-        </center>
       </div>
     </>
   );
