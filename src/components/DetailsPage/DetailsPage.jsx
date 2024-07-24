@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { icon } from "leaflet";
+import UserNavBar from "../UserNavBar/UserNavBar";
 
 function DetailsPage() {
   const [getDetails, setDetails] = useState([]);
@@ -80,6 +81,7 @@ function DetailsPage() {
         ) : (
           <p>No details available</p>
         )}
+        <center><UserNavBar /></center>
       </div>
     </>
   );

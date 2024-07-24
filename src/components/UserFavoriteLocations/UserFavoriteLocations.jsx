@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import UserNavBar from "../UserNavBar/UserNavBar";
 
 function UserFavoriteLocations() {
   const user = useSelector((store) => store.user);
@@ -43,6 +44,7 @@ function UserFavoriteLocations() {
       ) : (
         <p>No favorite locations found.</p>
       )}
+      <UserNavBar/>
     </div>
   );
 }

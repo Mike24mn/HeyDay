@@ -1,15 +1,11 @@
-
+const express = require("express");
 const app = express();
 const yelp = require('yelp-fusion');
 const cors = require('cors');
 const favoritesRouter = require('./routes/favorites.router.js')
 require('dotenv').config();
 
-const express = require("express");
-const app = express(); // app as a shortcut for express
-const yelp = require("yelp-fusion"); // yelp api
-const cors = require("cors"); // cross origin resource sharing
-const favoritesRouter = require("./routes/favorites.router.js"); // fav router
+
 const scraperRouter = require("./routes/scraper.router.js"); // scraping router
 require("dotenv").config();
 
