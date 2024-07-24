@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const scraperRouter = require("./routes/scraper.router.js");
 require('dotenv').config();
 const PORT = process.env.PORT || 5001;
 
@@ -24,6 +25,8 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/user', userRouter);
+
+app.use('/api/scraper', scraperRouter);
 
 // Listen Server & Port
 app.listen(PORT, () => {
