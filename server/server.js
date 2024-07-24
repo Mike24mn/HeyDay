@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 const express = require("express");
 const app = express();
 const yelp = require('yelp-fusion');
 const cors = require('cors');
 const favoritesRouter = require('./routes/favorites.router.js')
 require('dotenv').config();
+=======
+
+
+>>>>>>> f4e6133 ( doing a git pull)
 
 
 const scraperRouter = require("./routes/scraper.router.js"); // scraping router
