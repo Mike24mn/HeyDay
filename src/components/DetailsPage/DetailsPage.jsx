@@ -35,7 +35,7 @@ function DetailsPage() {
     event.preventDefault()
     const id = user.id
     console.log("checking id", id )
-    console.log("fav works", handleFav)
+    
  
     dispatch({type: "ADD_FAV", payload: { ...details, user_id: id, address: details.location.address1 } })
   }

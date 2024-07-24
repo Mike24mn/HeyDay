@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const yelp = require('yelp-fusion');
 const cors = require('cors');
-const favoritesRouter = require('./routes/template.router.js')
+const favoritesRouter = require('./routes/favorites.router.js')
 require('dotenv').config();
 const PORT = process.env.PORT || 5001;
 
@@ -32,9 +32,11 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/user', userRouter);
-app.use('/api', favoritesRouter);
+app.use('/api/favorites', favoritesRouter);
 
 app.use('/api/user', userRouter);
+
+
 
 const apiKey = '6ONLrF40aWp2jP__Bxi14hEEFXPj8161PsM3hAErgO03eXQWYIaw4aDAS-i1aGq3u9-dirq6NW9HD_xfglFTK1LANGuFzgOeEBsVWdQqoen9jM1SHOrkfydI1HeZZnYx'; // Use environment variable for API key
 
