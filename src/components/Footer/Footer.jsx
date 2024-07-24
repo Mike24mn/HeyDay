@@ -9,8 +9,8 @@ import UserNavBar from '../UserNavBar/UserNavBar';
 
 function Footer() {
   return <div>
-    <center><UserNavBar />
-    <footer>&copy; Heyday, 2024</footer></center></div>
+    
+    <footer>&copy; Heyday, 2024</footer></div>
 }
 
 export default Footer;

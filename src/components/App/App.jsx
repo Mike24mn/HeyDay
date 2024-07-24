@@ -7,8 +7,7 @@ import {
 } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import InfoPage from "../InfoPage/InfoPage";
-import LandingPage from "../LandingPage/LandingPage";
+
 import LoginPage from "../LoginPage/LoginPage";
 import RegisterPage from "../RegisterPage/RegisterPage";
 import Nav from "../Nav/Nav";
@@ -17,10 +16,10 @@ import Footer from "../Footer/Footer";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import AboutPage from "../AboutPage/AboutPage";
-import UserPage from "../UserPage/UserPage"; // merged with UserLanding
+
 
 import BusinessViewAsUser from "../BusinessViewAsUser/BusinessViewAsUser";
-import UserLanding from "../UserLanding/UserLanding"; // combine logic w UserPage eventually
+import UserLanding from "../UserLanding/UserLanding"; 
 import DetailsPage from "../DetailsPage/DetailsPage";
 import UserFavoriteLocations from "../UserFavoriteLocations/UserFavoriteLocations";
 import BusinessLogin from "../BusinessLogin/BusinessLogin";
@@ -52,14 +51,6 @@ function App() {
             <AboutPage />
           </Route>
 
-          <ProtectedRoute exact path="/user">
-            <UserPage />
-          </ProtectedRoute>
-
-          <ProtectedRoute exact path="/info">
-            <InfoPage />
-          </ProtectedRoute>
-
           <Route exact path="/login">
             {user.id ? <Redirect to="/user" /> : <LoginPage />}
           </Route>
@@ -68,13 +59,13 @@ function App() {
             {user.id ? <Redirect to="/user" /> : <RegisterPage />}
           </Route>
 
-          <Route exact path="/home">
-            {user.id ? <Redirect to="/user" /> : <LandingPage />}
-          </Route>
-
           {/* new Heyday routes (not Prime's routes) */}
           <Route exact path="/business-login">
             <BusinessLogin />
+          </Route>
+
+          <Route exact path="/user-landing-nonlogin">
+            <UserLanding />
           </Route>
 
           <ProtectedRoute exact path="/business-landing">
@@ -125,3 +116,5 @@ function App() {
 }
 
 export default App;
+
+

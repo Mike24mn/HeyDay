@@ -1,17 +1,15 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
+import React from "react";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 function UserFavoriteLocations() {
-  const user = useSelector(store => store.user);
-  const favorite = useSelector(store => store.favorites);
+  const user = useSelector((store) => store.user);
+  const favorite = useSelector((store) => store.favorites);
   console.log("checking fav", favorite);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
- 
   console.log("User:", user);
   console.log("Favorites:", favorite);
 
@@ -23,8 +21,9 @@ function UserFavoriteLocations() {
 
   const id = user.id;
 
-  
-  const filteredFavs = favorite.filter(fav => Number(fav.user_id) === Number(user.id));
+  const filteredFavs = favorite.filter(
+    (fav) => Number(fav.user_id) === Number(user.id)
+  );
 
   console.log("Filtered Favorites:", filteredFavs);
 
@@ -36,9 +35,9 @@ function UserFavoriteLocations() {
         <ul>
           {filteredFavs.map((fav, index) => (
             <li key={index}>
-              <p>{fav.name}</p> 
+              <p>{fav.name}</p>
               <p>ADDRESS:{fav.address}</p>
-              </li> 
+            </li>
           ))}
         </ul>
       ) : (
@@ -47,5 +46,4 @@ function UserFavoriteLocations() {
     </div>
   );
 }
-
 export default UserFavoriteLocations;
