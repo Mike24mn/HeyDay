@@ -2,11 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const puppeteer = require('puppeteer'); // this is javascripts html parsing/scraping library
-const natural = require('natural');
+const natural = require('natural'); // natural supports tokenization, tokenization allows us to break down language into segments for the machine learning/nlp library
 const NodeGeocoder = require('node-geocoder'); // turns addresses into lat. and long. and vice versa
 
 // Scraping function, given url
 async function scrapeHappyHours(url) {
+    console.log("in scrapeHappyHours");
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url);
@@ -22,6 +23,7 @@ async function scrapeHappyHours(url) {
       deal: item.querySelector('.deal').innerText,
       time: item.querySelector('.time').innerText
     }));
+    console.log("scraper.router happy hours are ", happyHours);
   });
 
   await browser.close();
@@ -50,6 +52,7 @@ const geocoder = NodeGeocoder({
 // grab coordinates from the address 
 async function getCoordinates(address) {
   const res = await geocoder.geocode(address);
+    // return 0th index or lat and lng
   return res[0] ? { lat: res[0].latitude, lng: res[0].longitude } : null;
 }
 
@@ -69,8 +72,11 @@ router.get('/scrape', async (req, res) => {
     let allHappyHours = [];
     // for loop below loops through ALL given urls
     for (let url of urls) {
+        console.log("in for of loop");
       const happyHours = await scrapeHappyHours(url); // wait for scrapeHappyHours to finish
       allHappyHours = allHappyHours.concat(happyHours); // concatanate happyhours with those being scraped (aka each loop through)
+      console.log("allHappyHours", allHappyHours);
+      console.log("happyHours", happyHours);
     }
 
     const mappableHappyHours = await Promise.all(allHappyHours.map(async (hh) => {
@@ -84,6 +90,7 @@ router.get('/scrape', async (req, res) => {
       };
     }));
 // send as json
+    console.log(mappableHappyHours); // ERROR: This is coming back as an empty array in server log and on Postman when testing
     res.json(mappableHappyHours);
   } catch (error) {
     console.error('Scraping error:', error);

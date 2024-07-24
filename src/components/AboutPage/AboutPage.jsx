@@ -8,8 +8,8 @@ function AboutPage() {
 
   useEffect(() => {
     const fetchHappyHours = async () => {
-      setIsLoading(true);
-      setError(null);
+      setIsLoading(true); // load state
+      setError(null); // set initial null state
       try {
         const response = await fetch("/api/scraper/scrape");
         if (!response.ok) {
@@ -25,7 +25,7 @@ function AboutPage() {
     };
 
     fetchHappyHours();
-  }, []);
+  }, []); // empty dependency array, only run once
 
   return (
     <div>
@@ -96,7 +96,7 @@ function AboutPage() {
           offerings.
         </li>
         <li>
-          We use location data to help you find the nearest and best happy hour
+          We also use location data to help you find the nearest and best happy hour
           deals.
         </li>
         <li>

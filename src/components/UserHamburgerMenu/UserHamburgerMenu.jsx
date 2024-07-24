@@ -95,13 +95,16 @@ export default function UserHamburgerMenu() {
             <MenuItem onClick={handleMenuClose}>
               <StyledLink to="/about">Getting Started (THE ABOUT COMPONENT)</StyledLink>
             </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+            <LogOutButton />
+            </MenuItem>
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Menu
           </Typography>
           {user.id ? (
             <Button color="inherit">
-              <LogOutButton />
+              
             </Button>
           ) : (
             <span></span>

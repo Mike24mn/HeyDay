@@ -76,7 +76,7 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
       });
       map.setCenter(currentLocation); // Center the map to the current location
     }
-  }, [currentLocation, map]); // Effect depends on currentLocation
+  }, [currentLocation, map]); // Effect depends on currentLocation, update on change of either of these
   
   useEffect(() => {
     if (mapRef.current) {
