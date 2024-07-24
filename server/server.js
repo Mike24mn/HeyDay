@@ -56,9 +56,7 @@ app.use("/api/user", userRouter);
 app.use("/api/favorites", favoritesRouter);
 app.use("/api/scraper", scraperRouter);
 
-const apiKey =
-  "6ONLrF40aWp2jP__Bxi14hEEFXPj8161PsM3hAErgO03eXQWYIaw4aDAS-i1aGq3u9-dirq6NW9HD_xfglFTK1LANGuFzgOeEBsVWdQqoen9jM1SHOrkfydI1HeZZnYx";
-
+const apiKey = process.env.VITE_GOOGLE_MAPS_API_KEY;
 app.get("/api/search", (req, res) => {
   const client = yelp.client(apiKey);
 
