@@ -1,3 +1,10 @@
+
+const app = express();
+const yelp = require('yelp-fusion');
+const cors = require('cors');
+const favoritesRouter = require('./routes/favorites.router.js')
+require('dotenv').config();
+
 const express = require("express");
 const app = express(); // app as a shortcut for express
 const yelp = require("yelp-fusion"); // yelp api
@@ -5,6 +12,7 @@ const cors = require("cors"); // cross origin resource sharing
 const favoritesRouter = require("./routes/favorites.router.js"); // fav router
 const scraperRouter = require("./routes/scraper.router.js"); // scraping router
 require("dotenv").config();
+
 const PORT = process.env.PORT || 5001;
 
 // Middleware Includes
@@ -14,7 +22,6 @@ const passport = require("./strategies/user.strategy");
 // Route Includes
 const userRouter = require("./routes/user.router");
 
-// Express Middleware
 app.use(
   cors({
     origin: "http://localhost:5173", // Allow requests from this origin
@@ -22,6 +29,7 @@ app.use(
     allowedHeaders: "Content-Type,Authorization", // Allowed headers
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("build"));
@@ -34,6 +42,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
+
 app.use("/api/user", userRouter);
 app.use("/api/favorites", favoritesRouter);
 app.use("/api/scraper", scraperRouter);
@@ -61,6 +70,7 @@ app.get("/api/search", (req, res) => {
       console.error("Error during Yelp API request:", e);
       res.status(500).send(e);
     });
+
 });
 
 // Listen Server & Port
