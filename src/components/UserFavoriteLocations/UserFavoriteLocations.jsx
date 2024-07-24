@@ -28,6 +28,13 @@ function UserFavoriteLocations() {
 
   console.log("Filtered Favorites:", filteredFavs);
 
+  const handleDel = (id) =>{
+    dispatch({ type:"DELETE_FAVS", payload: {id} })
+    console.log("checking id in delete handle ", id );
+
+
+  }
+
   return (
     <div>
       <h1>User Favorite Locations</h1>
@@ -38,7 +45,9 @@ function UserFavoriteLocations() {
             <li key={index}>
               <p>{fav.name}</p>
               <p>ADDRESS:{fav.address}</p>
+              <button onClick={()=>handleDel(fav.id)} >DELETE </button>
             </li>
+           
           ))}
         </ul>
       ) : (
