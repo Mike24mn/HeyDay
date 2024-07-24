@@ -1,83 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import UserNavBar from "../UserNavBar/UserNavBar";
+import { useSelector, useDispatch } from "react-redux";
 import Buttons from "../Buttons/Buttons";
-import LogOutButton from "../LogOutButton/LogOutButton";
-import { useSelector } from "react-redux";
-// Note to self, useRef allows for  a single render of the SAME content, meaning that its can PERSIST values between render events basically
-import L from "leaflet"; // importing leaflet as L, could import it as Leaflet too but this is easier
+import UserNavBar from "../UserNavBar/UserNavBar";
 import "leaflet/dist/leaflet.css";
 
-function UserLanding() {
-  const user = useSelector((store) => store.user);
-  const dispatch = useDispatch();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentLocation, setCurrentLocation] = useState(null);
-
-  useEffect(() => {
-    dispatch({ type: 'FETCH_HISTORY' });
-  }, [dispatch]);
-
-  function handleSearch() {
-    dispatch({ type: 'ADD_HISTORY', payload: { search_history: searchTerm } });
-    setSearchTerm('');
-  };
-
-  const handleGetCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCurrentLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Error retrieving location:", error);
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  };
-
-  const boundaries = [
-    [
-      { lat: 32.5252, lng: -93.763504 },
-      { lat: 32.5302, lng: -93.760504 },
-      { lat: 32.5272, lng: -93.755504 },
-      { lat: 32.5222, lng: -93.758504 },
-    ],
-  ];
-
-  const renderStatus = (status) => {
-    switch (status) {
-      case Status.LOADING:
-        return <div>Loading...</div>;
-      case Status.FAILURE:
-        return <div>Error loading Google map</div>;
-      case Status.SUCCESS:
-        return <GoogMap />;
-      default:
-        return null;
-
-
-const renderStatus = (status) => {
-  switch (status) {
-    case Status.LOADING:
-      return <div>Loading...</div>;
-    case Status.FAILURE:
-      return <div>Failed to load the map</div>;
-    default:
-      return null;
-  }
-};
 const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
   const mapRef = useRef(null);
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
   const [map, setMap] = useState(null);
-
 
   useEffect(() => {
     if (currentLocation && map) {
@@ -87,8 +19,8 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
       });
       map.setCenter(currentLocation); // Center the map to the current location
     }
-  }, [currentLocation, map]); // Effect depends on currentLocation, update on change of either of these
-  
+  }, [currentLocation, map]);
+
   useEffect(() => {
     if (mapRef.current) {
       const mapInstance = new window.google.maps.Map(mapRef.current, {
@@ -133,6 +65,7 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
       }
     }
   }, [center, zoom, boundaries]);
+
   const search21PlusPlaces = (mapInstance, location) => {
     const service = new window.google.maps.places.PlacesService(mapInstance);
     const request = {
@@ -141,10 +74,7 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
       type: ["restaurant", "bar"], // Types of places to search
     };
     service.nearbySearch(request, (results, status) => {
-      if (
-        status === window.google.maps.places.PlacesServiceStatus.OK &&
-        results
-      ) {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
         results.forEach((place) => {
           if (place.geometry && place.geometry.location) {
             new window.google.maps.marker.AdvancedMarkerElement({
@@ -157,7 +87,7 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
       }
     });
   };
-  
+
   return (
     <div style={{ height: "500px", width: "100%" }}>
       <input
@@ -187,27 +117,40 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
     </div>
   );
 };
+
 const MapWrapper = () => {
-    const [currentLocation, setCurrentLocation] = useState(null); // start with no user location 
-    const handleGetCurrentLocation = () => {
-        if (navigator.geolocation) {
-            console.log("in current location");
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              setCurrentLocation({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              });
-            },
-            (error) => {
-              console.error("Error retrieving location:", error);
-            }
-          );
-        } else {
-          alert("Geolocation is not supported by this browser.");
-        }
-      };
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'FETCH_HISTORY' });
+  }, [dispatch]);
+
+  function handleSearch() {
+    dispatch({ type: 'ADD_HISTORY', payload: { search_history: searchTerm } });
+    setSearchTerm('');
+  };
+
+  const handleGetCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error retrieving location:", error);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  };
+
   const boundaries = [
     [
       { lat: 32.5252, lng: -93.763504 },
@@ -215,17 +158,24 @@ const MapWrapper = () => {
       { lat: 32.5272, lng: -93.755504 },
       { lat: 32.5222, lng: -93.758504 },
     ],
-    
-    // Add more boundary arrays as needed
   ];
+
+  const renderStatus = (status) => {
+    switch (status) {
+      case Status.LOADING:
+        return <div>Loading...</div>;
+      case Status.FAILURE:
+        return <div>Failed to load the map</div>;
+      case Status.SUCCESS:
+        return <div>Map Loaded Successfully</div>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div>
       <h2>Welcome to Heyday, {user.username}!</h2>
-
-      <div>
-        {/* Ensure you have a valid Google Maps API key */}
-        <Wrapper apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY} render={renderGoogleMap} />
-      </div>
       <div style={{ margin: "20px 0" }}>
         <input
           type="text"
@@ -245,15 +195,16 @@ const MapWrapper = () => {
       </center>
 
       <Wrapper
-        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+        apiKey="AIzaSyA8jcuuW2zc0RNFrDoKhpwf5mAu2uDcXFU"
         libraries={["places", "marker"]}
         render={renderStatus}
       >
+        
         <GoogleMapComponent
           center={{ lat: 32.5252, lng: -93.763504 }}
           zoom={15}
           boundaries={boundaries}
-          currentLocation ={currentLocation}
+          currentLocation={currentLocation}
         />
       </Wrapper>
       <Buttons />
@@ -261,4 +212,5 @@ const MapWrapper = () => {
     </div>
   );
 };
+
 export default MapWrapper;
