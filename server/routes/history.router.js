@@ -41,4 +41,29 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   });
 
 
+
+  router.delete('/:id', rejectUnauthenticated, (req, res) => {
+    const itemId = req.params.id;
+    const userId = req.user.id;
+    console.log(`Attempting to delete item ${itemId} for user ${userId}`);
+
+    const queryText = `
+    DELETE FROM "user_profile"
+    WHERE "id" = $1 AND "user_id" = $2
+    `
+    pool.query(queryText, [itemId, userId])
+    .then ((result) => {
+      if (result.rowCount > 0) {
+        res.sendStatus(204)
+      } else {
+        res.sendStatus(403)
+      } 
+    })
+    .catch((error) => {
+      console.log('Error with DELETE', error);
+      res.sendStatus(500)
+    })
+});
+
+
 module.exports = router;
