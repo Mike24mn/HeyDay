@@ -1,4 +1,3 @@
-TheRippleEffect.jsx
 
 import React from 'react';
 import './TheRippleEffect.css';

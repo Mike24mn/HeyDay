@@ -1,14 +1,14 @@
 import React from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import { useHistory } from 'react-router-dom';
-//import TheRippleEffect from '../TheRippleEffect/TheRippleEffect';
+import TheRippleEffect from '../TheRippleEffect/TheRippleEffect';
 
 function LoginPage() {
   const history = useHistory();
 
   return (
     <div>
-      <center></center>
+      <center><TheRippleEffect/></center>
       <LoginForm />
       
 
