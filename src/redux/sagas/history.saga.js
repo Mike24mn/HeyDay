@@ -22,10 +22,22 @@ function* addHistory(action){
     }
 }
 
-function* historySaga(){
-    yield takeLatest('FETCH_HISTORY', fetchHistory)
-    yield takeLatest('ADD_HISTORY', addHistory)
+
+function* deleteHistory(action) {
+    try {
+        yield call(axios.delete, `/api/history/${action.payload}`);
+        yield put({ type: 'FETCH_HISTORY' });
+    } catch (error) {
+        console.log('Error with delete request', error);
+    }
 }
 
 
-export default historySaga
+function* historySaga(){
+    yield takeLatest('FETCH_HISTORY', fetchHistory)
+    yield takeLatest('ADD_HISTORY', addHistory)
+    yield takeLatest('DELETE_ITEM',deleteHistory )
+}
+
+
+export default historySaga;

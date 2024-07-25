@@ -1,9 +1,18 @@
 import React from 'react';
 import UserNavBar from '../UserNavBar/UserNavBar';
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+
 
 function UserSearchHistory() {
   const searchHistory = useSelector((store) => store.historyReducer);
+  const dispatch = useDispatch();
+  
+  
+  const handleDelete = (itemId) => {
+    dispatch({ type: 'DELETE_ITEM', payload: itemId });
+  };
+
+  
 
   return (
     <div>
@@ -11,7 +20,8 @@ function UserSearchHistory() {
       <div>
         {searchHistory.map((item) => (
           <div key={item.id}>
-            <p> {item.search_history}</p>
+            <p> {item.search_history}    <button  onClick={() => handleDelete(item.id)}>❌</button> </p>
+          
           </div>
         ))}
       </div>

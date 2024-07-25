@@ -17,7 +17,11 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
         position: currentLocation,
         map: map,
       });
-      map.setCenter(currentLocation); // Center the map to the current location
+      map.setCenter(currentLocation);
+
+      // CHANGE: Added automatic search for restaurants and bars when current location is set
+      searchRestaurantsAndBars    (map, currentLocation);
+
     }
   }, [currentLocation, map]);
 
@@ -45,7 +49,15 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
       });
       if (inputRef.current) {
         autocompleteRef.current = new window.google.maps.places.Autocomplete(
-          inputRef.current
+          inputRef.current,
+          {
+
+            // CHANGE: Modified types to only include restaurants and bars
+            types: ['restaurant', 'bar'],
+            componentRestrictions: { country: "us" },
+
+
+          }
         );
         autocompleteRef.current.bindTo("bounds", mapInstance);
         autocompleteRef.current.addListener("place_changed", () => {
@@ -60,24 +72,27 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
             mapInstance.setCenter(place.geometry.location);
             mapInstance.setZoom(17);
           }
-          search21PlusPlaces(mapInstance, place.geometry.location);
+
+          // CHANGE: Renamed function to searchRestaurantsAndBars for clarity
+          searchRestaurantsAndBars    (mapInstance, place.geometry.location);
         });
       }
     }
   }, [center, zoom, boundaries]);
 
-  const search21PlusPlaces = (mapInstance, location) => {
+  // CHANGE: Renamed function from search21PlusPlaces to searchRestaurantsAndBars
+  const searchRestaurantsAndBars     = (mapInstance, location) => {
     const service = new window.google.maps.places.PlacesService(mapInstance);
     const request = {
       location,
-      radius: "5000", // Radius in meters
-      type: ["restaurant", "bar"], // Types of places to search
+      radius: "5000", 
+      type: ["restaurant", "bar"],
     };
     service.nearbySearch(request, (results, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
         results.forEach((place) => {
           if (place.geometry && place.geometry.location) {
-            new window.google.maps.marker.AdvancedMarkerElement({
+            new window.google.maps.Marker({
               position: place.geometry.location,
               map: mapInstance,
               title: place.name,
@@ -87,13 +102,12 @@ const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
       }
     });
   };
-
   return (
     <div style={{ height: "500px", width: "100%" }}>
       <input
         ref={inputRef}
         type="text"
-        placeholder="Search Box"
+        placeholder="Search for restaurants and bars"
         style={{
           boxSizing: "border-box",
           border: "1px solid transparent",
@@ -212,5 +226,7 @@ const MapWrapper = () => {
     </div>
   );
 };
+
+
 
 export default MapWrapper;
