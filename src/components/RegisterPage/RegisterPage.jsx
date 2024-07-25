@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useHistory } from 'react-router-dom';
 import RegisterForm from '../RegisterForm/RegisterForm';
-//import TheRippleEffect from '../TheRippleEffect/TheRippleEffect';
+import TheRippleEffect from '../TheRippleEffect/TheRippleEffect';
 
 function RegisterPage() {
   const history = useHistory();
