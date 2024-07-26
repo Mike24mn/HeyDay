@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const BussinessInfo = ()=>{
-    const user = useSelector(store => store.users)
+    const user = useSelector(store => store.user)
     const [getAddress, setAddress]= useState('')
     const [getName, setName ]= useState('')
     const [getType, setType] = useState('')
@@ -13,25 +13,35 @@ const BussinessInfo = ()=>{
     const dispatch = useDispatch()
     const history = useHistory()
     const id = user.id 
+    const handleSubmit = (event  ) => {
+        event.preventDefault();
+        dispatch({
+            type: 'ADD_BUS',
+            payload: {
+                business_id: user.id,
+                business_name: getName,
+                business_type: getType,
+                address: getAddress,
+                description: getDes,
+                
+            },
+            
+        });
+        dispatch({type:"UPDATE_USER"})
 
-    const handlesubmit = (event)=>{
-        event.preventDefault()
-    dispatch({type: 'ADD_BUS', payload: {name: getName, type: getType, address: getAddress, des: getDes , id: user.id}})
+        setAddress('');
+        setDes('');
+        setName('');
+        setType('');
 
-        setAddress('')
-        setDes('')
-        setName('')
-        setType('')
+        history.push('tbd');
+    };
 
-        history.push('/bussinessLanding')
-        
-
-    }
 
     return( 
         <>
         <h1>bussiness fill out form</h1>
-        <form onSubmit={handlesubmit}>
+        <form onSubmit={handleSubmit}>
 
         <p>name</p>
         <input
@@ -54,12 +64,14 @@ const BussinessInfo = ()=>{
          onChange={(e)=> setType(e.target.value)}
          />
 
-        <p> des</p>
+        <p> Description </p>
          <input
          type="text"
          value={getDes}
          onChange={(e)=> setDes(e.target.value)}
          />
+
+         <button type="submit"> submit info </button>
 
 
         </form>

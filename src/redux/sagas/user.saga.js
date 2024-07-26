@@ -24,8 +24,24 @@ function* fetchUser() {
   }
 }
 
+function* updateAccessLevel(action) {
+  try {
+    const config = {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true,
+    };
+
+    const response = yield axios.put('/api/user/access_level', { access_level: 2 }, config);
+    yield put({ type: 'UPDATE_USER_SUCCSESS', payload: response.data }); // Assuming the response contains the updated user info
+  } catch (error) {
+    console.log('User update access level request failed', error);
+  }
+}
+
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
+  yield takeLatest('UPDATE_USER', updateAccessLevel)
 }
 
 export default userSaga;

@@ -4,18 +4,18 @@ import Button from "@mui/material/Button";
 
 export default function Buttons() {
   const buttons = [
-    "Vibe",
-    "Vibe",
-    "Diet",
-    "Time",
-    "Vibe",
-    "Vibe",
-    "Diet",
-    "Time",
-    "Vibe",
-    "Vibe",
-    "Diet",
-    "Time",
+    "Cozy",
+    "Trendy",
+    "Vegan",
+    "Time: 1:00PM",
+    "Casual",
+    "Romantic",
+    "Vegetarian",
+    "Time: 2:00PM",
+    "Lively",
+    "Outdoor Seating",
+    "Gluten-Free",
+    "Pet Friendly? (create checkbox here)",
   ];
 
   return (
