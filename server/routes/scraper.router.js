@@ -144,8 +144,9 @@ router.get('/scrape', async (req, res) => {
       allHappyHours = allHappyHours.concat(happyHours);
     }
 
-    // sse promise.all to wait for all async's ops in the array to complete
-    // allHappyHours.map creates new array where each element is a promise returned from the async function
+    // usse promise.all to wait for async ops in the array to complete!!!
+    // allHappyHours.map creates new array where each element is a promise obj. returned from the async function
+
     // process the scraped data to get all coordinates and analyze it for
     // descriptions we want
     const mappableHappyHours = await Promise.all(allHappyHours.map(async (hh) => {
@@ -164,7 +165,6 @@ router.get('/scrape', async (req, res) => {
     // convert to JSON string using mappableHappyHours array,
     // null means include all properties of the object (meaning not seperated or disincluding anything))
     // 2 tells the writing how much white space to use while writing,
-    // in this case we give it two spaces
     await fs.writeFile('happyHours.json', JSON.stringify(mappableHappyHours, null, 2));
     console.log('Data saved to happyHours.json');
 
