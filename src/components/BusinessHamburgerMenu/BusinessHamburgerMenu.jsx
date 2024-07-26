@@ -32,6 +32,8 @@ export default function ButtonAppBar({ user }) {
     setAnchorEl(null);
   };
 
+  // Code below needs to be updated to reflect Heyday links and routes
+
   return (
     <Box sx={{ flexGrow: 1, width: "100%", backgroundColor: "#000" }}>
       <AppBar position="static" sx={{ width: "100%", backgroundColor: "#000" }}>

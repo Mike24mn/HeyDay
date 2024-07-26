@@ -13,7 +13,7 @@ function AboutPage() {
       try {
         const response = await fetch("/api/scraper/scrape");
         if (!response.ok) {
-          throw new Error("Failed to fetch happy hour data");
+          throw new Error("Failed to fetch happy hour info");
         }
         const data = await response.json();
         setHappyHours(data);
@@ -90,13 +90,13 @@ function AboutPage() {
 
       <h2>How It Works</h2>
       <ol>
-        <li>We collect data from popular food and drink websites.</li>
+        <li>We collect data from popular food and drink sources.</li>
         <li>
-          Our system analyzes the information to categorize venues by vibe and
+          Our system analyzes the information to categorize venues by vibe, diet and
           offerings.
         </li>
         <li>
-          We also use location data to help you find the nearest and best happy hour
+          We use location data to help you find the nearest and best happy hour
           deals.
         </li>
         <li>
