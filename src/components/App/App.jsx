@@ -16,7 +16,7 @@ import Footer from "../Footer/Footer";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import AboutPage from "../AboutPage/AboutPage";
-
+import BusinessRegister from "../BusinessRegister/BusinessRegister";
 
 import BusinessViewAsUser from "../BusinessViewAsUser/BusinessViewAsUser";
 import UserLanding from "../UserLanding/UserLanding"; 
@@ -25,6 +25,7 @@ import UserFavoriteLocations from "../UserFavoriteLocations/UserFavoriteLocation
 import BusinessLogin from "../BusinessLogin/BusinessLogin";
 import BusinessLanding from "../BusinessLanding/BusinessLanding";
 import BusinessEditPage from "../BusinessEditPage/BusinessEditPage";
+import BussinessInfo from "../BusinessInfo/BusinessInfo";
 
 import UserSearchHistory from "../UserSearchHistory/UserSearchHistory";
 
@@ -106,9 +107,19 @@ function App() {
             <AboutPage />
           </ProtectedRoute>
 
+
+          <ProtectedRoute exact path="/businessinfo">
+            <BussinessInfo/>
+          </ProtectedRoute>
+
+          <Route exact path="/business-reg">
+            <BusinessRegister/>
+          </Route>
+
           <ProtectedRoute exact path="/user-login">
             <LogOutButton />
           </ProtectedRoute>
+
 
           {/* if none of the other routes, will show a 404. */}
         </Switch>

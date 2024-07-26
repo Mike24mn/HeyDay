@@ -4,6 +4,14 @@ const userReducer = (state = {}, action) => {
       return action.payload;
     case 'UNSET_USER':
       return {};
+      case 'UPDATE_USER':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          access_level: 2,
+        },
+      };
     default:
       return state;
   }
