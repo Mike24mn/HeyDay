@@ -20,7 +20,7 @@ function RegisterForm() {
       },
     });
     history.push('/businessinfo')
-  }; // end registerUser
+  }; 
 
   return (
     <form className="formPanel" onSubmit={registerUser}>

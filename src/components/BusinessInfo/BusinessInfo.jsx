@@ -29,12 +29,13 @@ const BussinessInfo = ()=>{
         });
         dispatch({type:"UPDATE_USER"})
 
-        setAddress('');
+        
         setDes('');
+        setAddress(''); 
         setName('');
         setType('');
 
-        history.push('tbd');
+        history.push("/business-landing");
     };
 
 
@@ -54,7 +55,7 @@ const BussinessInfo = ()=>{
          <input
          type="text"
          value={getAddress}
-         onChange={(e)=> setName(e.target.value)}
+         onChange={(e)=> setAddress(e.target.value)}
          />
 
          <p> type </p>

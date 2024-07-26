@@ -1,7 +1,7 @@
-const bussiness = (state = [], action)=>{
+const business = (state = [], action)=>{
     switch (action.type) {
         case "SET_BUS_SUCCESS":
-            return state
+            return action.payload
         case "ADD_BUS_SUCCESS":
             return [...state, action.payload]    
             
@@ -11,4 +11,4 @@ const bussiness = (state = [], action)=>{
     }
 }
 
-export default bussiness 
+export default business 
