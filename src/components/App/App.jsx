@@ -29,6 +29,8 @@ import BusinessEditPage from "../BusinessEditPage/BusinessEditPage";
 import UserSearchHistory from "../UserSearchHistory/UserSearchHistory";
 
 import "./App.css";
+import { Logout } from "@mui/icons-material";
+import LogOutButton from "../LogOutButton/LogOutButton";
 
 function App() {
   const dispatch = useDispatch();
@@ -104,10 +106,11 @@ function App() {
             <AboutPage />
           </ProtectedRoute>
 
+          <ProtectedRoute exact path="/user-login">
+            <LogOutButton />
+          </ProtectedRoute>
+
           {/* if none of the other routes, will show a 404. */}
-          <Route>
-            <h1>404</h1>
-          </Route>
         </Switch>
         <Footer />
       </div>
