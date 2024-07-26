@@ -40,7 +40,7 @@ global scope window object in javascript represents browser window (allows us to
 
 function UserLanding() {
 
-  // get the dispatch function to send actions to Redux
+  // get the dispatch function to send the action to Redux
   const dispatch = useDispatch();
 
   // fetch history on component load (for search history)
