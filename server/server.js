@@ -27,13 +27,11 @@ const userRouter = require('./routes/user.router');
 
 
 
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Allow requests from this origin
-    methods: "GET,POST,PUT,DELETE", // Allowed HTTP methods
-    allowedHeaders: "Content-Type,Authorization", // Allowed headers
-  })
-);
+ app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:5001'], // Allow both frontend and backend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
