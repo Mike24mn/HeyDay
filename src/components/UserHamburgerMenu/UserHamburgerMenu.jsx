@@ -77,10 +77,14 @@ export default function UserHamburgerMenu() {
                   <StyledLink to="/user-landing">User Landing</StyledLink>
                 </MenuItem>
                 <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/favorite-locations">Favorite Locations</StyledLink>
+                  <StyledLink to="/favorite-locations">
+                    Favorite Locations
+                  </StyledLink>
                 </MenuItem>
                 <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/user-search-history">Search History</StyledLink>
+                  <StyledLink to="/user-search-history">
+                    Search History
+                  </StyledLink>
                 </MenuItem>
                 <MenuItem onClick={handleMenuClose}>
                   <StyledLink to="/user-details">User Details</StyledLink>
@@ -88,19 +92,21 @@ export default function UserHamburgerMenu() {
               </>
             )}
             <MenuItem onClick={handleMenuClose}>
-              <StyledLink to="/about">Getting Started (THE ABOUT COMPONENT)</StyledLink>
+              <StyledLink to="/about">
+                Getting Started (THE ABOUT COMPONENT)
+              </StyledLink>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <LogOutButton />
-            </MenuItem>
+            {user.id ? (
+              <MenuItem onClick={handleMenuClose}>
+                <LogOutButton Button color="inherit" />
+              </MenuItem>
+            ) : null}
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Menu
           </Typography>
           {user.id && (
-            <Button color="inherit">
-              {/* Add Button Content Here */}
-            </Button>
+            <Button color="inherit">{/* Add Button Content Here */}</Button>
           )}
         </Toolbar>
       </AppBar>

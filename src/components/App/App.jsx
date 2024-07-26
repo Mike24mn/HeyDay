@@ -120,8 +120,6 @@ function App() {
             <LogOutButton />
           </ProtectedRoute>
 
-
-          {/* if none of the other routes, will show a 404. */}
         </Switch>
         <Footer />
       </div>
