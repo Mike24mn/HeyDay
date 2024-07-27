@@ -67,4 +67,20 @@ router.post('/logout', (req, res, next) => {
   });
 });
 
+router.put('/access_level', (req, res) => {
+  const userId = req.user.id; // Assuming you have user information in the session
+  const { access_level } = req.body;
+  const queryText = `UPDATE "user" SET "access_level" = $1 WHERE "id" = $2 RETURNING *;`;
+
+  pool.query(queryText, [access_level, userId])
+    .then((response) => {
+      console.log("Access level updated successfully", response.rows[0]);
+      res.status(200).json(response.rows[0]);
+    })
+    .catch((error) => {
+      console.log("Error in updating access level", error);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;

@@ -5,7 +5,7 @@ function AboutPage() {
   const [happyHours, setHappyHours] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+/*
   useEffect(() => {
     const fetchHappyHours = async () => {
       setIsLoading(true); // load state
@@ -26,7 +26,7 @@ function AboutPage() {
 
     fetchHappyHours();
   }, []); // empty dependency array, only run once
-
+*/
   return (
     <div>
       <h1>About HeyDay</h1>

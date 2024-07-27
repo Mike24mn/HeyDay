@@ -6,7 +6,7 @@ import { takeLatest, put } from "redux-saga/effects";
 function* getFavs() {
   try {
     const response = yield axios.get(`/api/favorites`);
-    console.log("Response data:", response.data); // Log data to verify structure
+    console.log("Response data:", response.data); 
     yield put({ type: "SET_FAVS_SUCCESS", payload: response.data });
   } catch (error) {
     console.error("Error in getFavs saga:", error);
