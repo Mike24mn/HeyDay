@@ -5,7 +5,8 @@ function AboutPage() {
   const [happyHours, setHappyHours] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-/*
+  
+/* COMMENTED OUT TO AVOID SCRAPING 
   useEffect(() => {
     const fetchHappyHours = async () => {
       setIsLoading(true); // load state

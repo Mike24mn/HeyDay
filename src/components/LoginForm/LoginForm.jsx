@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {useSelector} from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector(store => store.errors);
+  const user = useSelector(store => store.user); 
   const dispatch = useDispatch();
+  const history = useHistory();
+
+
+  useEffect(() => {
+    // Redirect to user-landing page if user is logged in
+    if (user) {
+      history.push('/user-landing');
+    }
+}, [user]); // redirect only if user is changed/updated
 
   const login = (event) => {
     event.preventDefault();
+
 
     if (username && password) {
       dispatch({
@@ -57,6 +69,7 @@ function LoginForm() {
         </label></center>
       </div>
       <div>
+
         <center><input className="btn" type="submit" name="submit" value="Log In" /></center>
 
       </div>

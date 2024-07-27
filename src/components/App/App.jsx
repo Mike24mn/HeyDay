@@ -55,11 +55,11 @@ function App() {
           </Route>
 
           <Route exact path="/login">
-            {user.id ? <Redirect to="/user" /> : <LoginPage />}
+            {user.id ? <Redirect to="/user-landing" /> : <LoginPage />}
           </Route>
 
           <Route exact path="/registration">
-            {user.id ? <Redirect to="/user" /> : <RegisterPage />}
+            {user.id ? <Redirect to="/user-landing" /> : <RegisterPage />}
           </Route>
 
           {/* new Heyday routes (not Prime's routes) */}
