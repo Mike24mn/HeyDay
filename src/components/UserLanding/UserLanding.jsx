@@ -54,7 +54,7 @@ function UserLanding() {
   // switch is shown, in the case of a failed load, return the second div, else return null
 /**
  * 
- * @param {} status 
+ * @param {"what"} status 
  * @returns 
  */
   const renderStatus = (status) => {

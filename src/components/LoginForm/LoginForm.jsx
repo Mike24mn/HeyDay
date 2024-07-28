@@ -2,8 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 
-function LoginForm() {
+
+const LoginButton = styled(Button)({
+  backgroundColor: "#057",
+  '&:hover': {
+    backgroundColor: "#046",
+  },
+});
+
+function LoginForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector(store => store.errors);
@@ -70,8 +80,15 @@ function LoginForm() {
       </div>
       <div>
 
-        <center><input className="btn" type="submit" name="submit" value="Log In" /></center>
-
+      <center>
+          <LoginButton
+            type="submit"
+            variant="contained"
+            className="btn"
+          >
+            Log In
+          </LoginButton>
+        </center>
       </div>
     </form>
   );
