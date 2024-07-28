@@ -1,6 +1,7 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
 import axios from 'axios';
 
+
 function* fetchHistory(){
     try{
         const historyItem = yield call (axios.get,`/api/history`)
