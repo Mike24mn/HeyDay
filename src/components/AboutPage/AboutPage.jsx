@@ -11,7 +11,7 @@ function AboutPage() {
   const user = useSelector(store => store.user); 
 
   useEffect(() => {
-    if (!user) {
+    if (!user.id) {
       history.push('/user-login');
     }
 }, [user, history]);
