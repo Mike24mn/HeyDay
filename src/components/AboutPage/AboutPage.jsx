@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import UserNavBar from "../UserNavBar/UserNavBar";
+import { useHistory } from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 function AboutPage() {
   const [happyHours, setHappyHours] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+  const history = useHistory();
+  const user = useSelector(store => store.user); 
+
+  useEffect(() => {
+    if (!user) {
+      history.push('/user-login');
+    }
+}, [user, history]);
+
 /* COMMENTED OUT TO AVOID SCRAPING 
   useEffect(() => {
     const fetchHappyHours = async () => {

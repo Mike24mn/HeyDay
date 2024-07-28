@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-const BussinessInfo = ()=>{
+const BusinessInfo = ()=>{
     const user = useSelector(store => store.user)
     const [getAddress, setAddress]= useState('')
     const [getName, setName ]= useState('')
@@ -41,7 +41,7 @@ const BussinessInfo = ()=>{
 
     return( 
         <>
-        <h1>bussiness fill out form</h1>
+        <h1>Business fill out form</h1>
         <form onSubmit={handleSubmit}>
 
         <p>name</p>
@@ -80,4 +80,4 @@ const BussinessInfo = ()=>{
     )
 }
 
-export default BussinessInfo
+export default BusinessInfo
