@@ -54,7 +54,7 @@ function UserLanding() {
   // switch is shown, in the case of a failed load, return the second div, else return null
 /**
  * 
- * @param {"what"} status 
+ * @param {""} status 
  * @returns 
  */
   const renderStatus = (status) => {
@@ -113,7 +113,7 @@ function UserLanding() {
       if (mapRef.current && !map) {
         const mapInstance = new window.google.maps.Map(mapRef.current, {
           center,
-          zoom,
+          zoom: 3,
           mapId: "2182bd31b6274e24",
         });
 
@@ -250,7 +250,7 @@ function UserLanding() {
           title: "Your Location", // title it, so user knows what it is
         });
         map.setCenter(currentLocation); // set center of the map at current user location
-
+        map.setZoom(12);
         searchPlaces(map, currentLocation); // search nearby places, on the map, given users current location
       }
     }, [currentLocation, map]); // Update on a new current location, or if a new map is created/instantiated
