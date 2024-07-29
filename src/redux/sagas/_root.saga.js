@@ -4,7 +4,7 @@ import registrationSaga from './registration.saga';
 import userSaga from './user.saga';
 import fetchHistory from './history.saga'; // new sagas 
 import favsSaga from './favorites.saga'; // new sagas
-import busSaga from './bussiness.saga';
+import busSaga from './business.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.

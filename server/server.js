@@ -4,7 +4,7 @@ const app = express();
 const yelp = require('yelp-fusion');
 const cors = require('cors');
 const favoritesRouter = require('./routes/favorites.router.js')
-const busRouter = require('./routes/bussiness.router.js')
+const busRouter = require('./routes/business.router.js')
 require('dotenv').config();
 
 

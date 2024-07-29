@@ -25,7 +25,7 @@ import UserFavoriteLocations from "../UserFavoriteLocations/UserFavoriteLocation
 import BusinessLogin from "../BusinessLogin/BusinessLogin";
 import BusinessLanding from "../BusinessLanding/BusinessLanding";
 import BusinessEditPage from "../BusinessEditPage/BusinessEditPage";
-import BussinessInfo from "../BusinessInfo/BusinessInfo";
+import BusinessInfo from "../BusinessInfo/BusinessInfo";
 
 import UserSearchHistory from "../UserSearchHistory/UserSearchHistory";
 
@@ -55,14 +55,14 @@ function App() {
           </Route>
 
           <Route exact path="/login">
-            {user.id ? <Redirect to="/user" /> : <LoginPage />}
+            {user.id ? <Redirect to="/user-landing" /> : <LoginPage />}
           </Route>
 
           <Route exact path="/registration">
-            {user.id ? <Redirect to="/user" /> : <RegisterPage />}
+            {user.id ? <Redirect to="/user-landing" /> : <RegisterPage />}
           </Route>
 
-          {/* new Heyday routes (not Prime's routes) */}
+          {/* new Heyday routes */}
           <Route exact path="/business-login">
             <BusinessLogin />
           </Route>
@@ -109,7 +109,7 @@ function App() {
 
 
           <ProtectedRoute exact path="/businessinfo">
-            <BussinessInfo/>
+            <BusinessInfo/>
           </ProtectedRoute>
 
           <Route exact path="/business-reg">
@@ -120,8 +120,6 @@ function App() {
             <LogOutButton />
           </ProtectedRoute>
 
-
-          {/* if none of the other routes, will show a 404. */}
         </Switch>
         <Footer />
       </div>

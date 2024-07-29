@@ -14,7 +14,7 @@ router.get('/',(req,res)=>{
        
     })
     .catch((error)=>{
-        console.log("error in bussiness GET route", error );
+        console.log("error in business GET route", error );
     })
 })
 
