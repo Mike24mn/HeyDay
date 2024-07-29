@@ -3,6 +3,7 @@ import UserNavBar from '../UserNavBar/UserNavBar';
 import { useSelector,useDispatch } from "react-redux";
 
 
+
 function UserSearchHistory() {
   const searchHistory = useSelector((store) => store.historyReducer);
   const dispatch = useDispatch();

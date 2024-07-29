@@ -88,9 +88,8 @@ function App() {
             <UserLanding />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/user-details">
-            <DetailsPage />
-          </ProtectedRoute>
+
+          <Route path="/user-details/:id" component={DetailsPage} />
 
           <ProtectedRoute exact path="/favorite-locations">
             <UserFavoriteLocations />
