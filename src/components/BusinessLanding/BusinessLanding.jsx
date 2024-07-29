@@ -1,88 +1,94 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import BusinessNavBar from '../BusinessNavBar/BusinessNavBar';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
 
+const LoginButton = styled(Button)({
+  backgroundColor: "#057",
+  '&:hover': {
+    backgroundColor: "#046",
+  },
+});
 
+const InputContainer = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  marginBottom: '20px',
+});
 
 function BusinessLanding() {
-  const [getHappy, setHappy]= useState('')
+  const [getHappy, setHappy] = useState('');
+  const [getAddress, setAddress] = useState('');
+  const [getName, setName] = useState('');
   const [happyHourTime, setHappyHourTime] = useState(''); 
   const [happyHourDate, setHappyHourDate] = useState('');
-  
 
-  // const to hold stores
-  const business = useSelector(store=> store.business)
-  console.log("CHECKING BUSINESS", business);
-  const user = useSelector(store=> store.user)
-  const happy= useSelector(store => store.happy)
-  console.log("checking happy", happy)
-
+  const business = useSelector(store => store.business);
+  const user = useSelector(store => store.user);
+  const happy = useSelector(store => store.happy);
   
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const id = user.id
-  
   const busFilter = (business || []).filter(bus => bus && bus.business_id && Number(bus.business_id) === Number(user.id));
   const happyFilter = (happy || []).filter(hap => hap && hap.business_id && Number(hap.business_id) === Number(user.id));
  
- console.log("checking filter", busFilter);
- console.log("checking filter", happyFilter);
+  useEffect(() => {
+    dispatch({ type: "SET_BUS" });
+    dispatch({ type: "SET_HAPPY" });
+  }, [dispatch]);
 
+  const handleHappy = (event) => {
+    event.preventDefault();
 
-  useEffect(()=>{
-    dispatch({type:"SET_BUS"});
-      dispatch({type:"SET_HAPPY"});
-    
-  }, [dispatch])
-
-  const handleHappy = (event)=>{
-    event.preventDefault()
-
-        if (busFilter.length > 0) {
-          const businessId = busFilter[0].business_id;
-          
-          dispatch({
-            type: 'ADD_HAPPY',
-            payload: {
-              business_id: businessId,
-              description: getHappy,
-              date: happyHourDate,
-              time: happyHourTime,
-            }
-          });
-
-          dispatch({type: 'SET_HAPPY'})
-             setHappy('');
-             setHappyHourTime(''); 
-             setHappyHourDate(''); 
-        }}
-
-        const handleDel = (id) =>{
-          dispatch({ type:"DELETE_HAPPY", payload: {id} })
-          console.log("checking id in delete handle ", id );
-          dispatch({type: 'SET_HAPPY'})
+    if (busFilter.length > 0) {
+      const businessId = busFilter[0].business_id;
       
-      
+      dispatch({
+        type: 'ADD_HAPPY',
+        payload: {
+          business_id: businessId,
+          happyName: getName,
+          address: getAddress,
+          description: getHappy,
+          date: happyHourDate,
+          time: happyHourTime,
         }
+      });
 
-        const formatDate = (isoString)=>{
-          const date = new Date(isoString)
-          return date.toLocaleDateString();
-        }
+      dispatch({ type: 'SET_HAPPY' });
 
-        const formatTime = (isoString)=>{
-          const date = new Date(isoString)
-          return date.toLocaleTimeString();
-        }
-      
-  
-  
+      setHappy('');
+      setName('');
+      setAddress('');
+      setHappyHourTime(''); 
+      setHappyHourDate(''); 
+    }
+  }
+
+  const handleDel = (id) => {
+    dispatch({ type: "DELETE_HAPPY", payload: { id } });
+    dispatch({ type: 'SET_HAPPY' });
+  }
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString();
+  }
+
+  const formatTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleTimeString();
+  }
 
   return (
-    
     <>
       <div>
         <center>
@@ -95,7 +101,19 @@ function BusinessLanding() {
             </p>
           ))}
         </h2>
-        <div>
+        <InputContainer>
+          <input
+            type="text"
+            value={getName}
+            onChange={(event) => setName(event.target.value)}
+            placeholder='Happy Hour Name'
+          />
+          <input
+            type="text"
+            value={getAddress}
+            onChange={(event) => setAddress(event.target.value)}
+            placeholder='Address of Happy Hour'
+          />
           <input
             type="text"
             value={getHappy}
@@ -103,32 +121,61 @@ function BusinessLanding() {
             placeholder="Enter description"
           />
           <input
-            type="date" 
+            type="date"
             value={happyHourDate}
             onChange={(event) => setHappyHourDate(event.target.value)}
             placeholder="Enter date"
           />
           <input
-            type="time" 
+            type="time"
             value={happyHourTime}
             onChange={(event) => setHappyHourTime(event.target.value)}
             placeholder="Enter time"
           />
-          <button onClick={handleHappy}>SUBMIT</button>
-        </div>
-        <footer>
-          <BusinessNavBar />
-        </footer>
+          <LoginButton onClick={handleHappy}>SUBMIT</LoginButton>
+        </InputContainer>
+     
       </div>
 
-      <div>
-        {happyFilter.map((hap )=>(
-          <ol>
-            <li key={hap.id}>description:{hap.description}, time: {hap.time}, date: {formatDate(hap.date)} </li>
-            <button onClick={()=>{handleDel(hap.id)}}>Delete</button>
-          </ol>
+      <Grid container spacing={4} justifyContent="center">
+        {happyFilter.map((hap) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={hap.id}>
+            <Card sx={{ height: '100%' }}>
+              <CardMedia
+                sx={{ height: 200 }}
+                image="public/image.png"
+                title={hap.happyName}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {hap.happyName}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Description: {hap.description}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Date: {formatDate(hap.date)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Time: {hap.time}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Address: {hap.address}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  likes: {hap.likes}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={() => handleDel(hap.id)}>Delete</Button>
+              </CardActions>
+            </Card>
+          </Grid>
         ))}
-      </div>
+      </Grid>
+      <footer>
+          <BusinessNavBar />
+        </footer>
     </>
   );
 }
