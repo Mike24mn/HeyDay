@@ -5,7 +5,8 @@ const happy = (state=[], action)=> {
         case "ADD_HAPPY_SUCCESS":
             return [...state, action.payload]    
             
-            
+        case "DELETE_HAPPY_SUCCESS":
+            return state.filter(fav => fav.id !== action.payload.id) 
     
         default:
             return state 

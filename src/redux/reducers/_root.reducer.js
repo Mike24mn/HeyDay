@@ -4,7 +4,7 @@ import user from './user.reducer';
 import historyReducer from './history.reducer'; // new reducers
 import favorites from './favorites.reducer'; // new reducers
 
-import business from './bussiness.reducer';
+
 import happy from './happyHour.reducer';
 
 import business from './business.reducer';

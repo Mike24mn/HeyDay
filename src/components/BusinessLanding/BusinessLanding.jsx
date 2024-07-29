@@ -53,10 +53,31 @@ function BusinessLanding() {
               time: happyHourTime,
             }
           });
+
+          dispatch({type: 'SET_HAPPY'})
              setHappy('');
              setHappyHourTime(''); 
              setHappyHourDate(''); 
         }}
+
+        const handleDel = (id) =>{
+          dispatch({ type:"DELETE_HAPPY", payload: {id} })
+          console.log("checking id in delete handle ", id );
+          dispatch({type: 'SET_HAPPY'})
+      
+      
+        }
+
+        const formatDate = (isoString)=>{
+          const date = new Date(isoString)
+          return date.toLocaleDateString();
+        }
+
+        const formatTime = (isoString)=>{
+          const date = new Date(isoString)
+          return date.toLocaleTimeString();
+        }
+      
   
   
 
@@ -103,7 +124,8 @@ function BusinessLanding() {
       <div>
         {happyFilter.map((hap )=>(
           <ol>
-            <li key={hap.id}>description:{hap.description}, time: {hap.time}, date: {hap.date} </li>
+            <li key={hap.id}>description:{hap.description}, time: {hap.time}, date: {formatDate(hap.date)} </li>
+            <button onClick={()=>{handleDel(hap.id)}}>Delete</button>
           </ol>
         ))}
       </div>

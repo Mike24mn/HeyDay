@@ -36,5 +36,22 @@ router.post('/', (req,res)=>{
 })
 
 
+router.delete('/:id', (req, res)=>{
+
+
+    const queryText= `
+    DELETE FROM "happyhour" WHERE "id" = $1;
+    `
+    pool.query(queryText, [req.params.id])
+    .then((result)=>{
+      console.log(result)
+      res.sendStatus(200)
+    })
+    .catch((error)=>{
+      console.log("error in delete fav route ", error);
+    })
+  })
+
+
 
 module.exports = router;
