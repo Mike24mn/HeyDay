@@ -25,9 +25,8 @@ function BusinessLanding() {
 
   const id = user.id
   
- const busFilter = business.filter((bus)=> Number(bus.business_id)=== Number(user.id))
-
- const happyFilter = happy.filter((hap)=>Number(hap.business_id)=== Number(user.id))
+  const busFilter = (business || []).filter(bus => bus && bus.business_id && Number(bus.business_id) === Number(user.id));
+  const happyFilter = (happy || []).filter(hap => hap && hap.business_id && Number(hap.business_id) === Number(user.id));
  
  console.log("checking filter", busFilter);
  console.log("checking filter", happyFilter);

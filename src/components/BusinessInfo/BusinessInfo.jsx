@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-const BussinessInfo = ()=>{
+const BusinessInfo = ()=>{
     const user = useSelector(store => store.user)
     const [getAddress, setAddress]= useState('')
     const [getName, setName ]= useState('')
@@ -41,6 +41,7 @@ const BussinessInfo = ()=>{
 
     return( 
         <>
+<<<<<<< HEAD
         <h1>bussiness fill out form</h1>
         <h2><center>Welcome to HeyDay, 
             the ultimate platform designed to elevate your business to new heights!
@@ -49,6 +50,9 @@ const BussinessInfo = ()=>{
             Whether you're looking to attract new clients, enhance customer engagement, or streamline your operations, 
             HeyDay is here to support you every step of the way. 
             Join us today and let's make your business's heyday every day!</center></h2>
+=======
+        <h1>Business fill out form</h1>
+>>>>>>> main
         <form onSubmit={handleSubmit}>
 
         <p><center><b>Name</b></center></p>
@@ -87,4 +91,4 @@ const BussinessInfo = ()=>{
     )
 }
 
-export default BussinessInfo
+export default BusinessInfo

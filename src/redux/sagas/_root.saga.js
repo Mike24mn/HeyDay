@@ -4,8 +4,12 @@ import registrationSaga from './registration.saga';
 import userSaga from './user.saga';
 import fetchHistory from './history.saga'; // new sagas 
 import favsSaga from './favorites.saga'; // new sagas
+<<<<<<< HEAD
 import busSaga from './bussiness.saga';
 import happysaga from './happyHour.saga';
+=======
+import busSaga from './business.saga';
+>>>>>>> main
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.

@@ -6,6 +6,8 @@
                                                                |___|            |___|          
 */
 
+// move to readme ^^^
+
 import React, { useRef, useEffect, useState } from "react"; // useRef for mutable vals or for things that shouldn't affect comp. rendering (aka can access and manipulate DOM directly basically)
 import { Wrapper, Status } from "@googlemaps/react-wrapper"; // import wrapper, and status (used in the renderStatus function) method, for the Google API
 import UserNavBar from "../UserNavBar/UserNavBar"; // import mui comp
@@ -50,7 +52,11 @@ function UserLanding() {
 
   // this function uses methods to handle navigate different map loading statuses, if still loading the first div in
   // switch is shown, in the case of a failed load, return the second div, else return null
-
+/**
+ * 
+ * @param {""} status 
+ * @returns 
+ */
   const renderStatus = (status) => {
     switch (status) {
       case Status.LOADING:
@@ -107,7 +113,7 @@ function UserLanding() {
       if (mapRef.current && !map) {
         const mapInstance = new window.google.maps.Map(mapRef.current, {
           center,
-          zoom,
+          zoom: 3,
           mapId: "2182bd31b6274e24",
         });
 
@@ -244,7 +250,7 @@ function UserLanding() {
           title: "Your Location", // title it, so user knows what it is
         });
         map.setCenter(currentLocation); // set center of the map at current user location
-
+        map.setZoom(12);
         searchPlaces(map, currentLocation); // search nearby places, on the map, given users current location
       }
     }, [currentLocation, map]); // Update on a new current location, or if a new map is created/instantiated
@@ -284,6 +290,7 @@ function UserLanding() {
         if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
             // loop through each results place
           results.forEach((place) => {
+            console.log("request is: ", request)
             if (place.geometry && place.geometry.location) {
                 // put a new marker at each (NOTE: this will eventually be the purple markers for our client)
               new window.google.maps.marker.AdvancedMarkerElement({
@@ -308,7 +315,7 @@ function UserLanding() {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search Box"
+          placeholder="Search by city, address or state"
           style={{
             boxSizing: "border-box",
             border: "1px solid transparent",

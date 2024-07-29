@@ -4,8 +4,12 @@ const app = express();
 const yelp = require('yelp-fusion');
 const cors = require('cors');
 const favoritesRouter = require('./routes/favorites.router.js')
+<<<<<<< HEAD
 const busRouter = require('./routes/bussiness.router.js')
 const happyHourRouter = require('./routes/happyHour.router.js')
+=======
+const busRouter = require('./routes/business.router.js')
+>>>>>>> main
 require('dotenv').config();
 
 
@@ -30,13 +34,11 @@ const userRouter = require('./routes/user.router');
 
 
 
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Allow requests from this origin
-    methods: "GET,POST,PUT,DELETE", // Allowed HTTP methods
-    allowedHeaders: "Content-Type,Authorization", // Allowed headers
-  })
-);
+ app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:5001'], // Allow both frontend and backend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

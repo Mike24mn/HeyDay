@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import UserNavBar from "../UserNavBar/UserNavBar";
+import { useHistory } from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 function AboutPage() {
   const [happyHours, setHappyHours] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const history = useHistory();
+  const user = useSelector(store => store.user); 
 
+
+
+/* COMMENTED OUT TO AVOID SCRAPING 
   useEffect(() => {
     const fetchHappyHours = async () => {
       setIsLoading(true); // load state
@@ -26,7 +33,7 @@ function AboutPage() {
 
     fetchHappyHours();
   }, []); // empty dependency array, only run once
-
+*/
   return (
     <div>
       <h1>About HeyDay</h1>
