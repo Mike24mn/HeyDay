@@ -41,7 +41,7 @@ const BusinessInfo = ()=>{
 
     return( 
         <>
-<<<<<<< HEAD
+
         <h1>bussiness fill out form</h1>
         <h2><center>Welcome to HeyDay, 
             the ultimate platform designed to elevate your business to new heights!
@@ -50,9 +50,9 @@ const BusinessInfo = ()=>{
             Whether you're looking to attract new clients, enhance customer engagement, or streamline your operations, 
             HeyDay is here to support you every step of the way. 
             Join us today and let's make your business's heyday every day!</center></h2>
-=======
+
         <h1>Business fill out form</h1>
->>>>>>> main
+
         <form onSubmit={handleSubmit}>
 
         <p><center><b>Name</b></center></p>

@@ -1,11 +1,11 @@
 
 import React from 'react';
 import './TheRippleEffect.css';
-<<<<<<< HEAD
+
 //import logo from '../../../../MockHeyDay/public/image copy.png'
-=======
+
 import logo from '/image copy.png'
->>>>>>> main
+
 
 function TheRippleEffect() {
   return (
