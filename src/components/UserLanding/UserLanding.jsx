@@ -315,7 +315,7 @@ function UserLanding() {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search Box"
+          placeholder="Search by city, address or state"
           style={{
             boxSizing: "border-box",
             border: "1px solid transparent",

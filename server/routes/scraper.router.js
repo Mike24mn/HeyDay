@@ -77,9 +77,243 @@ const classifier = new natural.BayesClassifier();
 // this is training info, TEAM: if you need more references about how this
 // works check out commented section at the bottom of the AboutPage.jsx
 
-classifier.addDocument('cozy atmosphere with dim lighting', 'cozy');
-classifier.addDocument('trendy decor and modern art', 'trendy');
+
+// Cozy
+
+classifier.addDocument('warm and inviting atmosphere', 'cozy');
+classifier.addDocument('soft, ambient lighting', 'cozy');
+classifier.addDocument('comfortable and snug setting', 'cozy');
+classifier.addDocument('intimate and relaxing environment', 'cozy');
+classifier.addDocument('homey feel with soft lighting', 'cozy');
+classifier.addDocument('welcoming space with warm tones', 'cozy');
+classifier.addDocument('relaxed and comfortable atmosphere', 'cozy');
+classifier.addDocument('dim lighting with a peaceful vibe', 'cozy');
+classifier.addDocument('charming and inviting surroundings', 'cozy');
+classifier.addDocument('pleasantly warm and cushy environment', 'cozy');
+classifier.addDocument('tranquil setting with gentle lighting', 'cozy');
+classifier.addDocument('relaxing ambiance with soft furnishings', 'cozy');
+classifier.addDocument('cozy nook with plush seating', 'cozy');
+classifier.addDocument('intimate space with calming lighting', 'cozy');
+classifier.addDocument('warm and soothing atmosphere', 'cozy');
+classifier.addDocument('comfortably lit and snug setting', 'cozy');
+classifier.addDocument('peaceful space with dim lights', 'cozy');
+classifier.addDocument('comfortable and warm atmosphere', 'cozy');
+classifier.addDocument('softly lit and inviting space', 'cozy');
+classifier.addDocument('cozy corner with ambient lighting', 'cozy');
+
+// Trendy
+
+classifier.addDocument('contemporary decor and stylish art', 'trendy');
+classifier.addDocument('modern furnishings and chic design', 'trendy');
+classifier.addDocument('fashionable interior with cutting-edge style', 'trendy');
+classifier.addDocument('sleek and sophisticated decor', 'trendy');
+classifier.addDocument('up-to-date with the latest design trends', 'trendy');
+classifier.addDocument('modern and fashionable environment', 'trendy');
+classifier.addDocument('hip and stylish ambiance', 'trendy');
+classifier.addDocument('innovative and contemporary design', 'trendy');
+classifier.addDocument('modern aesthetics with a trendy vibe', 'trendy');
+classifier.addDocument('stylish decor with a modern touch', 'trendy');
+classifier.addDocument('cool and contemporary space', 'trendy');
+classifier.addDocument('fashion-forward interior design', 'trendy');
+classifier.addDocument('on-trend with the latest decor', 'trendy');
+classifier.addDocument('sleek design with modern art', 'trendy');
+classifier.addDocument('chic and contemporary atmosphere', 'trendy');
+classifier.addDocument('trendsetting design and decor', 'trendy');
+classifier.addDocument('stylish space with modern furnishings', 'trendy');
+classifier.addDocument('cutting-edge interior with trendy details', 'trendy');
+classifier.addDocument('modern and sleek ambiance', 'trendy');
+classifier.addDocument('stylishly decorated with contemporary art', 'trendy');
+
+// Dog Friendly
+
 classifier.addDocument('dog-friendly patio', 'pet-friendly');
+classifier.addDocument('pet-friendly environment with water bowls', 'dog friendly');
+classifier.addDocument('outdoor seating area welcoming dogs', 'dog friendly');
+classifier.addDocument('dog-friendly space with treats available', 'dog friendly');
+classifier.addDocument('ample space for dogs to play', 'dog friendly');
+classifier.addDocument('patio area that welcomes pets', 'dog friendly');
+classifier.addDocument('designated dog-friendly zones', 'dog friendly');
+classifier.addDocument('dog-friendly park nearby', 'dog friendly');
+classifier.addDocument('welcomes dogs with open arms', 'dog friendly');
+classifier.addDocument('dog-friendly policies in place', 'dog friendly');
+classifier.addDocument('dogs allowed inside and outside', 'dog friendly');
+classifier.addDocument('provides dog waste bags', 'dog friendly');
+classifier.addDocument('features dog-friendly amenities', 'dog friendly');
+classifier.addDocument('offers dog-friendly services', 'dog friendly');
+classifier.addDocument('space for dogs to relax', 'dog friendly');
+classifier.addDocument('welcomes furry friends', 'dog friendly');
+classifier.addDocument('dog-friendly with pet stations', 'dog friendly');
+classifier.addDocument('pet-friendly patio', 'dog friendly');
+classifier.addDocument('dogs welcome in all areas', 'dog friendly');
+classifier.addDocument('provides water bowls for dogs', 'dog friendly');
+classifier.addDocument('offers dog-friendly treats', 'dog friendly');
+
+// Casual
+
+classifier.addDocument('relaxed and informal setting', 'casual');
+classifier.addDocument('laid-back vibe with simple decor', 'casual');
+classifier.addDocument('comfortable and easy-going environment', 'casual');
+classifier.addDocument('no dress code required', 'casual');
+classifier.addDocument('casual atmosphere with friendly staff', 'casual');
+classifier.addDocument('informal dining with a relaxed feel', 'casual');
+classifier.addDocument('easy-going and unpretentious', 'casual');
+classifier.addDocument('come as you are attitude', 'casual');
+classifier.addDocument('casual seating and simple layout', 'casual');
+classifier.addDocument('unfussy and straightforward', 'casual');
+classifier.addDocument('laid-back ambiance', 'casual');
+classifier.addDocument('informal and welcoming', 'casual');
+classifier.addDocument('casual environment with a relaxed pace', 'casual');
+classifier.addDocument('easy-going with a comfortable vibe', 'casual');
+classifier.addDocument('informal setting with a friendly atmosphere', 'casual');
+classifier.addDocument('relaxed and unpretentious', 'casual');
+classifier.addDocument('casual feel with a homey touch', 'casual');
+classifier.addDocument('simple and comfortable', 'casual');
+classifier.addDocument('informal and easy-going', 'casual');
+classifier.addDocument('relaxed setting with no frills', 'casual');
+
+// Romantic
+
+classifier.addDocument('intimate setting with soft lighting', 'romantic');
+classifier.addDocument('candlelit dinners and quiet ambiance', 'romantic');
+classifier.addDocument('romantic atmosphere with elegant decor', 'romantic');
+classifier.addDocument('cozy and secluded tables', 'romantic');
+classifier.addDocument('romantic music and dim lighting', 'romantic');
+classifier.addDocument('charming and intimate', 'romantic');
+classifier.addDocument('romantic setting perfect for dates', 'romantic');
+classifier.addDocument('elegant and intimate dining experience', 'romantic');
+classifier.addDocument('romantic ambiance with a touch of elegance', 'romantic');
+classifier.addDocument('romantic candlelight and soft music', 'romantic');
+classifier.addDocument('intimate and charming atmosphere', 'romantic');
+classifier.addDocument('romantic setting with a cozy vibe', 'romantic');
+classifier.addDocument('elegant and romantic', 'romantic');
+classifier.addDocument('romantic decor with a quiet ambiance', 'romantic');
+classifier.addDocument('intimate and elegant', 'romantic');
+classifier.addDocument('romantic ambiance with soft lighting and music', 'romantic');
+classifier.addDocument('cozy and romantic', 'romantic');
+classifier.addDocument('romantic setting with a charming touch', 'romantic');
+classifier.addDocument('elegant decor and romantic ambiance', 'romantic');
+classifier.addDocument('romantic and cozy atmosphere', 'romantic');
+
+// Lively/Bustling
+
+classifier.addDocument('energetic atmosphere with a busy crowd', 'lively');
+classifier.addDocument('lively ambiance with music and chatter', 'lively');
+classifier.addDocument('bustling environment with vibrant energy', 'lively');
+classifier.addDocument('high-energy space with a lively crowd', 'lively');
+classifier.addDocument('bustling venue with live entertainment', 'lively');
+classifier.addDocument('lively atmosphere with upbeat music', 'lively');
+classifier.addDocument('vibrant and bustling with activity', 'lively');
+classifier.addDocument('busy and lively with lots of energy', 'lively');
+classifier.addDocument('energetic vibe with a crowded scene', 'lively');
+classifier.addDocument('lively and bustling with a festive feel', 'lively');
+classifier.addDocument('bustling with people and vibrant energy', 'lively');
+classifier.addDocument('lively environment with a buzzing crowd', 'lively');
+classifier.addDocument('high-energy atmosphere with lively music', 'lively');
+classifier.addDocument('bustling crowd and a lively setting', 'lively');
+classifier.addDocument('lively ambiance with an energetic crowd', 'lively');
+classifier.addDocument('vibrant atmosphere with a bustling crowd', 'lively');
+classifier.addDocument('lively setting with lots of chatter and music', 'lively');
+classifier.addDocument('bustling environment with vibrant entertainment', 'lively');
+classifier.addDocument('energetic crowd and a lively scene', 'lively');
+classifier.addDocument('lively venue with a busy and bustling atmosphere', 'lively');
+
+// Outdoor Seating
+
+classifier.addDocument('outdoor patio seating available', 'outdoor seating');
+classifier.addDocument('seating on the outdoor patio', 'outdoor seating');
+classifier.addDocument('enjoyable outdoor seating options', 'outdoor seating');
+classifier.addDocument('patio seating available outdoors', 'outdoor seating');
+classifier.addDocument('outdoor seating with a view', 'outdoor seating');
+classifier.addDocument('seating available on the outdoor terrace', 'outdoor seating');
+classifier.addDocument('enjoy meals with outdoor seating', 'outdoor seating');
+classifier.addDocument('comfortable outdoor seating area', 'outdoor seating');
+classifier.addDocument('relaxing outdoor seating options', 'outdoor seating');
+classifier.addDocument('patio seating in the open air', 'outdoor seating');
+classifier.addDocument('outdoor seating for a fresh dining experience', 'outdoor seating');
+classifier.addDocument('dine on the patio with outdoor seating', 'outdoor seating');
+classifier.addDocument('outdoor seating in the garden area', 'outdoor seating');
+classifier.addDocument('available outdoor seating on the deck', 'outdoor seating');
+classifier.addDocument('patio seating under the open sky', 'outdoor seating');
+classifier.addDocument('alfresco dining with outdoor seating', 'outdoor seating');
+classifier.addDocument('enjoy outdoor seating on the porch', 'outdoor seating');
+classifier.addDocument('outdoor seating for a pleasant atmosphere', 'outdoor seating');
+classifier.addDocument('terrace seating available outdoors', 'outdoor seating');
+classifier.addDocument('outdoor seating in a scenic setting', 'outdoor seating');
+
+// Diets
+
+// Gluten-Free
+
+classifier.addDocument('gluten-free menu options available', 'gluten-free');
+classifier.addDocument('offering gluten-free dishes', 'gluten-free');
+classifier.addDocument('gluten-free meals on the menu', 'gluten-free');
+classifier.addDocument('variety of gluten-free choices', 'gluten-free');
+classifier.addDocument('gluten-free dining options', 'gluten-free');
+classifier.addDocument('gluten-free friendly menu', 'gluten-free');
+classifier.addDocument('gluten-free alternatives available', 'gluten-free');
+classifier.addDocument('gluten-free cuisine offered', 'gluten-free');
+classifier.addDocument('gluten-free food selection', 'gluten-free');
+classifier.addDocument('gluten-free items on the menu', 'gluten-free');
+classifier.addDocument('gluten-free options provided', 'gluten-free');
+classifier.addDocument('delicious gluten-free dishes', 'gluten-free');
+classifier.addDocument('gluten-free meals offered', 'gluten-free');
+classifier.addDocument('gluten-free friendly dishes', 'gluten-free');
+classifier.addDocument('gluten-free food choices', 'gluten-free');
+classifier.addDocument('gluten-free options available for dining', 'gluten-free');
+classifier.addDocument('enjoy gluten-free meals', 'gluten-free');
+classifier.addDocument('gluten-free cuisine available', 'gluten-free');
+classifier.addDocument('gluten-free menu choices', 'gluten-free');
+classifier.addDocument('wide range of gluten-free options', 'gluten-free');
+
+
+// Vegan
+
+classifier.addDocument('vegan menu options available', 'vegan');
+classifier.addDocument('offering vegan dishes', 'vegan');
+classifier.addDocument('vegan meals on the menu', 'vegan');
+classifier.addDocument('variety of vegan choices', 'vegan');
+classifier.addDocument('vegan dining options', 'vegan');
+classifier.addDocument('vegan-friendly menu', 'vegan');
+classifier.addDocument('vegan alternatives available', 'vegan');
+classifier.addDocument('vegan cuisine offered', 'vegan');
+classifier.addDocument('vegan food selection', 'vegan');
+classifier.addDocument('vegan items on the menu', 'vegan');
+classifier.addDocument('vegan options provided', 'vegan');
+classifier.addDocument('delicious vegan dishes', 'vegan');
+classifier.addDocument('vegan meals offered', 'vegan');
+classifier.addDocument('vegan-friendly dishes', 'vegan');
+classifier.addDocument('vegan food choices', 'vegan');
+classifier.addDocument('vegan options available for dining', 'vegan');
+classifier.addDocument('enjoy vegan meals', 'vegan');
+classifier.addDocument('vegan cuisine available', 'vegan');
+classifier.addDocument('vegan menu choices', 'vegan');
+classifier.addDocument('wide range of vegan options', 'vegan');
+
+
+// Vegetarian
+
+classifier.addDocument('vegetarian menu options available', 'vegetarian');
+classifier.addDocument('offering vegetarian dishes', 'vegetarian');
+classifier.addDocument('vegetarian meals on the menu', 'vegetarian');
+classifier.addDocument('variety of vegetarian choices', 'vegetarian');
+classifier.addDocument('vegetarian dining options', 'vegetarian');
+classifier.addDocument('vegetarian-friendly menu', 'vegetarian');
+classifier.addDocument('vegetarian alternatives available', 'vegetarian');
+classifier.addDocument('vegetarian cuisine offered', 'vegetarian');
+classifier.addDocument('vegetarian food selection', 'vegetarian');
+classifier.addDocument('vegetarian items on the menu', 'vegetarian');
+classifier.addDocument('vegetarian options provided', 'vegetarian');
+classifier.addDocument('delicious vegetarian dishes', 'vegetarian');
+classifier.addDocument('vegetarian meals offered', 'vegetarian');
+classifier.addDocument('vegetarian-friendly dishes', 'vegetarian');
+classifier.addDocument('vegetarian food choices', 'vegetarian');
+classifier.addDocument('vegetarian options available for dining', 'vegetarian');
+classifier.addDocument('enjoy vegetarian meals', 'vegetarian');
+classifier.addDocument('vegetarian cuisine available', 'vegetarian');
+classifier.addDocument('vegetarian menu choices', 'vegetarian');
+classifier.addDocument('wide range of vegetarian options', 'vegetarian');
+
+// End machine learning NLP additions
 
 // this is the method to train the machine
 classifier.train();
@@ -177,5 +411,24 @@ router.get('/scrape', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while scraping data', details: error.message });
   }
 });
+
+/*
+async function scrapeEater(url) {
+
+}
+
+async function scrapeYelp(url) {
+    
+}
+async function scrapeAppyHour(url) {
+    
+}
+async function scrapeMnMonthly(url) {
+    
+}
+async function scrapeThriftList(url) {
+    
+}
+*/
 
 module.exports = router;
