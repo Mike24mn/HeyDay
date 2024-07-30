@@ -37,4 +37,21 @@ router.post('/', (req,res)=>{
     })
 })
 
+router.get('/:id', (req, res) => {
+    const queryText = 'SELECT * FROM "business" WHERE id = $1;'
+    pool.query(queryText, [req.params.id])
+        .then((result) => {
+            if (result.rows.length === 0){
+            res.status(404).json({ error: 'Business not found!!!'})
+            }
+            else {
+                res.json(result.rows[0])
+            }
+        })
+        .catch((error) => {
+            console.log("error in address route", error);
+            res.sendStatus(500)
+        })
+})
+
 module.exports = router 

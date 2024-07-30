@@ -1,18 +1,41 @@
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { icon } from "leaflet";
 import UserNavBar from "../UserNavBar/UserNavBar";
+import { useParams, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function DetailsPage() {
   const [getDetails, setDetails] = useState([]);
   const [getTerm, setTerm] = useState("");
   const [getLocation, setLocation] = useState("");
+  const [business, setBusiness] = useState(null)
+  const { id } = useParams();
+  const history = useHistory();
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function fetchBusinessDetails(){
+        try {
+            const response = await fetch(`/api/businesses/${id}`)
+            if (!response.ok) {
+                if(response.status === 404) {
+                    throw new Error('Business not found!!!')
+                }
+                throw new Error(`HTTP error, status: ${response.status}`)
+
+            }
+            const data = await response.json();
+            setBusiness(data)
+        } catch (error) {
+            console.log("error fetching business details:", error);
+        }
+    }
+    fetchBusinessDetails();
+  }, [id]);
 
   const handleSearch = () => {
     fetch(

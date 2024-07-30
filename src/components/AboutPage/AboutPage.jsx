@@ -32,7 +32,7 @@ function AboutPage() {
     };
 
     fetchHappyHours();
-  }, []); // empty dependency array, only run once
+  }, []); // empty dependency array, only run once on initial page load
 */
   return (
     <div>
