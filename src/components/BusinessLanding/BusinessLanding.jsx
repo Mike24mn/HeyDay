@@ -32,14 +32,17 @@ function BusinessLanding() {
   const [happyHourDate, setHappyHourDate] = useState('');
 
   const business = useSelector(store => store.business);
+  console.log("checking data business", business);
   const user = useSelector(store => store.user);
   const happy = useSelector(store => store.happy);
+  console.log("checking data happy", happy);
   
   const dispatch = useDispatch();
 
-  const busFilter = (business || []).filter(bus => bus && bus.business_id && Number(bus.business_id) === Number(user.id));
-  const happyFilter = (happy || []).filter(hap => hap && hap.business_id && Number(hap.business_id) === Number(user.id));
- 
+  const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
+  console.log("checking data busFilter", busFilter);
+  const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
+  console.log("checking data checking happyFilter", happyFilter);
   useEffect(() => {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
@@ -55,9 +58,9 @@ function BusinessLanding() {
         type: 'ADD_HAPPY',
         payload: {
           business_id: businessId,
-          happyName: getName,
+     
           address: getAddress,
-          description: getHappy,
+          
           date: happyHourDate,
           time: happyHourTime,
         }
