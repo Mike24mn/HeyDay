@@ -113,7 +113,7 @@ function UserLanding() {
       if (mapRef.current && !map) {
         const mapInstance = new window.google.maps.Map(mapRef.current, {
           center,
-          zoom: 3,
+          zoom: 10,
           mapId: "2182bd31b6274e24",
         });
 
@@ -133,11 +133,11 @@ function UserLanding() {
 
           const polygon = new window.google.maps.Polygon({
             paths: boundary,
-            strokeColor: "#8A2BE2", // outline perimeter stroke color
+            strokeColor: "#1E90FF ", // outline perimeter stroke color
             strokeOpacity: 0.8, // transparency essentially, but as it relates to another layer
             strokeWeight: 5, // line weighting
             fillColor: "#ADD8E6", // inner polgyon color
-            fillOpacity: 0.35, // fill color transparency
+            fillOpacity: 0.3, // fill color transparency
           });
 
           // weave it into the current set instance of the map
@@ -240,14 +240,20 @@ function UserLanding() {
 
         // log it so we know where currentLoc is going in dev tools
         console.log("Updating map with current location:", currentLocation);
-
+        const iconHeart = {
+            url: '/public/heartpin.png', // Path to your custom icon
+            scaledSize: new window.google.maps.Size(30, 30), // Size of the icon
+            origin: new window.google.maps.Point(0, 0),
+            anchor: new window.google.maps.Point(15, 15)
+          };
         // put a marker there via the Google class,
         // we will want to customize this later, remember she wants purple icon pins
         // for general locations BUT the special Heyday heart pin for user loc. 
-        new window.google.maps.marker.AdvancedMarkerElement({
+        new window.google.maps.Marker({
           position: currentLocation, // put marker at current loc.
           map: map, // on the current map
           title: "Your Location", // title it, so user knows what it is
+          icon: iconHeart
         });
         map.setCenter(currentLocation); // set center of the map at current user location
         map.setZoom(12);
@@ -292,11 +298,18 @@ function UserLanding() {
           results.forEach((place) => {
             console.log("request is: ", request)
             if (place.geometry && place.geometry.location) {
+                const icon = {
+                    url: '/public/icons8-map-pin-26.png', // Path to your custom icon
+                    scaledSize: new window.google.maps.Size(30, 30), // Size of the icon
+                    origin: new window.google.maps.Point(0, 0),
+                    anchor: new window.google.maps.Point(15, 15)
+                  };
                 // put a new marker at each (NOTE: this will eventually be the purple markers for our client)
-              new window.google.maps.marker.AdvancedMarkerElement({
+                new window.google.maps.Marker({
                 position: place.geometry.location, // where we put the marker
                 map: mapInstance, // on what instance of map we put the marker
                 title: place.name, // access each places name for the title
+                icon: icon
               });
             }
           });
@@ -1193,7 +1206,7 @@ function UserLanding() {
           render={renderStatus}
         >
           <GoogleMapComponent
-            center={currentLocation || { lat: 32.5252, lng: -93.763504 }}
+            center={currentLocation || { lat: 44.9778, lng: -93.2650 }}
             zoom={15}
             boundaries={boundaries}
             currentLocation={currentLocation}
