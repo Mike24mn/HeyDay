@@ -32,17 +32,14 @@ function BusinessLanding() {
   const [happyHourDate, setHappyHourDate] = useState('');
 
   const business = useSelector(store => store.business);
-  console.log("checking data business", business);
   const user = useSelector(store => store.user);
   const happy = useSelector(store => store.happy);
-  console.log("checking data happy", happy);
   
   const dispatch = useDispatch();
 
-  const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
-  console.log("checking data busFilter", busFilter);
-  const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
-  console.log("checking data checking happyFilter", happyFilter);
+  const busFilter = (business || []).filter(bus => bus && bus.business_id && Number(bus.business_id) === Number(user.id));
+  const happyFilter = (happy || []).filter(hap => hap && hap.business_id && Number(hap.business_id) === Number(user.id));
+ 
   useEffect(() => {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
@@ -51,16 +48,15 @@ function BusinessLanding() {
   const handleHappy = (event) => {
     event.preventDefault();
 
-    if (busFilter.length > 0) {
-      const businessId = busFilter[0].business_id;
+   
       
       dispatch({
         type: 'ADD_HAPPY',
         payload: {
-          business_id: businessId,
-     
+          user_id: user.id,
+          happyName: getName,
           address: getAddress,
-          
+          description: getHappy,
           date: happyHourDate,
           time: happyHourTime,
         }
@@ -73,7 +69,7 @@ function BusinessLanding() {
       setAddress('');
       setHappyHourTime(''); 
       setHappyHourDate(''); 
-    }
+    
   }
 
   const handleDel = (id) => {
@@ -166,7 +162,7 @@ function BusinessLanding() {
                   Address: {hap.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  likes: {hap.likes}
+                  : {hap.likes}
                 </Typography>
               </CardContent>
               <CardActions>
