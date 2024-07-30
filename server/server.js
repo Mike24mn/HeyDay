@@ -5,6 +5,7 @@ const yelp = require('yelp-fusion');
 const cors = require('cors');
 const favoritesRouter = require('./routes/favorites.router.js')
 
+const addressRouter = require('./routes/address.router.js')
 
 const happyHourRouter = require('./routes/happyHour.router.js')
 
@@ -56,6 +57,9 @@ app.use(passport.session());
 
 app.use('/api/history', historyRouter )
 
+// new
+app.use("/api/getAddresses", addressRouter)
+// ^^
 
 app.use("/api/user", userRouter);
 app.use("/api/favorites", favoritesRouter);

@@ -17,9 +17,9 @@ import Button from "@mui/material/Button"; // mui library import
 import Typography from "@mui/material/Typography"; // mui library import
 import LogOutButton from "../LogOutButton/LogOutButton"; // logout comp
 import { useSelector, useDispatch } from "react-redux";
-import L from "leaflet"; // feel free to delete before client-hand off, we are not using this anymore
+import L, { icon } from "leaflet"; // feel free to delete before client-hand off, we are not using this anymore
 import "leaflet/dist/leaflet.css"; // feel free to delete before client-hand off, we are not using this anymore
-
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 /*
 General notes and reminders for Heyday friends about the UserLanding function:
@@ -41,7 +41,7 @@ global scope window object in javascript represents browser window (allows us to
 */
 
 function UserLanding() {
-
+    const history = useHistory();
   // get the dispatch function to send the action to Redux
   const dispatch = useDispatch();
 
@@ -86,6 +86,27 @@ function UserLanding() {
     const [map, setMap] = useState(null); // getter and setter for storing out map instance
     const dispatch = useDispatch();
 
+    function getCoordinates(businessAddress) {
+        if (typeof businessAddress !== 'string') {
+            console.error('Invalid address:', businessAddress);
+            return Promise.resolve(null);
+        }
+    
+        const geocoder = new google.maps.Geocoder();
+        return new Promise((resolve, reject) => {
+            geocoder.geocode({ address: businessAddress }, (results, status) => {
+                if (status === 'OK') {
+                    resolve({
+                        lat: results[0].geometry.location.lat(),
+                        lng: results[0].geometry.location.lng()
+                    });
+                } else {
+                    console.error('Geocoding failed:', status);
+                    resolve(null);
+                }
+            });
+        });
+    }
     // handleSearch is an arrow function that takes a place parameter
     // and adds the name (place.name) of it to the users history
 
@@ -118,6 +139,8 @@ function UserLanding() {
         });
 
         setMap(mapInstance); // set mapInstance created above in comp state
+        searchDatabasePlaces(mapInstance)
+
 
         // draw boundaries for each boundary (simple lat. long. points) and make them polyganol shaped
 
@@ -148,12 +171,12 @@ function UserLanding() {
           // with the polygon, I added this in case we want to manipulate the polygon eventually
           // or make it malleable and adjustable
 
-          polygon.addListener("click", () => {
+          // polygon.addListener("click", () => {
 
             // give this alert when interacting
 
-            alert("Polygon clicked!");
-          });
+           // alert("Polygon clicked!");
+         // });
         });
 
         /*
@@ -216,7 +239,7 @@ function UserLanding() {
             handleSearch(place);
 
             // take map instance and loc. coordinates and search places near it with the totally tubular searchPlaces function
-            searchPlaces(mapInstance, place.geometry.location);
+ //           searchPlaces(mapInstance, place.geometry.location);
 
             // dispatch an action to the Redux store fetching updated search history
             // and updating the store with the latest search!
@@ -257,7 +280,7 @@ function UserLanding() {
         });
         map.setCenter(currentLocation); // set center of the map at current user location
         map.setZoom(12);
-        searchPlaces(map, currentLocation); // search nearby places, on the map, given users current location
+       // searchPlaces(map, currentLocation); // search nearby places, on the map, given users current location
       }
     }, [currentLocation, map]); // Update on a new current location, or if a new map is created/instantiated
 
@@ -265,57 +288,41 @@ function UserLanding() {
     // Arrow function to searchPlace in the vicinity (i.e, a radius of 5000 meters)
     // it takes the map instance and location as parameters
 
-    const searchPlaces = (mapInstance, location) => {
-
-        // create new instance of the Places API Service class given the current
-        // map instance and name it service
-      const service = new window.google.maps.places.PlacesService(mapInstance);
-
-      // create a request object for the search of nearby services and places
-      // this is based on the location that is passed to searchPlaces above,
-      // and uses a radius range of 5000 meters to that location
-      // and only searches for the type or establishments listed in type (bars and restaurants here, change if needed)
-      const request = {
-        location,
-        radius: "5000",
-        type: ["restaurant", "bar"],
-      };
-      
-      // Callback function below:
-      // do a search using the PlacesService when "service.nearbySearch..."" is called
-      // then take the results and status of the search and proceed to the 
-      // code block within Example: {<code block contents here>} is ran (invoked)
-      // with the results and status, results will be an array of objects found in the search
-      // status is simply the code telling us if its succesful or not (this makes sure results array is not emtpy!)
-
-      service.nearbySearch(request, (results, status) => {
-
-        // If search success and results contains something, 
-        // then lets process each place in the results array of objects
-        // and make sure it has valid coordinate info (geometry && place.geometry.location) 
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
-            // loop through each results place
-          results.forEach((place) => {
-            console.log("request is: ", request)
-            if (place.geometry && place.geometry.location) {
-                const icon = {
-                    url: '/public/icons8-map-pin-26.png', // Path to your custom icon
-                    scaledSize: new window.google.maps.Size(30, 30), // Size of the icon
-                    origin: new window.google.maps.Point(0, 0),
-                    anchor: new window.google.maps.Point(15, 15)
-                  };
-                // put a new marker at each (NOTE: this will eventually be the purple markers for our client)
-                new window.google.maps.Marker({
-                position: place.geometry.location, // where we put the marker
-                map: mapInstance, // on what instance of map we put the marker
-                title: place.name, // access each places name for the title
-                icon: icon
-              });
+    async function searchDatabasePlaces(mapInstance) {
+        try {
+            const response = await fetch('/api/business');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-          });
+            const businesses = await response.json();
+            console.log('Fetched businesses:', businesses);
+    
+            for (const business of businesses) {
+                const coords = await getCoordinates(business.address);
+                if (coords) {
+                    const icon = {
+                        url: '/public/icons8-map-pin-26.png',
+                        scaledSize: new google.maps.Size(30, 30),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(15, 15)
+                    };
+                    const marker = new google.maps.Marker({
+                        position: coords,
+                        map: mapInstance,
+                        title: business.address,
+                        icon: icon
+                        // ... other marker properties
+                    });
+    
+                    marker.addListener('click', () => {
+                        history.push(`/user-details/${business.id}`);
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error in searchDatabasePlaces:', error);
         }
-      });
-    };
+    }
 
 
     // This is the return (and styling) for our search box, given via ref=(inputRef) 
