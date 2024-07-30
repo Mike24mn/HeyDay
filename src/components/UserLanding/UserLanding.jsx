@@ -385,16 +385,14 @@ function UserLanding() {
     };
 
     const boundaries = [
-        // boundary array meant for a polygon example, in Shrevesport, LA.
-        // We need to think of logic to make this more dynamic, as mentioned above
-      [
-        { lat: 32.5252, lng: -93.763504 },
-        { lat: 32.5302, lng: -93.760504 },
-        { lat: 32.5272, lng: -93.755504 },
-        { lat: 32.5222, lng: -93.758504 },
-      ],
-
-    ];
+  // Boundary array for a 20-mile square around the Twin Cities, MN
+  [
+    { lat: 45.1970, lng: -93.4650 }, 
+    { lat: 45.1970, lng: -93.0650 }, 
+    { lat: 44.7570, lng: -93.0650 }, 
+    { lat: 44.7570, lng: -93.4650 }, 
+  ],
+];
 
     // Return info below is relatively self-explanatory based on the information provided above in this component
 
