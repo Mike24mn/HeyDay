@@ -4,7 +4,12 @@ const app = express();
 const yelp = require('yelp-fusion');
 const cors = require('cors');
 const favoritesRouter = require('./routes/favorites.router.js')
+
+
+const happyHourRouter = require('./routes/happyHour.router.js')
+
 const busRouter = require('./routes/business.router.js')
+
 require('dotenv').config();
 
 
@@ -56,6 +61,7 @@ app.use("/api/user", userRouter);
 app.use("/api/favorites", favoritesRouter);
 app.use("/api/scraper", scraperRouter);
 app.use("/api/business", busRouter)
+app.use('/api/happyhour', happyHourRouter);
 
 const apiKey ="6ONLrF40aWp2jP__Bxi14hEEFXPj8161PsM3hAErgO03eXQWYIaw4aDAS-i1aGq3u9-dirq6NW9HD_xfglFTK1LANGuFzgOeEBsVWdQqoen9jM1SHOrkfydI1HeZZnYx"
 

@@ -41,38 +41,49 @@ const BusinessInfo = ()=>{
 
     return( 
         <>
+
+        <h1>bussiness fill out form</h1>
+        <h2><center>Welcome to HeyDay, 
+            the ultimate platform designed to elevate your business to new heights!
+            We're excited to invite you to join our community and experience the benefits of connecting with customers like never before.
+            By signing up, you'll gain access to a suite of powerful tools and features tailored to help your business thrive in today's competitive market.
+            Whether you're looking to attract new clients, enhance customer engagement, or streamline your operations, 
+            HeyDay is here to support you every step of the way. 
+            Join us today and let's make your business's heyday every day!</center></h2>
+
         <h1>Business fill out form</h1>
+
         <form onSubmit={handleSubmit}>
 
-        <p>name</p>
-        <input
+        <p><center><b>Name</b></center></p>
+        <center><input
         type="text"
         value={getName}
         onChange={(e) => setName(e.target.value)}
-         />
+         /></center>
 
-         <p> address</p>
-         <input
+         <p> <center><b> address</b></center></p>
+         <center><input
          type="text"
          value={getAddress}
          onChange={(e)=> setAddress(e.target.value)}
-         />
+         /></center>
 
-         <p> type </p>
-         <input
+         <p><center><b> type</b></center> </p>
+         <center><input 
          type="text"
          value={getType}
          onChange={(e)=> setType(e.target.value)}
-         />
+        /> </center>
 
-        <p> Description </p>
-         <input
+        <p><center><b> Description</b></center> </p>
+         <center><input
          type="text"
          value={getDes}
          onChange={(e)=> setDes(e.target.value)}
-         />
+         /> </center>
 
-         <button type="submit"> submit info </button>
+         <center><button type="submit"> submit info </button></center>
 
 
         </form>

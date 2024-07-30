@@ -3,7 +3,12 @@ import errors from './errors.reducer';
 import user from './user.reducer';
 import historyReducer from './history.reducer'; // new reducers
 import favorites from './favorites.reducer'; // new reducers
+
+
+import happy from './happyHour.reducer';
+
 import business from './business.reducer';
+
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -18,6 +23,7 @@ const rootReducer = combineReducers({
  historyReducer,
 favorites, 
 business,
+happy,
 });
 
 export default rootReducer;
