@@ -2,6 +2,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+EAD
+
+
+
 const RandomPlace = () => {
   const dispatch = useDispatch();
   const business = useSelector(store => store.business);
@@ -11,6 +15,14 @@ const RandomPlace = () => {
   }, [dispatch]);
   const handleRandom = () => {
     console.log("clicked worked");
+
+
+  useEffect(() => {
+    dispatch({ type: 'SET_BUSINESS' });
+  }, [dispatch]);
+
+  
+
     if (business.length > 0) {
       const randomIndex = Math.floor(Math.random() * business.length);
       const randomId = business[randomIndex].id;
@@ -25,6 +37,9 @@ const RandomPlace = () => {
       }
     }
   };
+
+
+
   return (
     <button onClick={handleRandom} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit' }}>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-shuffle" viewBox="0 0 16 16">
@@ -36,4 +51,6 @@ const RandomPlace = () => {
   );
 };
 
+
 export default RandomPlace
+
