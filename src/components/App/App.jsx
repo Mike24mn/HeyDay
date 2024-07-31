@@ -6,6 +6,7 @@ import {
   Switch,
 } from "react-router-dom";
 
+import RandomPlace from "../RandomPlace/RandomPlace";
 import { useDispatch, useSelector } from "react-redux";
 
 import LoginPage from "../LoginPage/LoginPage";
@@ -120,6 +121,11 @@ function App() {
           <ProtectedRoute exact path="/user-login">
             <LogOutButton />
           </ProtectedRoute>
+
+            <Route exact path="/random" >
+            <RandomPlace/>
+
+            </Route>
 
         </Switch>
         <Footer />

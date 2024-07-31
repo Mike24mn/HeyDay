@@ -30,6 +30,7 @@ function BusinessLanding() {
   const [getName, setName] = useState('');
   const [happyHourTime, setHappyHourTime] = useState(''); 
   const [happyHourDate, setHappyHourDate] = useState('');
+  
 
   const business = useSelector(store => store.business);
   const user = useSelector(store => store.user);
@@ -37,8 +38,8 @@ function BusinessLanding() {
   
   const dispatch = useDispatch();
 
-  const busFilter = (business || []).filter(bus => bus && bus.business_id && Number(bus.business_id) === Number(user.id));
-  const happyFilter = (happy || []).filter(hap => hap && hap.business_id && Number(hap.business_id) === Number(user.id));
+  const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
+  const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
  
   useEffect(() => {
     dispatch({ type: "SET_BUS" });
@@ -59,6 +60,7 @@ function BusinessLanding() {
           description: getHappy,
           date: happyHourDate,
           time: happyHourTime,
+          
         }
       });
 
@@ -143,11 +145,11 @@ function BusinessLanding() {
               <CardMedia
                 sx={{ height: 200 }}
                 image="public/image.png"
-                title={hap.happyName}
+                title={hap.name}
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  {hap.happyName}
+                  {hap.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Description: {hap.description}
@@ -162,7 +164,7 @@ function BusinessLanding() {
                   Address: {hap.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  : {hap.likes}
+                 likes : {hap.likes}
                 </Typography>
               </CardContent>
               <CardActions>

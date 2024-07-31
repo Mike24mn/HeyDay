@@ -19,13 +19,13 @@ router.get('/', (req,res)=>{
 })
 
 router.post('/', (req,res)=>{
-    const {  user_id,    date, start_time} = req.body
+    const {  user_id, address,    date, start_time} = req.body
 
     const queryText= `
-    INSERT INTO "happy_hour" ("user_id","date","start_time")
-    VALUES($1,$2,$3)
+    INSERT INTO "happy_hour" ("user_id", "address","date","start_time")
+    VALUES($1,$2,$3,$4)
     `
-    const queryValues = [ user_id,    date, start_time];
+    const queryValues = [ user_id, address,    date, start_time];
 
     pool.query(queryText, queryValues)
     .then((response)=>{

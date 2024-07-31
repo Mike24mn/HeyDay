@@ -20,12 +20,12 @@ router.get('/',(req,res)=>{
 
 
 router.post('/', (req,res)=>{
-    const { business_id, business_name, address, business_type, description, phone_number}= req.body
+    const {  business_name, address, business_type, description, user_id, phone_number}= req.body
     const queryText = `
-    INSERT INTO "business" ( "business_id","business_name", "address", "business_type", "description","phone_number")
+    INSERT INTO "business" ("business_name", "address","description", "business_type", "user_id","phone_number")
     VALUES($1,$2,$3,$4,$5,$6)
     `
-    const queryValues = [ business_id, business_name, address, business_type, description, phone_number];
+    const queryValues = [  business_name, address, business_type, description, user_id,  phone_number];
 
     pool.query(queryText, queryValues)
     .then((response)=>{
