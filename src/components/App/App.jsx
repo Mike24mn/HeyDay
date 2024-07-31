@@ -91,10 +91,10 @@ function App() {
             <UserLanding />
           </ProtectedRoute>
 
-          {/* <ProtectedRoute exact path="/user-details">
+          <ProtectedRoute exact path="/user-details/:id">
             <DetailsPage />
-          </ProtectedRoute> */}
-           <Route path="/user-details/:id" component={DetailsPage}/>
+          </ProtectedRoute>
+    
 
           <ProtectedRoute exact path="/favorite-locations">
             <UserFavoriteLocations />
