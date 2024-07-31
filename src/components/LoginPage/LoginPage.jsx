@@ -2,13 +2,14 @@ import React from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import { useHistory } from 'react-router-dom';
 import TheRippleEffect from '../TheRippleEffect/TheRippleEffect';
+import './LoginPage.css'
 
 function LoginPage() {
   const history = useHistory();
 
   return (
     <div>
-      <center><TheRippleEffect/></center>
+      <TheRippleEffect/>
       <LoginForm />
       
 
@@ -26,7 +27,20 @@ function LoginPage() {
           Signup
         </button>
         <p></p>
+
         <button
+          type="button"
+          className="btn btn_asLink"
+          onClick={() => {
+            history.push('/business-reg');
+          }}
+        >
+          
+        
+          Access Business Portal
+         </button>
+         <p></p>
+         <button
           type="button"
           className="btn btn_asLink"
           onClick={() => {
@@ -36,19 +50,7 @@ function LoginPage() {
           
           Skip login
         </button>
-        <p></p>
-               <button
-          type="button"
-          className="btn btn_asLink"
-          onClick={() => {
-            history.push('/business-login');
-          }}
-        >
-          
-        
-          Access Business Portal
-        </button>
-      </center>
+          </center>
 
       
     </div>

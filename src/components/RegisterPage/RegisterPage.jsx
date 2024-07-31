@@ -9,7 +9,7 @@ function RegisterPage() {
 
   return (
     <div>
-      <TheRippleEffect/>
+     
       <RegisterForm />
 
       <center>

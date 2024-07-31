@@ -1,0 +1,75 @@
+
+
+.details-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.business-name {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #DC143C
+}
+
+.address,
+.business-type,
+.description,
+.phone-number {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+.section-title {
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #DC143C
+}
+
+.diet-list,
+.happy-hour-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.diet-item,
+.happy-hour-item {
+    background-color: #f0f0f0;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+.image-gallery {
+    margin-top: 20px;
+}
+
+.image-container {
+    position: relative;
+    text-align: center;
+}
+
+.business-image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.next-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #DC143C;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+

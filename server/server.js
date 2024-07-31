@@ -4,6 +4,7 @@ const app = express();
 const yelp = require('yelp-fusion');
 const cors = require('cors');
 const favoritesRouter = require('./routes/favorites.router.js')
+const busRouter = require('./routes/business.router.js')
 require('dotenv').config();
 
 
@@ -23,17 +24,16 @@ const passport = require("./strategies/user.strategy");
 
 const userRouter = require('./routes/user.router');
  const historyRouter = require('./routes/history.router')
+
  
 
 
 
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Allow requests from this origin
-    methods: "GET,POST,PUT,DELETE", // Allowed HTTP methods
-    allowedHeaders: "Content-Type,Authorization", // Allowed headers
-  })
-);
+ app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:5001'], // Allow both frontend and backend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,6 +55,7 @@ app.use('/api/history', historyRouter )
 app.use("/api/user", userRouter);
 app.use("/api/favorites", favoritesRouter);
 app.use("/api/scraper", scraperRouter);
+app.use("/api/business", busRouter)
 
 const apiKey ="6ONLrF40aWp2jP__Bxi14hEEFXPj8161PsM3hAErgO03eXQWYIaw4aDAS-i1aGq3u9-dirq6NW9HD_xfglFTK1LANGuFzgOeEBsVWdQqoen9jM1SHOrkfydI1HeZZnYx"
 
