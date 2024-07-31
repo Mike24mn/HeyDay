@@ -36,6 +36,8 @@ router.post('/', (req,res)=>{
 })
 
 
+
+
 router.delete('/:id', (req, res)=>{
 
 
@@ -52,6 +54,45 @@ router.delete('/:id', (req, res)=>{
     })
   })
 
+router.put('/likes/:id', (req, res)=>{
+    const { id } = req.params
+    const queryText = `
+    UPDATE "happy_hour"
+    SET "likes" = "likes" + 1
+    WHERE "id" = $1
+    RETURNING *;
+    `
+
+    pool.query(queryText, [id])
+    .then((result)=>{
+        console.log("checking result in like ", result );
+        res.sendStatus(200)
+    })
+    .catch((error)=>{
+        console.log("error in like put", error );
+        res.sendStatus(400)
+    })
+})
+
+router.put('/interested/:id', (req, res)=>{
+    const { id } = req.params
+
+    const queryText = `
+    UPDATE "happy_hour"
+     SET "interested" = "interested" + 1 
+     WHERE "id" = $1;
+    `
+
+    pool.query(queryText, [id])
+    .then((result)=>{
+        console.log("checking result in like ", result );
+        res.sendStatus(200)
+    })
+    .catch((error)=>{
+        console.log("error in like put", error );
+        res.sendStatus(400)
+    })
+})
 
 
 module.exports = router;

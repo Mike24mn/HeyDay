@@ -15,6 +15,7 @@ import Nav from "../Nav/Nav";
 import Footer from "../Footer/Footer";
 
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import HappyMapping from "../HappyMapping/HappyMapping";
 
 import AboutPage from "../AboutPage/AboutPage";
 import BusinessRegister from "../BusinessRegister/BusinessRegister";
@@ -125,6 +126,10 @@ function App() {
             <Route exact path="/random" >
             <RandomPlace/>
 
+            </Route>
+
+            <Route exact path="/happy">
+              <HappyMapping/>
             </Route>
 
         </Switch>

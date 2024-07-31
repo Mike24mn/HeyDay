@@ -37,10 +37,36 @@ function* deleteHappy(action){
     }
 }
 
+function* addLike(action) {
+    try {
+        const { id } = action.payload;
+
+        const response = yield axios.put(`/api/happy_hour/likes/${id}`);
+        yield put({ type: 'UPDATE_LIKE_SUCCESS', payload: id });
+    } catch (error) {
+        console.error('Error updating likes:', error);
+        yield put({ type: 'UPDATE_LIKE_FAILURE', error });
+    }
+}
+
+function* addInterest(action) {
+    try {
+        const { id } = action.payload;
+
+        const response = yield axios.put(`/api/happy_hour/interested/${id}`);
+        yield put({ type: 'UPDATE_INT_SUCCESS', payload: id });
+    } catch (error) {
+        console.error('Error updating likes:', error);
+        yield put({ type: 'UPDATE_LIKE_FAILURE', error });
+    }
+}
+
 function* happysaga(){
     yield takeLatest('SET_HAPPY', getHappy)
     yield takeLatest('ADD_HAPPY', addHappy)
     yield takeLatest('DELETE_HAPPY', deleteHappy)
+    yield takeLatest('UPDATE_LIKE', addLike)
+    yield takeLatest('UPDATE_INT', addInterest)
 }
 
 export default happysaga
