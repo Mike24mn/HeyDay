@@ -1,3 +1,4 @@
+
 /*                                                                                                                    
  _ _ _       _                          _           _____            ____            
 | | | | ___ | | ___  ___  _____  ___   | |_  ___   |  |  | ___  _ _ |    \  ___  _ _ 
@@ -19,6 +20,7 @@ import L, { icon } from "leaflet"; // feel free to delete before client-hand off
 import "leaflet/dist/leaflet.css"; // feel free to delete before client-hand off, we are not using this anymore
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import './UserLanding.css'
+
 /*
 General notes and reminders for Heyday friends about the UserLanding function:
 This is the core functionality of the App, as such, it is detailed with the utmost care
@@ -35,8 +37,10 @@ global scope window object in javascript represents browser window (allows us to
 function UserLanding() {
     const history = useHistory()
     const [showWelcome, setShowWelcome] = useState(false)
+
   // get the dispatch function to send the action to Redux
   const dispatch = useDispatch();
+  const businesses = useSelector(state => state.business);
 
   useEffect(() => {
     console.log("Checking welcome message condition");
@@ -81,6 +85,12 @@ function UserLanding() {
   useEffect(() => {
     dispatch({ type: "FETCH_HISTORY" });
   }, [dispatch]);
+
+
+  useEffect(() => {
+    dispatch({ type: "FETCH_ALL_BUSINESSES" });
+  }, [dispatch]);
+
   // this function uses methods to handle navigate different map loading statuses, if still loading the first div in
   // switch is shown, in the case of a failed load, return the second div, else return null
 /**
@@ -112,29 +122,32 @@ function UserLanding() {
     const dispatch = useDispatch();
     const history = useHistory();
     const [userLocationCircle, setUserLocationCircle] = useState(null);
-  
-    const getCoordinates = (businessAddress) => {
-      if (typeof businessAddress !== 'string') {
-        console.error('Invalid address:', businessAddress);
-        return Promise.resolve(null);
-      }
-  
-      const geocoder = new google.maps.Geocoder();
-      return new Promise((resolve, reject) => {
-        geocoder.geocode({ address: businessAddress }, (results, status) => {
-          if (status === 'OK') {
-            resolve({
-              lat: results[0].geometry.location.lat(),
-              lng: results[0].geometry.location.lng()
+
+
+    function getCoordinates(businessAddress) {
+        if (typeof businessAddress !== 'string') {
+            console.error('Invalid address:', businessAddress);
+            return Promise.resolve(null);
+        }
+    
+        const geocoder = new google.maps.Geocoder();
+        return new Promise((resolve, reject) => {
+            geocoder.geocode({ address: businessAddress }, (results, status) => {
+                if (status === 'OK') {
+                    resolve({
+                        lat: results[0].geometry.location.lat(),
+                        lng: results[0].geometry.location.lng()
+                    });
+                } else {
+                    console.error('Geocoding failed:', status);
+                    resolve(null);
+                }
             });
-          } else {
-            console.error('Geocoding failed:', status);
-            resolve(null);
-          }
         });
-      });
-    };
-  
+    }
+    // handleSearch is an arrow function that takes a place parameter
+    // and adds the name (place.name) of it to the users history
+    
     const handleSearch = (place) => {
       console.log("handleSearch clicked", place.name);
       dispatch({
@@ -142,6 +155,7 @@ function UserLanding() {
         payload: { search_history: place.name },
       });
     };
+
     const drawCityBoundary = (mapInstance, geoJSON) => {
         console.log("drawCityBoundary called with:", {mapInstance, geoJSON});
         if (mapInstance && geoJSON) {
@@ -181,7 +195,7 @@ function UserLanding() {
               });
             }
           });
-        
+          
           if (!bounds.isEmpty()) {
             mapInstance.fitBounds(bounds);
             console.log("Map bounds updated:", bounds.toString());
@@ -390,6 +404,17 @@ function UserLanding() {
     const [currentLocation, setCurrentLocation] = useState(null);
     // select current logged in user from the redux store
     const user = useSelector((store) => store.user);
+
+    const handleRandomButton = () => {
+      if (businesses.length > 0) {
+        const randomIndex = Math.floor(Math.random() * businesses.length);
+        const randomBusiness = businesses[randomIndex];
+        history.push(`/user-details/${randomBusiness.id}`);
+      } else {
+        console.log("No businesses available");
+      }
+    };
+
     // function that gets current users location
     const handleGetCurrentLocation = () => {
         // if location services are allowed by the browser (AKA a geolocation supported browser)
@@ -1245,6 +1270,27 @@ function UserLanding() {
               Use Current Location
             </Button>
           </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
+        <Button
+        variant="contained"
+        onClick={handleRandomButton}
+        sx={{
+          backgroundColor: "#057",
+          "&:hover": {
+            backgroundColor: "#046",
+          },
+          marginTop: "20px"
+        }}
+      >
+        WildCard
+      </Button>
+      </Box>
           <Wrapper
             apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
             libraries={["places", "marker"]}

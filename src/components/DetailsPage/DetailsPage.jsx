@@ -1,113 +1,110 @@
-
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { icon } from "leaflet";
-import UserNavBar from "../UserNavBar/UserNavBar";
-import { useParams, useHistory } from "react-router-dom/cjs/react-router-dom.min";
-
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import './DetailsPage.css';
+import { useSelector,useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 function DetailsPage() {
-  const [getDetails, setDetails] = useState([]);
-  const [getTerm, setTerm] = useState("");
-  const [getLocation, setLocation] = useState("");
-  const [business, setBusiness] = useState(null)
-  const { id } = useParams();
-  const history = useHistory();
-  const user = useSelector((store) => store.user);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    async function fetchBusinessDetails(){
-        try {
-            const response = await fetch(`/api/businesses/${id}`)
-            if (!response.ok) {
-                if(response.status === 404) {
-                    throw new Error('Business not found!!!')
+    const [business, setBusiness] = useState(null);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
+    const favorites = useSelector(state => state.favorites);
+    console.log("Current favorites", favorites);
+    // Fetch business details whenever the ID changes
+    useEffect(() => {
+        fetchBusinessDetails();
+    }, [id]);
+    // Function to fetch business details from the API
+    const fetchBusinessDetails = () => {
+        fetch(`/api/business/${id}`)
+            .then(response => {
+                // Check if the response is okay
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                throw new Error(`HTTP error, status: ${response.status}`)
-
-            }
-            const data = await response.json();
-            setBusiness(data)
-        } catch (error) {
-            console.log("error fetching business details:", error);
-        }
+                // Parse the JSON data from the response
+                return response.json();
+            })
+            .then(data => {
+                // Update the state with the fetched business data
+                setBusiness(data);
+            })
+            .catch(error => {
+                // Log any errors that occur during the fetch
+                console.error('Error fetching business details:', error);
+            });
+    };
+    // Function to show the next image in the gallery
+    const showNextImage = () => {
+        setCurrentImageIndex((prevIndex) =>
+            (prevIndex + 1) % (business.images.length) // Loop back to the first image
+        );
+    };
+    // Display a loading message if business data is not yet available
+    if (!business) {
+        return <div>Loading...</div>;
     }
-    fetchBusinessDetails();
-  }, [id]);
-
-  const handleSearch = () => {
-    fetch(
-      `http://localhost:5001/api/search?term=${getTerm}&location=${getLocation}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setDetails(data);
-        console.log("checking-data: ", data);
-      })
-      .catch((error) => {
-        console.log("error in yelp fetch in details", error);
-      });
-  };
-
-  const handleFav = (event, details) => {
-    event.preventDefault();
-    const id = user.id;
-    console.log("checking id", id);
-
-    dispatch({
-      type: "ADD_FAV",
-      payload: { ...details, user_id: id, address: details.location.address1 },
-    });
-  };
-
-  return (
-    <>
-      <div>
-        <input
-          type="text"
-          placeholder="search term"
-          value={getTerm}
-          onChange={(event) => setTerm(event.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="location"
-          value={getLocation}
-          onChange={(event) => setLocation(event.target.value)}
-        />
-        <button onClick={handleSearch}>SEARCH</button>
-      </div>
-      <div>
-        {getDetails.length > 0 ? (
-          getDetails.map((details, index) => (
-            <div key={index} style={{ marginBottom: "20px" }}>
-              <div>Name: {details.name}</div>
-              <img
-                src={details.image_url}
-                alt={details.name}
-                style={{ width: "100px", height: "100px" }}
-              />
-              <div>Rating: {details.rating}</div>
-              <div>Number: {details.phone}</div>
-              <div>
-                Address:{" "}
-                {`${details.location.address1} ${details.location.address2} ${details.location.address3}, ${details.location.city}, ${details.location.zip_code}`}
-              </div>
-              <div>Amount of reviews: {details.review_count}</div>
-              <button onClick={(event) => handleFav(event, details)}>
-                <FavoriteIcon />
-              </button>
+    const handleFav = () => {
+        console.log("handleFav clicked");
+        const userId = user.id;
+        console.log("checking id", userId);
+        dispatch({
+            type: "ADD_FAV",
+            payload: {
+                user_id: userId,
+                name: business.business_name,
+                address: business.address
+            },
+        });
+        console.log("ADD_FAV action dispatched")
+    };
+    return (
+        <div className="details-page">
+            <h1 className="business-name">{business.business_name}</h1>
+            <div className="image-gallery">
+                {business.images.length > 0 && (
+                    <div className="image-container">
+                        <img
+                            src={business.images[currentImageIndex]}
+                            alt={`${business.business_name} ${currentImageIndex + 1}`}
+                            className="business-image"
+                        />
+                        <div className="buttons-container">
+                        <button className="favorite-button" onClick={handleFav}>
+                                <FontAwesomeIcon icon={faHeart} />
+                            </button>
+                            <button
+                                className="next-button"
+                                onClick={showNextImage}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
-          ))
-        ) : (
-          <p>No details available</p>
-        )}
-        <center><UserNavBar /></center>
-      </div>
-    </>
-  );
+            <p className="address"> Address: {business.address}</p>
+            <p className="business-type">Type: {business.business_type}</p>
+            <p className="description">Description: {business.description}</p>
+            <p className="phone-number">Phone: {business.phone_number}</p>
+            <h2 className="section-title">Diets</h2>
+            <ul className="diet-list">
+                {business.diets.map(diet => (
+                    <li key={diet.id} className="diet-item">{diet.name}</li>
+                ))}
+            </ul>
+            <h2 className="section-title">Happy Hours</h2>
+            <ul className="happy-hour-list">
+                {business.happy_hours.map((hh, index) => (
+                    <li key={index} className="happy-hour-item">
+                        {hh.day_of_week}: {hh.start_time} - {hh.end_time}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
-
 export default DetailsPage;
+      

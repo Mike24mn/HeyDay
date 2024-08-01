@@ -4,9 +4,13 @@ const business = (state = [], action) => {
       return action.payload;
     case "ADD_BUS_SUCCESS":
       return [...state, action.payload];
+      case "SET_ALL_BUSINESSES":
+        return action.payload;
+      default:
+        return state;
 
-    default:
-      return state;
   }
+
+  
 };
 export default business;

@@ -35,6 +35,7 @@ import "./App.css";
 import { Logout } from "@mui/icons-material";
 import LogOutButton from "../LogOutButton/LogOutButton";
 
+
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
@@ -94,9 +95,11 @@ function App() {
             <UserLanding />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/user-details">
+          <ProtectedRoute exact path="/user-details/:id">
             <DetailsPage />
           </ProtectedRoute>
+
+      
 
           <ProtectedRoute exact path="/favorite-locations">
             <UserFavoriteLocations />
@@ -140,5 +143,3 @@ function App() {
 }
 
 export default App;
-
-
