@@ -4,6 +4,7 @@ const favorites = (state = [], action) => {
       case "SET_FAVS_SUCCESS":
         return action.payload; 
       case "ADD_FAV_SUCCESS":
+      console.log("Reducer received ADD_FAV_SUCCESS with payload:", action.payload);
         return [...state, action.payload]; 
        case "DELETE_FAVS":
          return state.filter(fav => fav.id !== action.payload.id) 

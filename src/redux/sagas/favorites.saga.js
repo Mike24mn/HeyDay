@@ -17,13 +17,15 @@ function* getFavs() {
 // Add favorite saga
 function* addFav(action) {
   try {
+    console.log("addFav saga triggered with payload:", action.payload);
     const response = yield axios.post('/api/favorites', action.payload);
+    console.log("addFav saga response:", response.data);
     yield put({ type: "ADD_FAV_SUCCESS", payload: response.data });
   } catch (error) {
-    console.log("Error in addFav saga", error);
+    console.log("Error in addFav saga", error.message, error.stack);
+    yield put({ type: "ADD_FAV_ERROR", error: error.message });
   }
 }
-
 function* deleteFav(action){
     try{
         console.log("Action received in saga:", action);

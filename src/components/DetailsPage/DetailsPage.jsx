@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './DetailsPage.css'; 
+import { useSelector,useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+
 
 function DetailsPage() {
     const [business, setBusiness] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0); 
     const { id } = useParams();
+
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
+    const favorites = useSelector(state => state.favorites);
+    console.log("Current favorites", favorites);
 
     // Fetch business details whenever the ID changes
     useEffect(() => {
@@ -45,8 +54,23 @@ function DetailsPage() {
         return <div>Loading...</div>;
     }
     
+    const handleFav = () => {
+        console.log("handleFav clicked");
+        const userId = user.id;
+        console.log("checking id", userId);
 
+        dispatch({
+            type: "ADD_FAV",
+            payload: { 
+                user_id: userId, 
+                name: business.business_name, 
+                address: business.address 
+            },
+        });
+        console.log("ADD_FAV action dispatched")
+    };
 
+ 
     return (
         <div className="details-page">
             <h1 className="business-name">{business.business_name}</h1>
@@ -59,23 +83,27 @@ function DetailsPage() {
                             alt={`${business.business_name} ${currentImageIndex + 1}`} 
                             className="business-image" 
                         />
-                        <button 
-                            className="next-button" 
-                            onClick={showNextImage}
-                        >
-                            Next
-                        </button>
+                        <div className="buttons-container">
+                        <button className="favorite-button" onClick={handleFav}>
+                                <FontAwesomeIcon icon={faHeart} />
+                            </button>
+                            
+                            <button 
+                                className="next-button" 
+                                onClick={showNextImage}
+                            >
+                                Next
+                            </button>
+                           
+                        </div>
                     </div>
                 )}
-                <button className='next-button' >
-                    favorite
-                </button>
             </div>
             <p className="address"> Address: {business.address}</p>
             <p className="business-type">Type: {business.business_type}</p>
             <p className="description">Description: {business.description}</p>
             <p className="phone-number">Phone: {business.phone_number}</p>
-
+    
             <h2 className="section-title">Diets</h2>
             <ul className="diet-list">
                 {business.diets.map(diet => (
@@ -91,10 +119,9 @@ function DetailsPage() {
                     </li>
                 ))}
             </ul>
-
-            
         </div>
     );
 }
 
 export default DetailsPage;
+      

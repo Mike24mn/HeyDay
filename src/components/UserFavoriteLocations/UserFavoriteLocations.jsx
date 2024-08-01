@@ -1,18 +1,12 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import UserNavBar from "../UserNavBar/UserNavBar";
+import './UserFavoriteLocations.css';
 
 function UserFavoriteLocations() {
   const user = useSelector((store) => store.user);
   const favorite = useSelector((store) => store.favorites);
-  console.log("checking fav", favorite);
-
   const dispatch = useDispatch();
-
-  console.log("User:", user);
-  console.log("Favorites:", favorite);
 
   useEffect(() => {
     if (user && user.id) {
@@ -20,41 +14,40 @@ function UserFavoriteLocations() {
     }
   }, [dispatch, user]);
 
-  const id = user.id;
-
   const filteredFavs = favorite.filter(
     (fav) => Number(fav.user_id) === Number(user.id)
   );
 
-  console.log("Filtered Favorites:", filteredFavs);
-
-  const handleDel = (id) =>{
-    dispatch({ type:"DELETE_FAVS", payload: {id} })
-    console.log("checking id in delete handle ", id );
-
-
-  }
+  const handleDel = (id) => {
+    dispatch({ type: "DELETE_FAVS", payload: { id } });
+  };
 
   return (
-    <div>
-      <h1>User Favorite Locations</h1>
-      <h1>{user.username}</h1>
+    <div className="favorite-locations-container">
+   
+      <h1 className="title">User Favorite Locations</h1>
+      <h2 className="welcome">Welcome, {user.username}!</h2>
       {filteredFavs.length > 0 ? (
-        <ul>
+        <div className="favorites-list">
           {filteredFavs.map((fav, index) => (
-            <li key={index}>
-              <p>{fav.name}</p>
-              <p>ADDRESS:{fav.address}</p>
-              <button onClick={()=>handleDel(fav.id)} >DELETE </button>
-            </li>
-           
+            <div key={index} className="favorite-card">
+              <h3>{fav.name}</h3>
+              <p><strong>Address:</strong> {fav.address}</p>
+              <button 
+                className="delete-button" 
+                onClick={() => handleDel(fav.id)}
+              >
+                Delete
+              </button>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         <p>No favorite locations found.</p>
       )}
-      <UserNavBar/>
+          <UserNavBar />
     </div>
   );
 }
+
 export default UserFavoriteLocations;
