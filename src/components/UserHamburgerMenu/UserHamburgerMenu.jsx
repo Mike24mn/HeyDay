@@ -89,6 +89,9 @@ export default function UserHamburgerMenu() {
                 <MenuItem onClick={handleMenuClose}>
                   <StyledLink to="/user-details">User Details</StyledLink>
                 </MenuItem>
+                <MenuItem onClick={handleMenuClose}>
+                  <StyledLink to="/happy">Hey for the day </StyledLink>
+                </MenuItem>
               </>
             )}
             <MenuItem onClick={handleMenuClose}>

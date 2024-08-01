@@ -9,20 +9,22 @@ const BusinessInfo = ()=>{
     const [getName, setName ]= useState('')
     const [getType, setType] = useState('')
     const [getDes , setDes]= useState('')
+    const [ getNumber, setNumber] = useState('')
 
     const dispatch = useDispatch()
     const history = useHistory()
     const id = user.id 
-    const handleSubmit = (event  ) => {
+    const handleSubmit = (event , user ) => {
         event.preventDefault();
         dispatch({
             type: 'ADD_BUS',
             payload: {
-                business_id: user.id,
+                user_id: id,
                 business_name: getName,
                 business_type: getType,
                 address: getAddress,
                 description: getDes,
+                phone_number: getNumber,
                 
             },
             
@@ -34,6 +36,7 @@ const BusinessInfo = ()=>{
         setAddress(''); 
         setName('');
         setType('');
+        setNumber('')
 
         history.push("/business-landing");
     };
@@ -81,6 +84,13 @@ const BusinessInfo = ()=>{
          type="text"
          value={getDes}
          onChange={(e)=> setDes(e.target.value)}
+         /> </center>
+
+       <p><center><b> number</b></center> </p>
+         <center><input
+         type="text"
+         value={getNumber}
+         onChange={(e)=> setNumber(e.target.value)}
          /> </center>
 
          <center><button type="submit"> submit info </button></center>

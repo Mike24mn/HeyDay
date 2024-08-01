@@ -28,68 +28,75 @@ function BusinessLanding() {
   const [getHappy, setHappy] = useState('');
   const [getAddress, setAddress] = useState('');
   const [getName, setName] = useState('');
-  const [happyHourTime, setHappyHourTime] = useState(''); 
+  const [happyHourTime, setHappyHourTime] = useState('');
+  const [happyEndTime, setHappyEndTime] = useState('');
   const [happyHourDate, setHappyHourDate] = useState('');
+  const [selectedBusinessId, setSelectedBusinessId] = useState('');
 
   const business = useSelector(store => store.business);
-  console.log("checking data business", business);
   const user = useSelector(store => store.user);
   const happy = useSelector(store => store.happy);
-  console.log("checking data happy", happy);
-  
+
   const dispatch = useDispatch();
 
-  const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
-  console.log("checking data busFilter", busFilter);
-  const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
-  console.log("checking data checking happyFilter", happyFilter);
   useEffect(() => {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
   }, [dispatch]);
 
+
+  const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
+  const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
+
   const handleHappy = (event) => {
     event.preventDefault();
 
-    if (busFilter.length > 0) {
-      const businessId = busFilter[0].business_id;
-      
-      dispatch({
-        type: 'ADD_HAPPY',
-        payload: {
-          business_id: businessId,
-     
-          address: getAddress,
-          
-          date: happyHourDate,
-          time: happyHourTime,
-        }
-      });
-
-      dispatch({ type: 'SET_HAPPY' });
-
-      setHappy('');
-      setName('');
-      setAddress('');
-      setHappyHourTime(''); 
-      setHappyHourDate(''); 
+    if (!selectedBusinessId) {
+      console.error('No business selected');
+      return;
     }
-  }
+
+    console.log("Selected Business ID: ", selectedBusinessId);
+
+    dispatch({
+      type: 'ADD_HAPPY',
+      payload: {
+        user_id: user.id,
+        business_id: selectedBusinessId,
+        address: getAddress,
+        description: getHappy,
+        date: happyHourDate,
+        start_time: happyHourTime,
+        end_time: happyEndTime,
+        name: getName,
+      },
+    });
+
+    dispatch({ type: 'SET_HAPPY' });
+
+    setHappy('');
+    setName('');
+    setAddress('');
+    setHappyHourTime('');
+    setHappyHourDate('');
+    setHappyEndTime('');
+    setSelectedBusinessId('');
+  };
 
   const handleDel = (id) => {
     dispatch({ type: "DELETE_HAPPY", payload: { id } });
     dispatch({ type: 'SET_HAPPY' });
-  }
+  };
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleDateString();
-  }
+  };
 
   const formatTime = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleTimeString();
-  }
+  };
 
   return (
     <>
@@ -105,6 +112,17 @@ function BusinessLanding() {
           ))}
         </h2>
         <InputContainer>
+          <select
+            value={selectedBusinessId}
+            onChange={(event) => setSelectedBusinessId(event.target.value)}
+          >
+            <option value="" disabled>Select Business</option>
+            {busFilter.map((bus) => (
+              <option key={bus.id} value={bus.id}>
+                {bus.business_name}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             value={getName}
@@ -133,11 +151,16 @@ function BusinessLanding() {
             type="time"
             value={happyHourTime}
             onChange={(event) => setHappyHourTime(event.target.value)}
-            placeholder="Enter time"
+            placeholder="start time"
+          />
+          <input
+            type="time"
+            value={happyEndTime}
+            onChange={(event) => setHappyEndTime(event.target.value)}
+            placeholder="End time"
           />
           <LoginButton onClick={handleHappy}>SUBMIT</LoginButton>
         </InputContainer>
-     
       </div>
 
       <Grid container spacing={4} justifyContent="center">
@@ -147,11 +170,11 @@ function BusinessLanding() {
               <CardMedia
                 sx={{ height: 200 }}
                 image="public/image.png"
-                title={hap.happyName}
+                title={hap.name}
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  {hap.happyName}
+                  {hap.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Description: {hap.description}
@@ -160,13 +183,19 @@ function BusinessLanding() {
                   Date: {formatDate(hap.date)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Time: {hap.time}
+                  Start Time: {hap.start_time}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  End Time: {hap.end_time}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Address: {hap.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  likes: {hap.likes}
+                  Likes: {hap.likes}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  People Interested: {hap.interested}
                 </Typography>
               </CardContent>
               <CardActions>
@@ -177,8 +206,8 @@ function BusinessLanding() {
         ))}
       </Grid>
       <footer>
-          <BusinessNavBar />
-        </footer>
+        <BusinessNavBar />
+      </footer>
     </>
   );
 }
