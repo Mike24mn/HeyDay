@@ -28,66 +28,75 @@ function BusinessLanding() {
   const [getHappy, setHappy] = useState('');
   const [getAddress, setAddress] = useState('');
   const [getName, setName] = useState('');
-  const [happyHourTime, setHappyHourTime] = useState(''); 
+  const [happyHourTime, setHappyHourTime] = useState('');
+  const [happyEndTime, setHappyEndTime] = useState('');
   const [happyHourDate, setHappyHourDate] = useState('');
-  
+  const [selectedBusinessId, setSelectedBusinessId] = useState('');
 
   const business = useSelector(store => store.business);
   const user = useSelector(store => store.user);
   const happy = useSelector(store => store.happy);
-  
+
   const dispatch = useDispatch();
 
-  const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
-  const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
- 
   useEffect(() => {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
   }, [dispatch]);
 
+  // Filter businesses associated with the user
+  const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
+  const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
+
   const handleHappy = (event) => {
     event.preventDefault();
 
-   
-      
-      dispatch({
-        type: 'ADD_HAPPY',
-        payload: {
-          user_id: user.id,
-          happyName: getName,
-          address: getAddress,
-          description: getHappy,
-          date: happyHourDate,
-          time: happyHourTime,
-          
-        }
-      });
+    if (!selectedBusinessId) {
+      console.error('No business selected');
+      return;
+    }
 
-      dispatch({ type: 'SET_HAPPY' });
+    console.log("Selected Business ID: ", selectedBusinessId);
 
-      setHappy('');
-      setName('');
-      setAddress('');
-      setHappyHourTime(''); 
-      setHappyHourDate(''); 
-    
-  }
+    dispatch({
+      type: 'ADD_HAPPY',
+      payload: {
+        user_id: user.id,
+        business_id: selectedBusinessId,
+        happyName: getName,
+        address: getAddress,
+        description: getHappy,
+        date: happyHourDate,
+        start_time: happyHourTime,
+        end_time: happyEndTime,
+      },
+    });
+
+    dispatch({ type: 'SET_HAPPY' });
+
+    setHappy('');
+    setName('');
+    setAddress('');
+    setHappyHourTime('');
+    setHappyHourDate('');
+    setHappyEndTime('');
+    setSelectedBusinessId('');
+  };
 
   const handleDel = (id) => {
     dispatch({ type: "DELETE_HAPPY", payload: { id } });
     dispatch({ type: 'SET_HAPPY' });
-  }
+  };
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleDateString();
-  }
+  };
 
   const formatTime = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleTimeString();
-  }
+  };
 
   return (
     <>
@@ -103,6 +112,17 @@ function BusinessLanding() {
           ))}
         </h2>
         <InputContainer>
+          <select
+            value={selectedBusinessId}
+            onChange={(event) => setSelectedBusinessId(event.target.value)}
+          >
+            <option value="" disabled>Select Business</option>
+            {busFilter.map((bus) => (
+              <option key={bus.id} value={bus.id}>
+                {bus.business_name}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             value={getName}
@@ -131,11 +151,16 @@ function BusinessLanding() {
             type="time"
             value={happyHourTime}
             onChange={(event) => setHappyHourTime(event.target.value)}
-            placeholder="Enter time"
+            placeholder="start time"
+          />
+          <input
+            type="time"
+            value={happyEndTime}
+            onChange={(event) => setHappyEndTime(event.target.value)}
+            placeholder="End time"
           />
           <LoginButton onClick={handleHappy}>SUBMIT</LoginButton>
         </InputContainer>
-     
       </div>
 
       <Grid container spacing={4} justifyContent="center">
@@ -158,13 +183,19 @@ function BusinessLanding() {
                   Date: {formatDate(hap.date)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Time: {hap.time}
+                  Start Time: {formatTime(hap.start_time)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  End Time: {formatTime(hap.end_time)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Address: {hap.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                 likes : {hap.likes}
+                  Likes: {hap.likes}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  People Interested: {hap.interested}
                 </Typography>
               </CardContent>
               <CardActions>
@@ -175,8 +206,8 @@ function BusinessLanding() {
         ))}
       </Grid>
       <footer>
-          <BusinessNavBar />
-        </footer>
+        <BusinessNavBar />
+      </footer>
     </>
   );
 }

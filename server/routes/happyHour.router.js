@@ -1,5 +1,6 @@
 const express = require('express');
 const pool = require('../modules/pool');
+
 const router = express.Router();
 
 router.get('/', (req,res)=>{
@@ -19,13 +20,14 @@ router.get('/', (req,res)=>{
 })
 
 router.post('/', (req,res)=>{
-    const {  user_id, address,    date, start_time} = req.body
+    const {  user_id, business_id, address,   date, start_time, end_time,description , name} = req.body
 
     const queryText= `
-    INSERT INTO "happy_hour" ("user_id", "address","date","start_time")
-    VALUES($1,$2,$3,$4)
+      INSERT INTO "happy_hour" ("user_id","business_id","address", "date", "start_time", "end_time","description","name")
+    VALUES($1, $2, $3, $4, $5,$6,$7,$8)
+  ;
     `
-    const queryValues = [ user_id, address,    date, start_time];
+    const queryValues = [ user_id, business_id, address,    date, start_time, end_time, description,name];
 
     pool.query(queryText, queryValues)
     .then((response)=>{
