@@ -27,7 +27,7 @@ router.post('/', (req,res)=>{
     VALUES($1, $2, $3, $4, $5,$6,$7,$8)
   ;
     `
-    const queryValues = [ user_id, business_id, address,    date, start_time, end_time, description,name];
+    const queryValues = [ user_id, business_id, address,    date , start_time , end_time , description , name];
 
     pool.query(queryText, queryValues)
     .then((response)=>{

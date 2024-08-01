@@ -16,7 +16,7 @@ import RecommendIcon from '@mui/icons-material/Recommend';
 // Function to format date
 const formatDate = (isoDateString) => {
     const date = new Date(isoDateString);
-    return format(date, 'MMM d, yyyy');
+    return format(date, 'MMM dd, yyyy');
 };
 
 // HappyMapping component
@@ -63,11 +63,20 @@ const HappyMapping = () => {
                     return (
                         <Card key={item.id} variant="outlined" sx={{ mb: 2 }}>
                             <CardContent>
+                            <Typography variant="h5" component="div">
+                                    {item.name}
+                                </Typography>
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                     {formatDate(item.date)}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                    {item.address}
+                                   where: {item.address}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                  start time:  {item.start_time}
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                  end time:  {item.end_time}
                                 </Typography>
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                                     Description: {item.description}
@@ -102,7 +111,7 @@ const HappyMapping = () => {
                     );
                 })}
             </Box>
-            <UserNavBar />
+            <UserNavBar  />
         </>
     );
 };

@@ -44,7 +44,7 @@ function BusinessLanding() {
     dispatch({ type: "SET_HAPPY" });
   }, [dispatch]);
 
-  // Filter businesses associated with the user
+
   const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
   const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
 
@@ -63,12 +63,12 @@ function BusinessLanding() {
       payload: {
         user_id: user.id,
         business_id: selectedBusinessId,
-        happyName: getName,
         address: getAddress,
         description: getHappy,
         date: happyHourDate,
         start_time: happyHourTime,
         end_time: happyEndTime,
+        name: getName,
       },
     });
 
@@ -183,10 +183,10 @@ function BusinessLanding() {
                   Date: {formatDate(hap.date)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Start Time: {formatTime(hap.start_time)}
+                  Start Time: {hap.start_time}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  End Time: {formatTime(hap.end_time)}
+                  End Time: {hap.end_time}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Address: {hap.address}
