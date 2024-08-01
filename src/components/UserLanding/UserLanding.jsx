@@ -22,6 +22,9 @@ import L, { icon } from "leaflet"; // feel free to delete before client-hand off
 import "leaflet/dist/leaflet.css"; // feel free to delete before client-hand off, we are not using this anymore
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
+
+
+
 /*
 General notes and reminders for Heyday friends about the UserLanding function:
 
@@ -45,10 +48,15 @@ function UserLanding() {
     const history = useHistory();
   // get the dispatch function to send the action to Redux
   const dispatch = useDispatch();
+  const businesses = useSelector(state => state.business);
 
   // fetch history on component load (for search history)
   useEffect(() => {
     dispatch({ type: "FETCH_HISTORY" });
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch({ type: "FETCH_ALL_BUSINESSES" });
   }, [dispatch]);
 
   // this function uses methods to handle navigate different map loading statuses, if still loading the first div in
@@ -372,6 +380,16 @@ function UserLanding() {
     // select current logged in user from the redux store
     const user = useSelector((store) => store.user);
 
+    const handleRandomButton = () => {
+      if (businesses.length > 0) {
+        const randomIndex = Math.floor(Math.random() * businesses.length);
+        const randomBusiness = businesses[randomIndex];
+        history.push(`/user-details/${randomBusiness.id}`);
+      } else {
+        console.log("No businesses available");
+      }
+    };
+
     // function that gets current users location
     const handleGetCurrentLocation = () => {
         // if location services are allowed by the browser (AKA a geolocation supported browser)
@@ -419,6 +437,8 @@ function UserLanding() {
 
     // Return info below is relatively self-explanatory based on the information provided above in this component
 
+   
+  
     return (
       <div>
         <center>
@@ -426,6 +446,8 @@ function UserLanding() {
             Welcome to Heyday {user.username}!
           </h2>
         </center>
+       
+
         <Box
           sx={{
             display: "flex",
@@ -446,6 +468,29 @@ function UserLanding() {
             Use Current Location
           </Button>
         </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
+        <Button
+        variant="contained"
+        onClick={handleRandomButton}
+        sx={{
+          backgroundColor: "#057",
+          "&:hover": {
+            backgroundColor: "#046",
+          },
+          marginTop: "20px"
+        }}
+      >
+        WildCard
+      </Button>
+      </Box>
+      
         <Wrapper
           apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
           libraries={["places", "marker"]}

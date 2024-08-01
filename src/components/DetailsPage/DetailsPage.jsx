@@ -46,6 +46,7 @@ function DetailsPage() {
     }
     
 
+
     return (
         <div className="details-page">
             <h1 className="business-name">{business.business_name}</h1>
@@ -66,6 +67,9 @@ function DetailsPage() {
                         </button>
                     </div>
                 )}
+                <button className='next-button' >
+                    favorite
+                </button>
             </div>
             <p className="address"> Address: {business.address}</p>
             <p className="business-type">Type: {business.business_type}</p>

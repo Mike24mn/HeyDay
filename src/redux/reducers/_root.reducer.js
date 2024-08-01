@@ -5,6 +5,7 @@ import historyReducer from './history.reducer'; // new reducers
 import favorites from './favorites.reducer'; // new reducers
 import business from './business.reducer';
 
+
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
 // This is imported in index.js as rootSaga
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
  historyReducer,
 favorites, 
 business,
+
 });
 
 export default rootReducer;
