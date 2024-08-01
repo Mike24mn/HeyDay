@@ -1,7 +1,7 @@
 
 import React from 'react';
 import './TheRippleEffect.css';
-import logo from '../../../../MockHeyDay/public/image copy.png'
+import logo from './../../../../MockHeyDay/public/image copy.png'
 
 function TheRippleEffect() {
   return (

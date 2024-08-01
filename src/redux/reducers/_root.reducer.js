@@ -3,6 +3,10 @@ import errors from './errors.reducer';
 import user from './user.reducer';
 import historyReducer from './history.reducer'; // new reducers
 import favorites from './favorites.reducer'; // new reducers
+
+
+import happy from './happyHour.reducer';
+
 import business from './business.reducer';
 
 
@@ -19,7 +23,7 @@ const rootReducer = combineReducers({
  historyReducer,
 favorites, 
 business,
-
+happy,
 });
 
 export default rootReducer;

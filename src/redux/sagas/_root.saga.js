@@ -2,9 +2,14 @@ import { all } from 'redux-saga/effects';
 import loginSaga from './login.saga';
 import registrationSaga from './registration.saga';
 import userSaga from './user.saga';
-import fetchHistory from './history.saga'; // new sagas 
-import favsSaga from './favorites.saga'; // new sagas
-import busSaga from './business.saga';
+import fetchHistory from './history.saga'; 
+import favsSaga from './favorites.saga'; 
+
+
+import happysaga from './happyHour.saga';
+
+import busSaga from './business.saga.js';
+
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -23,5 +28,6 @@ export default function* rootSaga() {
     fetchHistory(),
     favsSaga(),
     busSaga(),
+    happysaga(),
   ]);
 }

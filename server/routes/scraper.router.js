@@ -411,7 +411,6 @@ router.get('/scrape', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while scraping data', details: error.message });
   }
 });
-
 /*
 async function scrapeEater(url) {
 
@@ -430,5 +429,4 @@ async function scrapeThriftList(url) {
     
 }
 */
-
 module.exports = router;

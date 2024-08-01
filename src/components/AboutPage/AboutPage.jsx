@@ -32,13 +32,13 @@ function AboutPage() {
     };
 
     fetchHappyHours();
-  }, []); // empty dependency array, only run once
+  }, []); // empty dependency array, only run once on initial page load
 */
   return (
     <div>
       <h1>About HeyDay</h1>
       <p>
-        Welcome to HeyDay, your go-to app for finding the best happy hours in
+        Welcome to Heyday, your go-to app for finding the best happy hours in
         town!
       </p>
 
@@ -90,7 +90,7 @@ function AboutPage() {
 
       <h2>About Our App</h2>
       <p>
-        HeyDay is designed to help you discover and enjoy the best happy hours
+        Heyday is designed to help you discover and enjoy the best happy hours
         in your area. We gather information from various sources to provide you
         with up-to-date deals and venue information.
       </p>

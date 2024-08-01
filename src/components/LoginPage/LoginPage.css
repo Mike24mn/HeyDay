@@ -1,13 +1,13 @@
 .btn_asLink {
-  background: none;
-  border: none;
-  color: blue;
-  text-decoration: underline;
-  padding: 0;
-  font-size: inherit;
-  font-family: inherit;
+  background: none !important;
+  border: none !important;
+  color: blue !important;
+  text-decoration: underline !important;
+  padding: 0 !important;
+  font-size: inherit !important;
+  font-family: inherit !important;
 }
 
 .btn_asLink:hover {
-  color: darkblue;
+  color: darkblue !important;
 }

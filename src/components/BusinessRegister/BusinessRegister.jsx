@@ -19,7 +19,7 @@ function RegisterForm() {
         password: password,
       },
     });
-    history.push('/businessinfo')
+    history.push("/businessinfo")
   }; 
 
   return (
