@@ -4,6 +4,7 @@ import './DetailsPage.css';
 import { useSelector,useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import UserNavBar from '../UserNavBar/UserNavBar';
 function DetailsPage() {
     const [business, setBusiness] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -103,6 +104,7 @@ function DetailsPage() {
                     </li>
                 ))}
             </ul>
+            <UserNavBar/>
         </div>
     );
 }

@@ -8,3 +8,19 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
 }
+.textbox {
+  padding-top: 34px;
+  text-decoration: underline;
+  font-weight: bolder;
+}
+.scrollable-card-content {
+  height: 450px;
+  overflow-y: auto;
+  padding-right: 10px; 
+  padding: 16px; 
+  border: 2px solid #ddd; 
+  border-radius: 8px; 
+  margin: 20px 0;
+  background-color: #3d3636; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+}

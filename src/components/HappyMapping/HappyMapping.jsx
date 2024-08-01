@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import UserNavBar from "../UserNavBar/UserNavBar";
 import "./HappyMapping.css";
 import RecommendIcon from '@mui/icons-material/Recommend';
+import TheRippleEffect from '../TheRippleEffect/TheRippleEffect';
 
 
 // Function to format date
@@ -48,21 +49,16 @@ const HappyMapping = () => {
 
     return (
         <>
+<TheRippleEffect/>
+<center><Typography className="textbox" variant="h5" gutterBottom>The Heystack</Typography></center> 
+            <Box  className="scrollable-card-content" component="section" sx={{ p: 2,  }}>
 
-            <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}>
-                <center><Typography variant="h5" gutterBottom>Hours of Hey for the Day</Typography></center> 
-               <center><img src='public/image.png' alt='Happy Hour'
-                    style={{ 
-                        maxWidth: '100%', 
-                        height: 'auto',   
-                        width: '300px',   
-                    }} /> 
-                    </center> 
+
                 {happy.map((item) => {
                     const progress = Math.min(100, (item.interested / 100) * 100); 
                     return (
                         <Card key={item.id} variant="outlined" sx={{ mb: 2 }}>
-                            <CardContent>
+                            <CardContent >
                             <Typography variant="h5" component="div">
                                     {item.name}
                                 </Typography>

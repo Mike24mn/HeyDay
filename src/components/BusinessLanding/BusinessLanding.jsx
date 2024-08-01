@@ -163,8 +163,7 @@ function BusinessLanding() {
         </InputContainer>
       </div>
 
-  
-    </div>
+
    
 
       <Grid container spacing={4} justifyContent="center">

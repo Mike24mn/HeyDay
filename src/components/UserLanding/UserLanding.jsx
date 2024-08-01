@@ -341,7 +341,7 @@ function UserLanding() {
             fillOpacity: 0.3,    
             map: map,
             center: currentLocation,
-            radius: 2000 
+            radius: 2000 // 2000 meter radius
           });
       
           setUserLocationCircle(circle);
@@ -362,7 +362,7 @@ function UserLanding() {
             border: "1px solid transparent",
             width: "240px",
             height: "32px",
-            marginTop: "45px",
+            marginTop: "48px",
             padding: " 12px",
             borderRadius: "3px",
             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
@@ -1274,10 +1274,12 @@ function UserLanding() {
           sx={{
             display: "flex",
             justifyContent: "center",
-            marginBottom: "20px",
+            marginBottom: "-38px",
+            marginTop: "25px"
           }}
         >
         <Button
+        className="wildcard"
         variant="contained"
         onClick={handleRandomButton}
         sx={{
