@@ -4,12 +4,12 @@ const router = express.Router();
 
 router.get('/', (req,res)=>{
     const queryText = `
-    SELECT * FROM "happyhour";
+    SELECT * FROM "happy_hour";
     `;
 
     pool.query(queryText)
     .then((result)=>{
-        console.log("checking data in happyhour get ", result.rows);
+        console.log("checking data in happy_hour get ", result.rows);
         res.send(result.rows)
     })
     .catch((error)=>{
@@ -19,13 +19,13 @@ router.get('/', (req,res)=>{
 })
 
 router.post('/', (req,res)=>{
-    const {business_id, happyName, address, description, date, time} = req.body
+    const {business_id,  address,  date, time} = req.body
 
     const queryText= `
-    INSERT INTO "happyhour" ("business_id", "happyName", "address","description","date","time")
-    VALUES($1,$2,$3,$4,$5,$6)
+    INSERT INTO "happy_hour" ("business_id","address","date","time")
+    VALUES($1,$2,$3,$4)
     `
-    const queryValues = [business_id, happyName, address,  description, date, time];
+    const queryValues = [business_id,  address,   date, time];
 
     pool.query(queryText, queryValues)
     .then((response)=>{
@@ -40,7 +40,7 @@ router.delete('/:id', (req, res)=>{
 
 
     const queryText= `
-    DELETE FROM "happyhour" WHERE "id" = $1;
+    DELETE FROM "happy_hour" WHERE "id" = $1;
     `
     pool.query(queryText, [req.params.id])
     .then((result)=>{
