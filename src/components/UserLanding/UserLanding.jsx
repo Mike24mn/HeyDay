@@ -5,9 +5,7 @@
 |_____||___||_||___||___||_|_|_||___|  |_|  |___|  |__|__||___||_  ||____/ |__,||_  |
                                                                |___|            |___|          
 */
-
 // move to readme ^^^
-
 import React, { useRef, useEffect, useState } from "react"; // useRef for mutable vals or for things that shouldn't affect comp. rendering (aka can access and manipulate DOM directly basically)
 import { Wrapper, Status } from "@googlemaps/react-wrapper"; // import wrapper, and status (used in the renderStatus function) method, for the Google API
 import UserNavBar from "../UserNavBar/UserNavBar"; // import mui comp
@@ -20,36 +18,69 @@ import { useSelector, useDispatch } from "react-redux";
 import L, { icon } from "leaflet"; // feel free to delete before client-hand off, we are not using this anymore
 import "leaflet/dist/leaflet.css"; // feel free to delete before client-hand off, we are not using this anymore
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-
+import './UserLanding.css'
 /*
 General notes and reminders for Heyday friends about the UserLanding function:
-
 This is the core functionality of the App, as such, it is detailed with the utmost care
 and precision for future developer reference and readability. Good documentation is a foundational
 pillar of clean code and modular, reusable engineering standards that this Dev team is deeply committed to!
-
 Cheers,
 Team Heyday
 */
-
 /*
 Team Notes:
-
 new keyword creates instances of a class
-
 global scope window object in javascript represents browser window (allows us to manipulate map elements in a more dynamic/fluid fashion)
 */
-
 function UserLanding() {
-    const history = useHistory();
+    const history = useHistory()
+    const [showWelcome, setShowWelcome] = useState(false)
   // get the dispatch function to send the action to Redux
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    console.log("Checking welcome message condition");
+    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+    console.log("hasSeenWelcome:", hasSeenWelcome);
+    if (hasSeenWelcome) {
+      console.log("Setting showWelcome to true");
+      setShowWelcome(true);
+    //  localStorage.setItem('hasSeenWelcome', 'true');
+      
+      const timer = setTimeout(() => {
+        console.log("Timer expired, setting showWelcome to false");
+        setShowWelcome(false);
+      }, 3000);
+  
+      return () => clearTimeout(timer);
+    }
+  }, []);
+  
+
+  const handleDismissWelcome = () => {
+    setShowWelcome(false);
+  };
+
+  
+  async function loadCityGeoJSON(cityName) {
+    try {
+      console.log("Attempting to fetch GeoJSON for:", cityName);
+      const response = await fetch(`/mn/${cityName}.json`);
+      if (!response.ok) {
+        throw new Error('City data not found');
+      }
+      const data = await response.json();
+      console.log("GeoJSON data loaded successfully");
+      return data;
+    } catch (error) {
+      console.error('Error loading city data:', error);
+      return null;
+    }
+  }
   // fetch history on component load (for search history)
   useEffect(() => {
     dispatch({ type: "FETCH_HISTORY" });
   }, [dispatch]);
-
   // this function uses methods to handle navigate different map loading statuses, if still loading the first div in
   // switch is shown, in the case of a failed load, return the second div, else return null
 /**
@@ -67,49 +98,43 @@ function UserLanding() {
         return null;
     }
   };
-
   // component that renders the Google map; passed center object that has lat and lng
   // zoom, which is the zoom level based on a int value
   // boundaries for how we will draw polygons and perimeter outlines (still considering using a GeoJSON file alongside this)
   // currentLocation for the function handleGetcurrentLocation and our button that gets user location
-
   const GoogleMapComponent = ({ center, zoom, boundaries, currentLocation }) => {
-
-    const mapRef = useRef(null);   // initialize null, then reference the location on the DOM we want to render the map to ultimately
-    // this makes it so the map is only made after the DOM is created and available
-    // also persists between renders, which is a huge plus for resource allocation/potential load time problems
-
-    const inputRef = useRef(null); // similar logic, but for our search input box
-
-    const autocompleteRef = useRef(null); // similar logic, but for autocomplete functionality
-
-    const [map, setMap] = useState(null); // getter and setter for storing out map instance
+    const mapRef = useRef(null);
+    const inputRef = useRef(null);
+    const autocompleteRef = useRef(null);
+    const [map, setMap] = useState(null);
+    const [cityBoundary, setCityBoundary] = useState(null);
+    const [markers, setMarkers] = useState([]);
     const dispatch = useDispatch();
-
-    function getCoordinates(businessAddress) {
-        if (typeof businessAddress !== 'string') {
-            console.error('Invalid address:', businessAddress);
-            return Promise.resolve(null);
-        }
-    
-        const geocoder = new google.maps.Geocoder();
-        return new Promise((resolve, reject) => {
-            geocoder.geocode({ address: businessAddress }, (results, status) => {
-                if (status === 'OK') {
-                    resolve({
-                        lat: results[0].geometry.location.lat(),
-                        lng: results[0].geometry.location.lng()
-                    });
-                } else {
-                    console.error('Geocoding failed:', status);
-                    resolve(null);
-                }
+    const history = useHistory();
+    const [userLocationCircle, setUserLocationCircle] = useState(null);
+  
+    const getCoordinates = (businessAddress) => {
+      if (typeof businessAddress !== 'string') {
+        console.error('Invalid address:', businessAddress);
+        return Promise.resolve(null);
+      }
+  
+      const geocoder = new google.maps.Geocoder();
+      return new Promise((resolve, reject) => {
+        geocoder.geocode({ address: businessAddress }, (results, status) => {
+          if (status === 'OK') {
+            resolve({
+              lat: results[0].geometry.location.lat(),
+              lng: results[0].geometry.location.lng()
             });
+          } else {
+            console.error('Geocoding failed:', status);
+            resolve(null);
+          }
         });
-    }
-    // handleSearch is an arrow function that takes a place parameter
-    // and adds the name (place.name) of it to the users history
-
+      });
+    };
+  
     const handleSearch = (place) => {
       console.log("handleSearch clicked", place.name);
       dispatch({
@@ -117,219 +142,201 @@ function UserLanding() {
         payload: { search_history: place.name },
       });
     };
-
-    // init map and auto complete 
-
-    useEffect(() => {
-
-        // If condition below: does our map reference have a value? is map state getter null or undefined?
-        // if so the DOM is ready and we can create an instance of the map, since one
-        // does not currently exist (!map)
-
-        // create a (new) instance of the map at the mapRef location on the DOM (located within the return below)
-        // center gives map lat and lng coordinates
-        // zoom = zoom level (an int value)
-        // mapId is a Google developer portal value that is loosely tied to your dev profile and API key (no need for security concerns/.env inclusion; its primary purpose is for identity and styling)
-
-      if (mapRef.current && !map) {
-        const mapInstance = new window.google.maps.Map(mapRef.current, {
-          center,
-          zoom: 10,
-          mapId: "2182bd31b6274e24",
-        });
-
-        setMap(mapInstance); // set mapInstance created above in comp state
-        searchDatabasePlaces(mapInstance)
-
-
-        // draw boundaries for each boundary (simple lat. long. points) and make them polyganol shaped
-
-        // we gotta somehow make this dynamic, I think if we add a function that
-        // detects boundaries coordinates and then call it here could make it so
-        // a polygon is rendered at each location we type in the search bar???
-        // store it to state and then have it delete and rerender new ones too
-        // so we are not storing the old polygons on the map (dependency array style maybe?)
-
-        boundaries.forEach((boundary) => {
-
-            // make new polygon instances 
-
-          const polygon = new window.google.maps.Polygon({
-            paths: boundary,
-            strokeColor: "#1E90FF ", // outline perimeter stroke color
-            strokeOpacity: 0.8, // transparency essentially, but as it relates to another layer
-            strokeWeight: 5, // line weighting
-            fillColor: "#ADD8E6", // inner polgyon color
-            fillOpacity: 0.3, // fill color transparency
+    const drawCityBoundary = (mapInstance, geoJSON) => {
+        console.log("drawCityBoundary called with:", {mapInstance, geoJSON});
+        if (mapInstance && geoJSON) {
+          // Remove the previous boundary if it exists
+          if (cityBoundary) {
+            cityBoundary.setMap(null);
+          }
+      
+          const boundary = new google.maps.Data();
+          try {
+            boundary.addGeoJson(geoJSON);
+            console.log("GeoJSON added to boundary");
+          } catch (error) {
+            console.error("Error adding GeoJSON to boundary:", error);
+            return;
+          }
+      
+          boundary.setStyle({
+            fillColor: "#ADD8E6",
+            fillOpacity: 0.3,
+            strokeColor: "#1E90FF",
+            strokeOpacity: 0.8,
+            strokeWeight: 5
           });
-
-          // weave it into the current set instance of the map
-
-          polygon.setMap(mapInstance);
-
-          // add listener to the polygon, so we can detect interaction
-          // with the polygon, I added this in case we want to manipulate the polygon eventually
-          // or make it malleable and adjustable
-
-          // polygon.addListener("click", () => {
-
-            // give this alert when interacting
-
-           // alert("Polygon clicked!");
-         // });
-        });
-
-        /*
-        Heyday Notes on API resources:
-
-        We need Find Place, Nearby Search, Text Search, Place Details, 
-        Place Photo, Place Autocomplete and Query Autocomplete I believe.
-        I am thinking a switch/ternary that responds to certain text input?
-        like Google has where you can type in "bars" and it searches generally 
-        but also gives results based on queries that have the word "bar" in the title
-
-        Idk, we gotta brainstorm this more
-        */
-
-        // init autocomplete for search box (need to adjust this to include ALL Places API resources)
+      
+          boundary.setMap(mapInstance);
+          setCityBoundary(boundary);
+          console.log("Boundary set on map");
+      
+          const bounds = new google.maps.LatLngBounds();
+          boundary.forEach((feature) => {
+            console.log("Processing feature:", feature);
+            const geometry = feature.getGeometry();
+            if (geometry) {
+              geometry.forEachLatLng((latLng) => {
+                bounds.extend(latLng);
+              });
+            }
+          });
         
-        // If logic: does our input field have a value in it? If so, proceed
-        if (inputRef.current) {
-
-        // create an instance of Google Autocomplete class based on current input values/characters
-
-          autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current);
-
-        // only search current boundary bounds on the current mapInstance
-
-          autocompleteRef.current.bindTo("bounds", mapInstance);
-
-        // listener to handle event when a place is actually selected
-
-          autocompleteRef.current.addListener("place_changed", () => {
-            const place = autocompleteRef.current.getPlace();
-
-        // check for geographic information first before proceeding
-
-            if (!place.geometry || !place.geometry.location) {
-
-            // tell user there is no info for that place, its probably invalid
-
-              console.log("No details available for input: '" + place.name);
-              return;
-            }
-
-            // if place has a viewport prop, and map can zoom and pan to fit it,
-            // then do so via fitBounds (fitBounds basicaly adjusts the maps view to include entire viewport area)
-
-            if (place.geometry.viewport) {
-              mapInstance.fitBounds(place.geometry.viewport);
-            } 
-            
-            else {
-
-              // center map at the location of the place
-              mapInstance.setCenter(place.geometry.location)
-              // setZoom at int level 17
-              mapInstance.setZoom(17);
-
-            }
-
-            // call handleSearch and pass it the place from autocompletes suggested completion
-            handleSearch(place);
-
-            // take map instance and loc. coordinates and search places near it with the totally tubular searchPlaces function
- //           searchPlaces(mapInstance, place.geometry.location);
-
-            // dispatch an action to the Redux store fetching updated search history
-            // and updating the store with the latest search!
-            dispatch({ type: "FETCH_HISTORY" });
-          });
+          if (!bounds.isEmpty()) {
+            mapInstance.fitBounds(bounds);
+            console.log("Map bounds updated:", bounds.toString());
+          } else {
+            console.log("Bounds are empty");
+          }
+        } else {
+          console.log("Map or GeoJSON data is missing", {mapInstance, geoJSON});
         }
-      }
-    }, [center, zoom, boundaries, map, dispatch]); // dependency array, AKA update whenever any of these things change
-    // this is the "meat" of our app, and it needs to stay in sync and updated with changes and user interactions
-    // eventually we will need to consider useMemo logic implementations to reduce laggy load times
-    // useMemo could probably work great when we start selecting all combinations of Vibe, Diet and Time
-    // and isolating pins based on those criteria
-
-
-    // update w/ the current location if map present and currentLocation
-    // remember currentLocation (used in a button below) is what finds the users current location!
-
+      };
+  
+      const searchDatabasePlaces = async (mapInstance, searchLocation) => {
+        try {
+          const response = await fetch('/api/business');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const businesses = await response.json();
+          console.log('Fetched businesses:', businesses);
+    
+          // Clear existing markers
+          markers.forEach(marker => marker.setMap(null));
+          setMarkers([]);
+    
+          const newMarkers = [];
+          for (const business of businesses) {
+            const coords = await getCoordinates(business.address);
+            if (coords) {
+              const icon = {
+                url: '/public/icons8-map-pin-26.png',
+                scaledSize: new google.maps.Size(30, 30),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(15, 15)
+              };
+              const marker = new google.maps.Marker({
+                position: coords,
+                map: mapInstance,
+                title: business.address,
+                icon: icon
+              });
+    
+              marker.addListener('click', () => {
+                history.push(`/user-details/${business.id}`);
+              });
+    
+              newMarkers.push(marker);
+            }
+          }
+          setMarkers(newMarkers);
+        } catch (error) {
+          console.error('Error in searchDatabasePlaces:', error);
+        }
+      };
+    
+      useEffect(() => {
+        if (mapRef.current && !map) {
+          const mapInstance = new window.google.maps.Map(mapRef.current, {
+            center,
+            zoom: 5,
+            mapId: "2182bd31b6274e24",
+          });
+      
+          setMap(mapInstance);
+      
+          if (inputRef.current) {
+            autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current);
+            autocompleteRef.current.bindTo("bounds", mapInstance);
+      
+            autocompleteRef.current.addListener("place_changed", async () => {
+              const place = autocompleteRef.current.getPlace();
+              console.log("Selected place:", place);
+      
+              if (!place.geometry || !place.geometry.location) {
+                console.log("No geometry for place:", place);
+                return;
+              }
+      
+              // Remove the previous boundary if it exists
+              if (cityBoundary) {
+                cityBoundary.setMap(null);
+                setCityBoundary(null);
+              }
+      
+              if (place.types.includes('locality') && 
+                  place.address_components.some(component => 
+                    component.short_name === 'MN' && component.types.includes('administrative_area_level_1'))) {
+                console.log("Minnesota city selected");
+                const cityName = place.name.replace(/\s+/g, '_').toLowerCase();
+                console.log("Fetching GeoJSON for:", cityName);
+                const cityData = await loadCityGeoJSON(cityName);
+                if (cityData) {
+                  console.log("Calling drawCityBoundary with:", cityData);
+                  drawCityBoundary(mapInstance, cityData);
+                } else {
+                  console.log("No GeoJSON data available for:", cityName);
+                }
+              } else {
+                console.log("Non-Minnesota city or non-city place selected");
+                if (place.geometry.viewport) {
+                  console.log("Fitting to viewport");
+                  mapInstance.fitBounds(place.geometry.viewport);
+                } else {
+                  console.log("Centering on location");
+                  mapInstance.setCenter(place.geometry.location);
+                  mapInstance.setZoom(17);
+                }
+              }
+      
+              // Search for businesses after a place is selected
+              await searchDatabasePlaces(mapInstance, place.geometry.location);
+      
+              handleSearch(place);
+              dispatch({ type: "FETCH_HISTORY" });
+            });
+          }
+        }
+      }, [center, zoom, boundaries, map, dispatch]);
+  
     useEffect(() => {
-
       if (map && currentLocation) {
-
-        // log it so we know where currentLoc is going in dev tools
         console.log("Updating map with current location:", currentLocation);
         const iconHeart = {
-            url: '/public/heartpin.png', // Path to your custom icon
-            scaledSize: new window.google.maps.Size(30, 30), // Size of the icon
-            origin: new window.google.maps.Point(0, 0),
-            anchor: new window.google.maps.Point(15, 15)
-          };
-        // put a marker there via the Google class,
-        // we will want to customize this later, remember she wants purple icon pins
-        // for general locations BUT the special Heyday heart pin for user loc. 
+          url: '/public/heartpin.png',
+          scaledSize: new window.google.maps.Size(30, 30),
+          origin: new window.google.maps.Point(0, 0),
+          anchor: new window.google.maps.Point(15, 15)
+        };
         new window.google.maps.Marker({
-          position: currentLocation, // put marker at current loc.
-          map: map, // on the current map
-          title: "Your Location", // title it, so user knows what it is
+          position: currentLocation,
+          map: map,
+          title: "Your Location",
           icon: iconHeart
         });
-        map.setCenter(currentLocation); // set center of the map at current user location
-        map.setZoom(12);
-       // searchPlaces(map, currentLocation); // search nearby places, on the map, given users current location
-      }
-    }, [currentLocation, map]); // Update on a new current location, or if a new map is created/instantiated
+        if (userLocationCircle) {
+            userLocationCircle.setMap(null);
+          }
 
-
-    // Arrow function to searchPlace in the vicinity (i.e, a radius of 5000 meters)
-    // it takes the map instance and location as parameters
-
-    async function searchDatabasePlaces(mapInstance) {
-        try {
-            const response = await fetch('/api/business');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const businesses = await response.json();
-            console.log('Fetched businesses:', businesses);
-    
-            for (const business of businesses) {
-                const coords = await getCoordinates(business.address);
-                if (coords) {
-                    const icon = {
-                        url: '/public/icons8-map-pin-26.png',
-                        scaledSize: new google.maps.Size(30, 30),
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(15, 15)
-                    };
-                    const marker = new google.maps.Marker({
-                        position: coords,
-                        map: mapInstance,
-                        title: business.address,
-                        icon: icon
-                        // ... other marker properties
-                    });
-    
-                    marker.addListener('click', () => {
-                        history.push(`/user-details/${business.id}`);
-                    });
-                }
-            }
-        } catch (error) {
-            console.error('Error in searchDatabasePlaces:', error);
+          const circle = new window.google.maps.Circle({
+            strokeColor: '#A9A9A9', 
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#D3D3D3', 
+            fillOpacity: 0.3,    
+            map: map,
+            center: currentLocation,
+            radius: 2000 
+          });
+      
+          setUserLocationCircle(circle);
+      
+          map.setCenter(currentLocation);
+          map.setZoom(15); 
         }
-    }
-
-
-    // This is the return (and styling) for our search box, given via ref=(inputRef) 
-    // and in a seperate div, our map, given via ref={mapRef}
-
-    // Future Devs: Feel free to adjust any setting to change the box or map page fitment or the general aesthetic!
-
+      }, [currentLocation, map]);
+  
     return (
       <div style={{ height: "500px", width: "100%" }}>
         <input
@@ -341,44 +348,54 @@ function UserLanding() {
             border: "1px solid transparent",
             width: "240px",
             height: "32px",
-            marginTop: "27px",
-            padding: "0 12px",
+            marginTop: "45px",
+            padding: " 12px",
             borderRadius: "3px",
             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
             fontSize: "14px",
             outline: "none",
             textOverflow: "ellipsis",
             position: "absolute",
-            top: "60px",
+            top: "55px",
             left: "50%",
             marginLeft: "-120px",
             zIndex: 5,
           }}
         />
-        <div ref={mapRef} style={{ height: "100%", width: "100%" }} />
+          <Box
+            sx={{
+              width: '90%',
+              height: '70%',
+              margin: '50px auto',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+              
+            }}
+            ref={mapRef}
+          ></Box>
       </div>
     );
   };
-
   // MapWrapper to set state info and handle general geolocation features, like getting current user location
   // we need this to ensure the button "Get Current Location"" works as intended
-
   const MapWrapper = () => {
+    const [filteredData, setFilteredData] = useState([]);
 
+    const handleFilterChange = (newFilteredData) => {
+      setFilteredData(newFilteredData);
+    };
     // getter and setter for currentLoc state management, init as null so location isn't a default given (maybe change this later?)
     const [currentLocation, setCurrentLocation] = useState(null);
-
     // select current logged in user from the redux store
     const user = useSelector((store) => store.user);
-
     // function that gets current users location
     const handleGetCurrentLocation = () => {
         // if location services are allowed by the browser (AKA a geolocation supported browser)
       if (navigator.geolocation) {
-
         // test via console log, delete later
         console.log("in current location");
-
         // Method that is part of the Google Geolocation API (wrappers ftw) 
         // it allows applications to get the location of devices (granted the support above is allowed via the browser)
         // Callback: after location is succesfully gathered, callback function below 
@@ -403,7 +420,6 @@ function UserLanding() {
         alert("Geolocation not supported by this browser.");
       }
     };
-
     const boundaries = [
         // Boundary array for Minneapolis
         [
@@ -1177,57 +1193,90 @@ function UserLanding() {
           { lat: 44.941422, lng: -93.329163 }
         ],
       ];
+      return (
+        <div>
+        {showWelcome && (
+          <div
+            className="welcome-message"
+            style={{
+              position: 'fixed',
+              top: '0',
+              left: '0',
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: '9999',
+              color: '#fff',
+              textAlign: 'center',
+              padding: '20px',
+              cursor: 'pointer',
+            }}
+            onClick={handleDismissWelcome}
+          >
+    <div className="welcome-message-content">
+      <h2>Welcome to Heyday, {user.username}!</h2>
+      <p>Click anywhere to dismiss</p>
+    </div>
+          </div>
+        )}
 
-    // Return info below is relatively self-explanatory based on the information provided above in this component
-
-    return (
-      <div>
-        <center>
-          <h2 style={{ textAlign: "center", marginTop: "75px" }}>
-            Welcome to Heyday {user.username}!
-          </h2>
-        </center>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "20px",
-          }}
-        >
-          <Button
-            variant="contained"
-            onClick={handleGetCurrentLocation}
+          <Box
             sx={{
-              backgroundColor: "#057",
-              "&:hover": {
-                backgroundColor: "#046",
-              },
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "20px",
             }}
           >
-            Use Current Location
-          </Button>
-        </Box>
-        <Wrapper
-          apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-          libraries={["places", "marker"]}
-          render={renderStatus}
-        >
-          <GoogleMapComponent
-            center={currentLocation || { lat: 44.9778, lng: -93.2650 }}
-            zoom={15}
-            boundaries={boundaries}
-            currentLocation={currentLocation}
-          />
-        </Wrapper>
-        <Buttons />
-        <UserNavBar />
+            <Button
+             
+              variant="contained"
+              onClick={handleGetCurrentLocation}
+              sx={{
+                marginTop: "3px",
+                backgroundColor: "#057",
+                "&:hover": {
+                  backgroundColor: "#046",
+                },
+              }}
+            >
+              Use Current Location
+            </Button>
+          </Box>
+          <Wrapper
+            apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+            libraries={["places", "marker"]}
+            render={renderStatus}
+          >
+            <GoogleMapComponent
+              center={currentLocation || { lat: 44.9778, lng: -93.2650 }}
+              zoom={15}
+              boundaries={boundaries}
+              currentLocation={currentLocation}
+              markers={filteredData}
+            />
+          </Wrapper>
+          <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '-135px', 
+        }}
+      >
+        <Buttons onFilterChange={handleFilterChange} />
+      </Box>
+          <UserNavBar />
+        </div>
+      );
+    };
+  
+    return (
+      <div>
+        <MapWrapper />
       </div>
     );
-  };
-
-  return <MapWrapper />;
-}
-
-// export for UserLanding to be used elsewhere
-
+  }
+  
 export default UserLanding;

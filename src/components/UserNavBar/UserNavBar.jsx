@@ -11,7 +11,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 // then we can just change the icon in the code below
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom"
-
+import './UserNavBar.css';
 export default function UserNavBar() {
   const [value, setValue] = React.useState(0);
 
@@ -24,8 +24,9 @@ let history = useHistory()
 
 
   return (
-    <Box sx={{ width: 500 }}>
+    <Box className="nav-container" sx={{ width: '500px' }}>
       <BottomNavigation
+        className="bottom-nav"
         showLabels
         value={value}
         onChange={(event, newValue) => {
