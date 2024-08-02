@@ -1292,7 +1292,7 @@ function UserLanding() {
       </Button>
       </Box>
           <Wrapper
-            apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+            apiKey='AIzaSyAm6yKhKSP38jztFaKtIdCgbsos6r3jmnM'
             libraries={["places", "marker"]}
             render={renderStatus}
           >
