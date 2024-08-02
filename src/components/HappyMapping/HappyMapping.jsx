@@ -7,11 +7,10 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
-import { format } from 'date-fns'; 
+import { format } from 'date-fns';
 import UserNavBar from "../UserNavBar/UserNavBar";
 import "./HappyMapping.css";
 import RecommendIcon from '@mui/icons-material/Recommend';
-
 
 // Function to format date
 const formatDate = (isoDateString) => {
@@ -22,10 +21,12 @@ const formatDate = (isoDateString) => {
 // HappyMapping component
 const HappyMapping = () => {
     const happy = useSelector(store => store.happy);
+    const businesses = useSelector(store => store.business); 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch({ type: "SET_HAPPY" });
+        dispatch({ type: "SET_BUS" }); 
     }, [dispatch]);
 
     const handleLike = (event, id) => {
@@ -46,43 +47,55 @@ const HappyMapping = () => {
         dispatch({ type: 'UPDATE_INT', payload: { id } });
     };
 
+    // function that gets the business name for the cards from the business_id. 
+    const findBusinessName = (businessId) => {
+        const business = businesses.find(bus => bus.id === businessId);
+        return business ? business.business_name : 'Unknown Business';
+    };
+
     return (
         <>
-
             <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}>
-                <center><Typography variant="h5" gutterBottom>Hours of Hey for the Day</Typography></center> 
-               <center><img src='public/image.png' alt='Happy Hour'
-                    style={{ 
-                        maxWidth: '100%', 
-                        height: 'auto',   
-                        width: '300px',   
-                    }} /> 
-                    </center> 
+                <center><Typography variant="h5" gutterBottom>Hours of Hey for the Day</Typography></center>
+                <center>
+                    <img
+                        src='public/image.png'
+                        alt='Happy Hour'
+                        style={{
+                            maxWidth: '100%',
+                            height: 'auto',
+                            width: '300px',
+                        }}
+                    />
+                </center>
                 {happy.map((item) => {
-                    const progress = Math.min(100, (item.interested / 100) * 100); 
+                    const progress = Math.min(100, (item.interested / 100) * 100);
                     return (
                         <Card key={item.id} variant="outlined" sx={{ mb: 2 }}>
                             <CardContent>
-                            <Typography variant="h5" component="div">
+                                <Typography variant="h5" component="div">
+                                    {findBusinessName(item.business_id)}
+                                </Typography>
+                                <Typography variant="h5" component="div">
                                     {item.name}
                                 </Typography>
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                     {formatDate(item.date)}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                   where: {item.address}
+                                    Where: {item.address}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                  start time:  {item.start_time}
+                                    Start Time: {item.start_time}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                  end time:  {item.end_time}
+                                    End Time: {item.end_time}
                                 </Typography>
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                                     Description: {item.description}
                                 </Typography>
                                 <Box sx={{ mt: 1 }}>
-                                    <Button size="small" onClick={(event) => handleLike(event, item.id)}><RecommendIcon/></Button>
+                                    <Button size="small" onClick={(event) => handleLike(event, item.id)}><RecommendIcon /></Button>
                                     <Button size="small" onClick={(event) => handleInt(event, item.id)}>Are you going?</Button>
                                 </Box>
                                 <Box sx={{ mt: 2 }}>
@@ -111,7 +124,7 @@ const HappyMapping = () => {
                     );
                 })}
             </Box>
-            <UserNavBar  />
+            <UserNavBar />
         </>
     );
 };
