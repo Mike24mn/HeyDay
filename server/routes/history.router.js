@@ -20,27 +20,35 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 
 
   router.post('/', rejectUnauthenticated, (req, res) => {
-    const {search_history} = req.body;
+    const { search_history } = req.body;
+    const user_id = req.user.id;
+  
+    console.log('Received POST request:', { user_id, search_history });
+  
+    if (!user_id) {
+      console.log('User ID is missing');
+      return res.status(400).send('User ID is required');
+    }
+  
     let sqlText = `
-      INSERT INTO "user_profile"
-      ("user_id", "search_history")
-      VALUES
-      ($1, $2)
+      INSERT INTO "user_profile" ("user_id", "search_history")
+      VALUES ($1, $2)
+      ON CONFLICT (user_id) 
+      DO UPDATE SET search_history = COALESCE(user_profile.search_history, '') || ', ' || EXCLUDED.search_history
     `;
-    const values = [req.user.id, search_history];
-    pool
-      .query(sqlText, values)
+  
+    const values = [user_id, search_history];
+  
+    pool.query(sqlText, values)
       .then(() => {
-        console.log('POST successful'); 
+        console.log('POST successful');
         res.sendStatus(200);
       })
       .catch((error) => {
-        console.log('Error making POST', error);
-        res.sendStatus(500);
+        console.error('Error making POST:', error);
+        res.status(500).send(error.toString());
       });
   });
-
-
 
   router.delete('/:id', rejectUnauthenticated, (req, res) => {
     const itemId = req.params.id;

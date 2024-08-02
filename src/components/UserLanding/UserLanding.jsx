@@ -238,6 +238,7 @@ function UserLanding() {
               });
     
               marker.addListener('click', () => {
+                dispatch({ type: 'ADD_HISTORY', payload: { search_history: business.business_name, address: business.address} });
                 history.push(`/user-details/${business.id}`);
               });
     
@@ -350,6 +351,7 @@ function UserLanding() {
           map.setZoom(15); 
         }
       }, [currentLocation, map]);
+      
   
     return (
       <div style={{ height: "500px", width: "100%" }}>
@@ -1310,7 +1312,7 @@ function UserLanding() {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          marginTop: '-135px', 
+          marginTop: '-140px', 
         }}
       >
         <Buttons onFilterChange={handleFilterChange} />

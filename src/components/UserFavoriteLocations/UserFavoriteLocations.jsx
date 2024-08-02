@@ -25,8 +25,8 @@ function UserFavoriteLocations() {
   return (
     <div className="favorite-locations-container">
    
-      <h1 className="title">User Favorite Locations</h1>
-      <h2 className="welcome">Welcome, {user.username}!</h2>
+      <h1 className="title">Favorite Destinations</h1>
+      <h2 className="welcome">{user.username}'s List of Favorites:</h2>
       {filteredFavs.length > 0 ? (
         <div className="favorites-list">
           {filteredFavs.map((fav, index) => (
@@ -45,7 +45,9 @@ function UserFavoriteLocations() {
       ) : (
         <p>No favorite locations found.</p>
       )}
-          <UserNavBar />
+      <div className="navone">
+          <UserNavBar  />
+          </div>
     </div>
   );
 }

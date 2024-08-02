@@ -22,9 +22,10 @@ function UserSearchHistory() {
       <h2>Search History List</h2>
       <div>
         {searchHistory.map((item) => (
-          <div key={item.id}>
-            <p> {item.search_history}    <button  onClick={() => handleDelete(item.id)}>❌</button> </p>
-          
+          <div key={item.id} style={{ marginBottom: '10px' }}>
+            <span>{item.search_history}</span>
+            {item.address && <span> - {item.address}</span>}
+            <button onClick={() => handleDelete(item.id)} style={{ marginLeft: '10px' }}>❌</button>
           </div>
         ))}
       </div>
