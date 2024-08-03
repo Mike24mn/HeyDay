@@ -8,7 +8,12 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import BusinessNavBar from '../BusinessNavBar/BusinessNavBar';
+import BusinessInfo from '../BusinessInfo/BusinessInfo';
 
 const LoginButton = styled(Button)({
   backgroundColor: "#057",
@@ -32,6 +37,7 @@ function BusinessLanding() {
   const [happyEndTime, setHappyEndTime] = useState('');
   const [happyHourDate, setHappyHourDate] = useState('');
   const [selectedBusinessId, setSelectedBusinessId] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false); 
 
   const business = useSelector(store => store.business);
   const user = useSelector(store => store.user);
@@ -43,7 +49,6 @@ function BusinessLanding() {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
   }, [dispatch]);
-
 
   const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
   const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
@@ -88,14 +93,22 @@ function BusinessLanding() {
     dispatch({ type: 'SET_HAPPY' });
   };
 
+  const handleBusDel = (id) => {
+    dispatch({ type: "DELETE_BUS", payload: { id } });
+  };
+
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleDateString();
   };
 
-  const formatTime = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString();
+  const handleOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    console.log("it worked");
+    setDialogOpen(false);
   };
 
   return (
@@ -104,11 +117,16 @@ function BusinessLanding() {
         <center>
           <h1>Welcome {user.username}</h1>
         </center>
+        <Button variant="contained" color="primary" onClick={handleOpen}>
+          Open Business Info
+        </Button>
         <h2>
           {busFilter.map((bus) => (
-            <p key={bus.id}>
-              <center>{bus.business_name}</center>
-            </p>
+            <ul key={bus.id}>
+             <li><center>{bus.business_name}</center></li>
+             <center><Button onClick={()=>handleBusDel(bus.id)}>Delete</Button></center>
+            </ul>
+            
           ))}
         </h2>
         <InputContainer>
@@ -163,10 +181,6 @@ function BusinessLanding() {
         </InputContainer>
       </div>
 
-  
-    
-   
-
       <Grid container spacing={4} justifyContent="center">
         {happyFilter.map((hap) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={hap.id}>
@@ -209,11 +223,21 @@ function BusinessLanding() {
           </Grid>
         ))}
       </Grid>
+
+      <Dialog open={dialogOpen} onClose={handleClose}>
+        <DialogTitle>INFO</DialogTitle>
+        <DialogContent>
+          <BusinessInfo />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color='primary'>CLOSE</Button>
+        </DialogActions>
+      </Dialog>
+      
       <footer>
         <BusinessNavBar />
       </footer>
     </>
-
   );
 }
 

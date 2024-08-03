@@ -6,6 +6,9 @@ const business = (state = [], action) => {
       return [...state, action.payload];
       case "SET_ALL_BUSINESSES":
         return action.payload;
+    case "DELETE_BUS_SUCESS":
+         return state.filter( bus => bus.id !== action.payload.id) 
+     
       default:
         return state;
 

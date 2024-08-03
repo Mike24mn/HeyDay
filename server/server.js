@@ -10,7 +10,7 @@ const addressRouter = require('./routes/address.router.js')
 const happyHourRouter = require('./routes/happyHour.router.js')
 
 const busRouter = require('./routes/business.router.js')
-const path = require('path');
+
 require('dotenv').config();
 
 
@@ -59,7 +59,6 @@ app.use('/api/history', historyRouter )
 
 // new
 app.use("/api/getAddresses", addressRouter)
-app.use('/mn', express.static(path.join(__dirname, '../mn')));
 // ^^
 
 app.use("/api/user", userRouter);

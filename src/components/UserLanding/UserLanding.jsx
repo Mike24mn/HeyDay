@@ -35,6 +35,7 @@ new keyword creates instances of a class
 global scope window object in javascript represents browser window (allows us to manipulate map elements in a more dynamic/fluid fashion)
 */
 function UserLanding() {
+
     const history = useHistory()
     const [showWelcome, setShowWelcome] = useState(false)
 

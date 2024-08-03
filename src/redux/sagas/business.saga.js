@@ -28,15 +28,32 @@ function* getbus(){
           console.log("Error fetching all businesses:", error);
         }
       }
+
+      function* deleteBus(action){
+        try{
+            console.log("Action received in saga:", action);
+            const {id} = action.payload
+            console.log("Checking id in saga:", id);
+            yield axios.delete(`/api/business/${id}`)
+            yield put({ type: "DELETE_BUS_SUCCESS", payload: id})
+            yield put({type:"SET_BUS"})
+    
+        } catch(error){
+            console.log("failed in delete business saga ", error)
+        }
+    }
       
  
         function* busSaga (){
             yield takeLatest("SET_BUS", getbus);
             yield takeLatest('ADD_BUS', addBus)
+            yield takeLatest('DELETE_BUS', deleteBus)
             yield takeLatest('FETCH_ALL_BUSINESSES', fetchAllBusinesses);
     
 
         }
+
+       
     
 
     export default busSaga

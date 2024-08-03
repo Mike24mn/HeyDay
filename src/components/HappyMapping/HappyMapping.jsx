@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -12,21 +12,27 @@ import UserNavBar from "../UserNavBar/UserNavBar";
 import "./HappyMapping.css";
 import RecommendIcon from '@mui/icons-material/Recommend';
 
-// Function to format date
 const formatDate = (isoDateString) => {
     const date = new Date(isoDateString);
     return format(date, 'MMM dd, yyyy');
 };
 
-// HappyMapping component
+const getColor = (value) => {
+    const red = Math.min(255, Math.floor((255 * value) / 100));
+    const green = Math.min(255, Math.floor((255 * (100 - value)) / 100));
+    return `rgb(${red},${green},0)`;
+};
+
 const HappyMapping = () => {
     const happy = useSelector(store => store.happy);
-    const businesses = useSelector(store => store.business); 
+    const businesses = useSelector(store => store.business);
     const dispatch = useDispatch();
+    const [clickedEvents, setClickedEvents] = useState({});
 
     useEffect(() => {
         dispatch({ type: "SET_HAPPY" });
-        dispatch({ type: "SET_BUS" }); 
+        dispatch({ type: "SET_BUS" });
+        dispatch({ type: "UPDATE_LIKE" });
     }, [dispatch]);
 
     const handleLike = (event, id) => {
@@ -35,6 +41,7 @@ const HappyMapping = () => {
             console.error('ID is undefined in handleLike');
             return;
         }
+        setClickedEvents(prevState => ({ ...prevState, [id]: { ...prevState[id], liked: true } }));
         dispatch({ type: "UPDATE_LIKE", payload: { id } });
     };
 
@@ -44,10 +51,10 @@ const HappyMapping = () => {
             console.error('ID is undefined in handleInt');
             return;
         }
+        setClickedEvents(prevState => ({ ...prevState, [id]: { ...prevState[id], interested: true } }));
         dispatch({ type: 'UPDATE_INT', payload: { id } });
     };
 
-    // function that gets the business name for the cards from the business_id. 
     const findBusinessName = (businessId) => {
         const business = businesses.find(bus => bus.id === businessId);
         return business ? business.business_name : 'Unknown Business';
@@ -69,7 +76,9 @@ const HappyMapping = () => {
                     />
                 </center>
                 {happy.map((item) => {
-                    const progress = Math.min(100, (item.interested / 100) * 100);
+                    const progressInt = Math.min(100, (item.interested / 100) * 100);
+                    const progressLike = Math.min(100, (item.likes / 100) * 100);
+                    const clickedState = clickedEvents[item.id] || {};
                     return (
                         <Card key={item.id} variant="outlined" sx={{ mb: 2 }}>
                             <CardContent>
@@ -95,14 +104,34 @@ const HappyMapping = () => {
                                     Description: {item.description}
                                 </Typography>
                                 <Box sx={{ mt: 1 }}>
-                                    <Button size="small" onClick={(event) => handleLike(event, item.id)}><RecommendIcon /></Button>
-                                    <Button size="small" onClick={(event) => handleInt(event, item.id)}>Are you going?</Button>
+                                    <Button
+                                        size="small"
+                                        onClick={(event) => handleLike(event, item.id)}
+                                        disabled={clickedState.liked}
+                                    >
+                                        <RecommendIcon />
+                                    </Button>
+                                    <Button
+                                        size="small"
+                                        onClick={(event) => handleInt(event, item.id)}
+                                        disabled={clickedState.interested}
+                                    >
+                                        Are you going?
+                                    </Button>
                                 </Box>
                                 <Box sx={{ mt: 2 }}>
                                     <Typography variant="body2" color="text.secondary">
                                         People Going:
                                     </Typography>
-                                    <LinearProgress variant="determinate" value={progress} />
+                                    <LinearProgress 
+                                        variant="determinate" 
+                                        value={progressInt}
+                                        sx={{ 
+                                            '& .MuiLinearProgress-bar': {
+                                                backgroundColor: getColor(progressInt),
+                                            },
+                                        }} 
+                                    />
                                     <Box sx={{ mt: 1, textAlign: 'center' }}>
                                         <span>{item.interested} people interested</span>
                                     </Box>
@@ -111,7 +140,15 @@ const HappyMapping = () => {
                                     <Typography variant="body2" color="text.secondary">
                                         People Liked:
                                     </Typography>
-                                    <LinearProgress variant="determinate" value={Math.min(100, (item.likes / 100) * 100)} />
+                                    <LinearProgress 
+                                        variant="determinate" 
+                                        value={progressLike}
+                                        sx={{ 
+                                            '& .MuiLinearProgress-bar': {
+                                                backgroundColor: getColor(progressLike),
+                                            },
+                                        }} 
+                                    />
                                     <Box sx={{ mt: 1, textAlign: 'center' }}>
                                         <span>{item.likes} people liked</span>
                                     </Box>

@@ -91,7 +91,11 @@ export default function UserHamburgerMenu() {
                 </MenuItem>
                 <MenuItem onClick={handleMenuClose}>
                   <StyledLink to="/happy">Hey for the day </StyledLink>
+                  </MenuItem>
+                  <MenuItem onClick={handleMenuClose}>
+                  <StyledLink to="/business-landing">My Business </StyledLink>
                 </MenuItem>
+                
               </>
             )}
             <MenuItem onClick={handleMenuClose}>
