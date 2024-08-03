@@ -25,7 +25,10 @@ function UserFavoriteLocations() {
   };
 
   const handleViewDetails = (id) => {
+    console.log(`Attempting to view details for favorite with id: ${id}`);
+    console.log(`Navigating to: /user-details/${id}`);
     history.push(`/user-details/${id}`);
+    console.log('Navigation completed');
   };
 
 
@@ -43,7 +46,7 @@ function UserFavoriteLocations() {
               <div className="button-group">
                 <button 
                   className="view-details-button" 
-                  onClick={() => handleViewDetails(fav.id)}
+                  onClick={() => handleViewDetails(fav.business_id)}
                 >
                   View Details
                 </button>

@@ -32,7 +32,8 @@ function* deleteFav(action){
         const {id} = action.payload
         console.log("Checking id in saga:", id);
         yield axios.delete(`/api/favorites/${id}`)
-        yield put({ type: "DELETE_FAVS", payload: id})
+        yield put({ type: "DELETE_FAVS_SUCCESS", payload: id})
+        yield put({ type: "SET_FAVS"})
 
     } catch(error){
         console.log("failed in delete fav saga ", error)

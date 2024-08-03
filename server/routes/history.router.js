@@ -24,8 +24,6 @@ router.get('/', rejectUnauthenticated, (req, res) => {
     });
 });
 
-
-
   router.post('/', rejectUnauthenticated, (req, res) => {
     const { search_history } = req.body;
     const user_id = req.user.id;

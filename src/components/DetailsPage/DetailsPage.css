@@ -87,15 +87,11 @@
     background-color: transparent;
     border: none;
     font-size: 2em;
-    color:#DC143C;;
+    color: black;
     cursor: pointer;
 }
 
-.favorite-button:hover {
-    color: rgb(24, 1, 1);
-}
 
-.next-button:hover {
-   color: rgb(85, 6, 6);
-
+.favorite-button .favorited {
+    color: #1E90FF; 
 }

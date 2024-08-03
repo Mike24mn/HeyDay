@@ -5,7 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import UserNavBar from "../UserNavBar/UserNavBar";
+
 function DetailsPage() {
+  const [isFavorited, setIsFavorited] = useState(false)
   const [business, setBusiness] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { id } = useParams();
@@ -17,6 +19,13 @@ function DetailsPage() {
   useEffect(() => {
     fetchBusinessDetails();
   }, [id]);
+  
+  useEffect(() => {
+    if (business) {
+      const isAlreadyFavorited = favorites.some(fav => fav.name === business.business_name);
+      setIsFavorited(isAlreadyFavorited);
+    }
+  }, [favorites, business]);
   // Function to fetch business details from the API
   const fetchBusinessDetails = () => {
     fetch(`/api/business/${id}`)
@@ -51,15 +60,37 @@ function DetailsPage() {
     console.log("handleFav clicked");
     const userId = user.id;
     console.log("checking id", userId);
-    dispatch({
-      type: "ADD_FAV",
-      payload: {
-        user_id: userId,
-        name: business.business_name,
-        address: business.address,
-      },
-    });
-    console.log("ADD_FAV action dispatched");
+    
+    if (isFavorited) {
+      // Find the favorite item
+      const favoriteItem = favorites.find(fav => fav.name === business.business_name);
+      if (favoriteItem) {
+        // Unfavorite
+        dispatch({
+          type: "DELETE_FAVS",
+          payload: {
+            id: favoriteItem.id, // Include the id of the favorite item
+            user_id: userId,
+            name: business.business_name,
+          },
+        });
+      }
+    } else {
+      // Favorite
+      dispatch({
+        type: "ADD_FAV",
+        payload: {
+          user_id: userId,
+          name: business.business_name,
+          address: business.address,
+          business_id: business.id
+          
+        },
+      });
+    }
+    
+    setIsFavorited(!isFavorited);
+    console.log(isFavorited ? "DELETE_FAVS action dispatched" : "ADD_FAV action dispatched");
   };
   return (
     <div>
@@ -74,9 +105,9 @@ function DetailsPage() {
               className="business-image"
             />
             <div className="buttons-container">
-              <button className="favorite-button" onClick={handleFav}>
-                <FontAwesomeIcon icon={faHeart} />
-              </button>
+            <button className="favorite-button" onClick={handleFav}>
+  <FontAwesomeIcon icon={faHeart} className={isFavorited ? 'favorited' : ''} />
+</button>
               <button className="next-button" onClick={showNextImage}>
                 Next
               </button>
