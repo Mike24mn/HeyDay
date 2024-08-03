@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom';
 import UserNavBar from "../UserNavBar/UserNavBar";
 import './UserFavoriteLocations.css';
 
@@ -7,6 +8,7 @@ function UserFavoriteLocations() {
   const user = useSelector((store) => store.user);
   const favorite = useSelector((store) => store.favorites);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     if (user && user.id) {
@@ -22,6 +24,11 @@ function UserFavoriteLocations() {
     dispatch({ type: "DELETE_FAVS", payload: { id } });
   };
 
+  const handleViewDetails = (id) => {
+    history.push(`/user-details/${id}`);
+  };
+
+
   return (
     <div className="favorite-locations-container">
    
@@ -33,12 +40,20 @@ function UserFavoriteLocations() {
             <div key={index} className="favorite-card">
               <h3>{fav.name}</h3>
               <p><strong>Address:</strong> {fav.address}</p>
-              <button 
-                className="delete-button" 
-                onClick={() => handleDel(fav.id)}
-              >
-                Delete
-              </button>
+              <div className="button-group">
+                <button 
+                  className="view-details-button" 
+                  onClick={() => handleViewDetails(fav.id)}
+                >
+                  View Details
+                </button>
+                <button 
+                  className="delete-button" 
+                  onClick={() => handleDel(fav.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>

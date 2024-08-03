@@ -66,7 +66,7 @@ const HappyMapping = () => {
                                     {formatDate(item.date)}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                   Location: {item.address}
+                                   Location: Minneapolis {item.address}
                                 </Typography>
                                 <Typography variant="h5" component="div">
                                   Start Time:  {new Date(`1970-01-01T${item.start_time}`).toLocaleTimeString('en-US', 

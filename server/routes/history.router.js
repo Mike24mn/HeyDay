@@ -5,18 +5,25 @@ const {rejectUnauthenticated} = require('../modules/authentication-middleware');
 
 
 router.get('/', rejectUnauthenticated, (req, res) => {
-    const sqlText = `SELECT * FROM user_profile`;
-    pool
-      .query(sqlText)
-      .then((result) => {
-        console.log(`GET from database`, result.rows);
-        res.send(result.rows);
-      })
-      .catch((error) => {
-        console.log(`Error making database query ${sqlText}`, error);
-        res.sendStatus(500);
-      });
-  }); 
+  const queryText = `
+    SELECT up.id, up.search_history, b.id AS business_id, b.business_name, b.address
+    FROM user_profile up
+    LEFT JOIN business b ON b.business_name = up.search_history
+    WHERE up.user_id = $1
+    ORDER BY up.id DESC
+  `;
+  
+  pool.query(queryText, [req.user.id])
+    .then((result) => {
+      console.log(`GET from database`, result.rows);
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log(`Error making database query ${queryText}`, error);
+      res.sendStatus(500);
+    });
+});
+
 
 
   router.post('/', rejectUnauthenticated, (req, res) => {
