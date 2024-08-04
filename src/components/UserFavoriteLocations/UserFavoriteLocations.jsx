@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom';
 import UserNavBar from "../UserNavBar/UserNavBar";
 import './UserFavoriteLocations.css';
 
@@ -7,6 +8,7 @@ function UserFavoriteLocations() {
   const user = useSelector((store) => store.user);
   const favorite = useSelector((store) => store.favorites);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     if (user && user.id) {
@@ -22,30 +24,48 @@ function UserFavoriteLocations() {
     dispatch({ type: "DELETE_FAVS", payload: { id } });
   };
 
+  const handleViewDetails = (id) => {
+    console.log(`Attempting to view details for favorite with id: ${id}`);
+    console.log(`Navigating to: /user-details/${id}`);
+    history.push(`/user-details/${id}`);
+    console.log('Navigation completed');
+  };
+
+
   return (
     <div className="favorite-locations-container">
    
-      <h1 className="title">User Favorite Locations</h1>
-      <h2 className="welcome">Welcome, {user.username}!</h2>
+      <h1 className="title">Favorite Destinations</h1>
+      <h2 className="welcome">{user.username}'s List of Favorites:</h2>
       {filteredFavs.length > 0 ? (
         <div className="favorites-list">
           {filteredFavs.map((fav, index) => (
             <div key={index} className="favorite-card">
               <h3>{fav.name}</h3>
               <p><strong>Address:</strong> {fav.address}</p>
-              <button 
-                className="delete-button" 
-                onClick={() => handleDel(fav.id)}
-              >
-                Delete
-              </button>
+              <div className="button-group">
+                <button 
+                  className="view-details-button" 
+                  onClick={() => handleViewDetails(fav.business_id)}
+                >
+                  View Details
+                </button>
+                <button 
+                  className="delete-button" 
+                  onClick={() => handleDel(fav.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
       ) : (
         <p>No favorite locations found.</p>
       )}
-          <UserNavBar />
+      <div className="navone">
+          <UserNavBar  />
+          </div>
     </div>
   );
 }

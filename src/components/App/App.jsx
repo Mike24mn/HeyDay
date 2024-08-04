@@ -74,6 +74,7 @@ function App() {
           <Route exact path="/user-landing-nonlogin">
             <UserLanding />
           </Route>
+          
 
           <ProtectedRoute exact path="/business-landing">
             <BusinessLanding />
