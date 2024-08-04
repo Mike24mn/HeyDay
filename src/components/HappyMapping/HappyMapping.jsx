@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import UserNavBar from "../UserNavBar/UserNavBar";
 import "./HappyMapping.css";
 import RecommendIcon from '@mui/icons-material/Recommend';
+import TheRippleEffect from '../TheRippleEffect/TheRippleEffect';
 
 const formatDate = (isoDateString) => {
     const date = new Date(isoDateString);
@@ -62,43 +63,36 @@ const HappyMapping = () => {
 
     return (
         <>
-            <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}>
-                <center><Typography variant="h5" gutterBottom>Hours of Hey for the Day</Typography></center>
-                <center>
-                    <img
-                        src='public/image.png'
-                        alt='Happy Hour'
-                        style={{
-                            maxWidth: '100%',
-                            height: 'auto',
-                            width: '300px',
-                        }}
-                    />
-                </center>
+<TheRippleEffect/>
+<center><Typography className="textbox" variant="h5" gutterBottom>The Heystack</Typography></center> 
+            <Box  className="scrollable-card-content" component="section" sx={{ p: 2,  }}>
+
+
                 {happy.map((item) => {
                     const progressInt = Math.min(100, (item.interested / 100) * 100);
                     const progressLike = Math.min(100, (item.likes / 100) * 100);
                     const clickedState = clickedEvents[item.id] || {};
                     return (
                         <Card key={item.id} variant="outlined" sx={{ mb: 2 }}>
-                            <CardContent>
-                                <Typography variant="h5" component="div">
-                                    {findBusinessName(item.business_id)}
-                                </Typography>
-                                <Typography variant="h5" component="div">
+                            <CardContent >
+                            <Typography variant="h5" component="div">
                                     {item.name}
                                 </Typography>
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                     {formatDate(item.date)}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                    Where: {item.address}
+                                   Location: Minneapolis {item.address}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                    Start Time: {item.start_time}
+                                  Start Time:  {new Date(`1970-01-01T${item.start_time}`).toLocaleTimeString('en-US', 
+  { hour: 'numeric', minute: '2-digit', hour12: true }
+)}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                    End Time: {item.end_time}
+                                  End Time:  {new Date(`1970-01-01T${item.end_time}`).toLocaleTimeString('en-US', 
+  { hour: 'numeric', minute: '2-digit', hour12: true }
+)}
                                 </Typography>
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                                     Description: {item.description}
@@ -121,7 +115,7 @@ const HappyMapping = () => {
                                 </Box>
                                 <Box sx={{ mt: 2 }}>
                                     <Typography variant="body2" color="text.secondary">
-                                        People Going:
+                                        # Going:
                                     </Typography>
                                     <LinearProgress 
                                         variant="determinate" 
@@ -133,12 +127,12 @@ const HappyMapping = () => {
                                         }} 
                                     />
                                     <Box sx={{ mt: 1, textAlign: 'center' }}>
-                                        <span>{item.interested} people interested</span>
+                                        <span>{item.interested} Interested</span>
                                     </Box>
                                 </Box>
                                 <Box sx={{ mt: 2 }}>
                                     <Typography variant="body2" color="text.secondary">
-                                        People Liked:
+                                        # Likes:
                                     </Typography>
                                     <LinearProgress 
                                         variant="determinate" 
@@ -150,7 +144,7 @@ const HappyMapping = () => {
                                         }} 
                                     />
                                     <Box sx={{ mt: 1, textAlign: 'center' }}>
-                                        <span>{item.likes} people liked</span>
+                                        <span>{item.likes} Likes</span>
                                     </Box>
                                 </Box>
                             </CardContent>

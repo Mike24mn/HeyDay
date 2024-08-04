@@ -23,6 +23,30 @@ const StyledLink = styled(Link)({
   textDecoration: "underline",
 });
 
+const StyledMenuItem = styled(MenuItem)({
+    backgroundColor: "#057",
+    color: "#fff",
+    '&:hover': {
+      backgroundColor: "#046",
+      color: "#FFFFFF"
+    },
+  });
+
+  const StyButton = styled(Link)({
+    color: "#FFFFFF",
+    textDecoration: "underline",
+    width: "100%",
+    display: "block",
+    fontWeight: "bold",
+    padding: "6px 16px",
+    backgroundColor: "#057",
+    '&:hover': {
+      backgroundColor: "#046",
+      color: "#FFFFFF", 
+      textDecoration: "underline", 
+    },
+  });
+  
 export default function UserHamburgerMenu() {
   const [anchorEl, setAnchorEl] = useState(null); // Anchor point for the menu
   const user = useSelector((store) => store.user);
@@ -57,35 +81,34 @@ export default function UserHamburgerMenu() {
             onClose={handleMenuClose}
             sx={{
               "& .MuiPaper-root": {
-                backgroundColor: "#777",
+                backgroundColor: "#0E0E0E",
+                color: "#FFFFFF",
+                textDecoration: "underline"
               },
               "& .MuiMenuItem-root": {
-                color: "#00CED1",
+                color: "#FFFFFF",
                 "&:hover": {
-                  backgroundColor: "#507D80",
+                  backgroundColor: "#046",
                 },
               },
             }}
           >
             {!user.id ? (
-              <MenuItem onClick={handleMenuClose}>
-                <StyledLink to="/login">Login</StyledLink>
+              <MenuItem component={StyButton} to="/login" onClick={handleMenuClose}>
+                Login
               </MenuItem>
             ) : (
               <>
-                <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/user-landing">User Landing</StyledLink>
+                <MenuItem component={StyButton} to="/user-landing" onClick={handleMenuClose}>
+                  Home
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/favorite-locations">
-                    Favorite Locations
-                  </StyledLink>
+                <MenuItem component={StyButton} to="/favorite-locations" onClick={handleMenuClose}>
+                  Favorite Locations
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/user-search-history">
-                    Search History
-                  </StyledLink>
+                <MenuItem component={StyButton} to="/user-search-history" onClick={handleMenuClose}>
+                  Search History
                 </MenuItem>
+<<<<<<< HEAD
                 <MenuItem onClick={handleMenuClose}>
                   <StyledLink to="/user-details">User Details</StyledLink>
                 </MenuItem>
@@ -94,20 +117,22 @@ export default function UserHamburgerMenu() {
                   </MenuItem>
                   <MenuItem onClick={handleMenuClose}>
                   <StyledLink to="/business-landing">My Business </StyledLink>
+=======
+                <MenuItem component={StyButton} to="/happy" onClick={handleMenuClose}>
+                  The Heystack
+>>>>>>> main
                 </MenuItem>
                 
               </>
             )}
-            <MenuItem onClick={handleMenuClose}>
-              <StyledLink to="/about">
-                Getting Started (THE ABOUT COMPONENT)
-              </StyledLink>
+            <MenuItem component={StyButton} to="/about" onClick={handleMenuClose}>
+              Getting Started
             </MenuItem>
-            {user.id ? (
-              <MenuItem onClick={handleMenuClose}>
+            {user.id && (
+              <MenuItem onClick={handleMenuClose} >
                 <LogOutButton Button color="inherit" />
               </MenuItem>
-            ) : null}
+            )}
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Menu
@@ -118,5 +143,4 @@ export default function UserHamburgerMenu() {
         </Toolbar>
       </AppBar>
     </Box>
-  );
-}
+  );}

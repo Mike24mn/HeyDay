@@ -16,25 +16,26 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { user_id, name, address } = req.body;
+  const { user_id, business_id, name, address } = req.body;
   const queryText = `
-  INSERT INTO "favorites" ("user_id", "name", "address")
-  VALUES($1, $2, $3)
-  RETURNING *;
-`;
-  const queryValues = [user_id, name, address];
+    INSERT INTO favorites (user_id, business_id, name, address)
+    VALUES ($1, $2, $3, $4)
+    ON CONFLICT (user_id, business_id) 
+    DO NOTHING
+    RETURNING *;
+  `;
 
-  pool.query(queryText, queryValues)
-    .then(response => {
-      console.log("Response in post route:", response);
-      res.status(200).json(response.rows[0]);
+  const values = [user_id, business_id, name, address];
+
+  pool.query(queryText, values)
+    .then((result) => {
+      res.status(201).json(result.rows[0]);
     })
-      .catch(error => {
-        console.log("error in post route", error.message, error.stack);
-        res.status(500).json({ error: error.message });
-      });
+    .catch((error) => {
+      console.log('Error in POST favorites route', error);
+      res.sendStatus(500);
     });
-
+});
 
 router.delete('/:id', (req, res)=>{
 
