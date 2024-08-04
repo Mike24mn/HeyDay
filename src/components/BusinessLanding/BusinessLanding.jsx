@@ -48,6 +48,7 @@ function BusinessLanding() {
   useEffect(() => {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
+    dispatch({type:"SET_LIKES"})
   }, [dispatch]);
 
   const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));

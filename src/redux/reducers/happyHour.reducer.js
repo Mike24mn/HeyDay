@@ -17,7 +17,7 @@ const happy = (state = [], action) => {
             return state.map(int =>
                 action.payload && int.id === action.payload.id ? { ...int, interested: int.interested + 1 } : int
             );
-           
+      
 
         default:
             return state;
