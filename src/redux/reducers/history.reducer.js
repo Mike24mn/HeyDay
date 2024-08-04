@@ -3,6 +3,8 @@ const historyReducer = (state = [], action) => {
       case "SET_HISTORY_ITEM":
         console.log('History set:', action.payload);
         return action.payload;
+      case "ADD_HISTORY":
+        return [...state, action.payload]  
         default:
           return state   
     }

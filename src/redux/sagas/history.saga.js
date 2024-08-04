@@ -4,9 +4,9 @@ import axios from 'axios';
 
 function* fetchHistory(){
     try{
-        const historyItem = yield call (axios.get,`/api/history`)
-        console.log('Fetched history:', historyItem.data); 
-        yield put ({type: "SET_HISTORY_ITEM", payload: historyItem.data})
+        const response = yield  axios.get('/api/search_history')
+        console.log('Fetched history:', response.data); 
+        yield put({type: "SET_HISTORY_ITEM", payload: response.data})
     } catch(error){
         console.log('error with get request', error)
     
@@ -15,7 +15,8 @@ function* fetchHistory(){
 
 function* addHistory(action){
     try{
-        yield call(axios.post, `/api/history`, action.payload);
+       const response = yield axios.post(`/api/search_history`, action.payload);
+        yield put({type:"ADD_HISTORY", payload: response.data })
         console.log('History added:', action.payload);
         yield put({type: 'FETCH_HISTORY'})
     } catch (error){
@@ -26,7 +27,7 @@ function* addHistory(action){
 
 function* deleteHistory(action) {
     try {
-        yield call(axios.delete, `/api/history/${action.payload}`);
+        yield call(axios.delete, `/api/search_history/${action.payload}`);
         yield put({ type: 'FETCH_HISTORY' });
     } catch (error) {
         console.log('Error with delete request', error);

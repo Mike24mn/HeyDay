@@ -43,7 +43,7 @@ function* addLike(action) {
 
         const response = yield axios.put(`/api/happy_hour/likes/${id}`);
         yield put({ type: 'UPDATE_LIKE_SUCCESS', payload: id });
-        //yield put({type: "SET_LIKES"})
+       
        
     } catch (error) {
         console.error('Error updating likes:', error);

@@ -239,7 +239,7 @@ function UserLanding() {
               });
     
               marker.addListener('click', () => {
-                dispatch({ type: 'ADD_HISTORY', payload: { search_history: business.business_name, address: business.address} });
+                dispatch({ type: 'ADD_HISTORY', payload: {  userId: user.id, businessId: business.id,  name: business.business_name, address: business.address} });
                 history.push(`/user-details/${business.id}`);
               });
     

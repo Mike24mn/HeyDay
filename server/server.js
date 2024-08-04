@@ -11,6 +11,8 @@ const happyHourRouter = require('./routes/happyHour.router.js')
 
 const busRouter = require('./routes/business.router.js')
 
+const historyRouter= require('./routes/history.router.js')
+
 require('dotenv').config();
 
 
@@ -29,7 +31,7 @@ const passport = require("./strategies/user.strategy");
 // Route Includes
 
 const userRouter = require('./routes/user.router');
- const historyRouter = require('./routes/history.router')
+ 
 
  
 
@@ -55,7 +57,7 @@ app.use(passport.session());
 // Routes
 
 
-app.use('/api/history', historyRouter )
+app.use('/api/search_history', historyRouter )
 
 // new
 app.use("/api/getAddresses", addressRouter)

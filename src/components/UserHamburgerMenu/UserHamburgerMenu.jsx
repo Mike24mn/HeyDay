@@ -108,19 +108,8 @@ export default function UserHamburgerMenu() {
                 <MenuItem component={StyButton} to="/user-search-history" onClick={handleMenuClose}>
                   Search History
                 </MenuItem>
-<<<<<<< HEAD
-                <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/user-details">User Details</StyledLink>
-                </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/happy">Hey for the day </StyledLink>
-                  </MenuItem>
-                  <MenuItem onClick={handleMenuClose}>
-                  <StyledLink to="/business-landing">My Business </StyledLink>
-=======
                 <MenuItem component={StyButton} to="/happy" onClick={handleMenuClose}>
                   The Heystack
->>>>>>> main
                 </MenuItem>
                 
               </>

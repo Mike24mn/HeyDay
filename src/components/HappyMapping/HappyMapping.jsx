@@ -33,7 +33,7 @@ const HappyMapping = () => {
     useEffect(() => {
         dispatch({ type: "SET_HAPPY" });
         dispatch({ type: "SET_BUS" });
-        dispatch({ type: "UPDATE_LIKE" });
+      
     }, [dispatch]);
 
     const handleLike = (event, id) => {
