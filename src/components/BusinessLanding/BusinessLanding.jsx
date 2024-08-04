@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import BusinessNavBar from '../BusinessNavBar/BusinessNavBar';
+import "./BusinessLanding.css"
 
 const LoginButton = styled(Button)({
   backgroundColor: "#057",
@@ -209,7 +210,9 @@ function BusinessLanding() {
         ))}
       </Grid>
       <footer>
+        <div className="buslandingbar">
         <BusinessNavBar />
+        </div>
       </footer>
     </>
 

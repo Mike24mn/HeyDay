@@ -47,19 +47,18 @@ const StyledMenuItem = styled(MenuItem)({
     },
   });
   
-export default function UserHamburgerMenu() {
-  const [anchorEl, setAnchorEl] = useState(null); // Anchor point for the menu
-  const user = useSelector((store) => store.user);
-
-  // Open the menu
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  // Close the menu
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  export default function UserHamburgerMenu() {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const user = useSelector((store) => store.user);
+  
+    const handleMenuOpen = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleMenuClose = () => {
+      setAnchorEl(null);
+    };
+  
 
   return (
     <Box sx={{ flexGrow: 1, width: "100%", backgroundColor: "#000" }}>
@@ -93,7 +92,7 @@ export default function UserHamburgerMenu() {
               },
             }}
           >
-            {!user.id ? (
+            {!user?.id ? (
               <MenuItem component={StyButton} to="/login" onClick={handleMenuClose}>
                 Login
               </MenuItem>
@@ -116,7 +115,7 @@ export default function UserHamburgerMenu() {
             <MenuItem component={StyButton} to="/about" onClick={handleMenuClose}>
               Getting Started
             </MenuItem>
-            {user.id && (
+            {user?.id && (
               <MenuItem onClick={handleMenuClose} >
                 <LogOutButton Button color="inherit" />
               </MenuItem>
@@ -125,7 +124,7 @@ export default function UserHamburgerMenu() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Menu
           </Typography>
-          {user.id && (
+          {user?.id && (
             <Button color="inherit">{/* Add Button Content Here */}</Button>
           )}
         </Toolbar>

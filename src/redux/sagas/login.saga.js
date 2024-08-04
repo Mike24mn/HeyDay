@@ -1,11 +1,10 @@
-import { put, takeLatest } from 'redux-saga/effects';
-
+import { put, takeLatest, call } from 'redux-saga/effects';
 import axios from 'axios';
+import history from '../../history';
 
-// worker Saga: will be fired on "LOGIN" actions
+// worker Saga: will be fired ON FRICKEN "LOGIN" actions
 function* loginUser(action) {
   try {
-    // clear any existing error on the login page
     yield put({ type: 'CLEAR_LOGIN_ERROR' });
 
     const config = {
@@ -13,24 +12,30 @@ function* loginUser(action) {
       withCredentials: true,
     };
 
-    // send the action.payload as the body
-    // the config includes credentials which
-    // allow the server session to recognize the user
-    yield axios.post('/api/user/login', action.payload, config);
+    // Send the login request
+    const response = yield call(axios.post, '/api/user/login', action.payload, config);
 
-    // after the user has logged in
-    // get the user information from the server
+    // Check the user's access level
+    if (action.payload.isBusiness && response.data.access_level !== 2) {
+      throw new Error('Invalid access level for business login');
+    }
+
+    // If everything is okay, fetch the user
     yield put({ type: 'FETCH_USER' });
+
+    // Redirect based on access level so get 2 different results, expand later to include admin maybe
+    if (response.data.access_level === 2) {
+      yield call(history.push, '/business-landing');
+    } else {
+      yield call(history.push, '/user-landing');
+    }
   } catch (error) {
     console.log('Error with user login:', error);
-    if (error.response.status === 401) {
-      // The 401 is the error status sent from passport
-      // if user isn't in the database or
-      // if the username and password don't match in the database
+    if (error.message === 'Invalid access level for business login') {
+      yield put({ type: 'LOGIN_FAILED', payload: 'Invalid access level for business login' });
+    } else if (error.response && error.response.status === 401) {
       yield put({ type: 'LOGIN_FAILED' });
     } else {
-      // Got an error that wasn't a 401
-      // Could be anything, but most common cause is the server is not started
       yield put({ type: 'LOGIN_FAILED_NO_CODE' });
     }
   }
@@ -44,16 +49,16 @@ function* logoutUser(action) {
       withCredentials: true,
     };
 
-    // the config includes credentials which
-    // allow the server session to recognize the user
-    // when the server recognizes the user session
-    // it will end the session
-    yield axios.post('/api/user/logout', config);
+    yield call(axios.post, '/api/user/logout', config);
 
-    // now that the session has ended on the server
-    // remove the client-side user object to let
-    // the client-side code know the user is logged out
     yield put({ type: 'UNSET_USER' });
+    
+    // Redirect after logout
+    yield call(history.push, '/login');
+
+    // clear parts of state (this is why we wrapped things in the reducer fyi)
+    yield put({ type: 'RESET_STATE' });
+
   } catch (error) {
     console.log('Error with user logout:', error);
   }
@@ -61,6 +66,7 @@ function* logoutUser(action) {
 
 function* loginSaga() {
   yield takeLatest('LOGIN', loginUser);
+  yield takeLatest('LOGIN_BUSINESS', loginUser);
   yield takeLatest('LOGOUT', logoutUser);
 }
 
