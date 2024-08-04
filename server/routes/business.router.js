@@ -2,6 +2,54 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
+router.get('/all-details', (req, res) => {
+    console.log('GET /api/business/all-details called');
+    const query = `
+      SELECT 
+        business.id, 
+        business.business_name, 
+        business.address, 
+        happy_hour.start_time, 
+        happy_hour.end_time, 
+        happy_hour.day_of_week,
+        STRING_AGG(DISTINCT diet.name, ', ') AS diets
+      FROM 
+        business
+      LEFT JOIN 
+        happy_hour ON business.id = happy_hour.business_id
+      LEFT JOIN 
+        business_diet ON business.id = business_diet.business_id
+      LEFT JOIN 
+        diet ON business_diet.diet_id = diet.id
+      GROUP BY 
+        business.id, happy_hour.id
+    `;
+  
+    pool.query(query)
+      .then((result) => {
+        console.log('Query executed successfully');
+        console.log('Fetched businesses:', result.rows);
+        res.json(result.rows);
+      })
+      .catch((err) => {
+        console.error('Error executing query:', err);
+        res.status(500).json({ error: err.toString() });
+      });
+  });
+
+
+router.get('/', (req, res) => {
+  const queryText = `SELECT * FROM "business"`;
+  pool.query(queryText)
+    .then(result => {
+      res.send(result.rows);
+    })
+    .catch(error => {
+      console.log('Error in business GET route', error);
+      res.sendStatus(500);
+    });
+});
+
 router.get('/', (req, res) => {
   const queryText = `SELECT * FROM "business"`;
   pool.query(queryText)
@@ -52,7 +100,6 @@ router.get('/:id', (req, res) => {
     //filters the results to include only the business with the ID specified by $1
      //groups the results by the business ID (b.id).
 
-
 router.post('/', (req,res)=>{
     const {  business_name, address, business_type, description, user_id, phone_number}= req.body
     const queryText = `
@@ -72,38 +119,6 @@ router.post('/', (req,res)=>{
 })
 
 
-router.get('/all-details', (req, res) => {
-    const query = `
-      SELECT 
-        business.id, 
-        business.business_name, 
-        business.address, 
-        happy_hour.start_time, 
-        happy_hour.end_time, 
-        happy_hour.day_of_week,
-        STRING_AGG(DISTINCT diet.name, ', ') AS diets
-      FROM 
-        business
-      LEFT JOIN 
-        happy_hour ON business.id = happy_hour.business_id
-      LEFT JOIN 
-        business_diet ON business.id = business_diet.business_id
-      LEFT JOIN 
-        diet ON business_diet.diet_id = diet.id
-      GROUP BY 
-        business.id, happy_hour.id
-    `;
-  
-    pool.query(query)
-      .then((result) => {
-        console.log('Fetched businesses:', result.rows);
-        res.json(result.rows);
-      })
-      .catch((err) => {
-        console.error('Error executing query', err);
-        res.sendStatus(500);
-      });
-  });
 
 
 router.get('/:id', (req, res) => {

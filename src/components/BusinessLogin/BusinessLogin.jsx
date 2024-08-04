@@ -1,5 +1,5 @@
 import React from "react";
-import LoginForm from "../LoginForm/LoginForm";
+import BusinessLoginForm from "../BusinessLoginForm/BusinessLoginForm";
 import TheRippleEffect from "../TheRippleEffect/TheRippleEffect";
 
 
@@ -8,7 +8,7 @@ function BusinessLogin() {
     <div>
         <h>You are on business Login</h>
           <TheRippleEffect/>
-      <LoginForm />
+      <BusinessLoginForm />
       BusinessLogin
     
     </div>

@@ -152,7 +152,7 @@ function UserLanding() {
       console.log("handleSearch clicked", place.name);
       dispatch({
         type: "ADD_HISTORY",
-        payload: { search_history: place.name },
+        payload: { search_history: place.name, address: place.address},
       });
     };
 
@@ -238,6 +238,7 @@ function UserLanding() {
               });
     
               marker.addListener('click', () => {
+                dispatch({ type: 'ADD_HISTORY', payload: { search_history: business.business_name, address: business.address} });
                 history.push(`/user-details/${business.id}`);
               });
     
@@ -307,7 +308,7 @@ function UserLanding() {
               // Search for businesses after a place is selected
               await searchDatabasePlaces(mapInstance, place.geometry.location);
       
-              handleSearch(place);
+
               dispatch({ type: "FETCH_HISTORY" });
             });
           }
@@ -341,7 +342,7 @@ function UserLanding() {
             fillOpacity: 0.3,    
             map: map,
             center: currentLocation,
-            radius: 2000 
+            radius: 2000 // 2000 meter radius
           });
       
           setUserLocationCircle(circle);
@@ -350,6 +351,7 @@ function UserLanding() {
           map.setZoom(15); 
         }
       }, [currentLocation, map]);
+      
   
     return (
       <div style={{ height: "500px", width: "100%" }}>
@@ -362,8 +364,8 @@ function UserLanding() {
             border: "1px solid transparent",
             width: "240px",
             height: "32px",
-            marginTop: "45px",
-            padding: " 12px",
+            marginTop: "10px",
+            padding: " 10px",
             borderRadius: "3px",
             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
             fontSize: "14px",
@@ -380,7 +382,7 @@ function UserLanding() {
             sx={{
               width: '90%',
               height: '70%',
-              margin: '50px auto',
+              margin: '5px auto',
               border: '1px solid #ddd',
               borderRadius: '8px',
               overflow: 'hidden',
@@ -479,49 +481,43 @@ function UserLanding() {
           </div>
         )}
 
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: "20px",
-            }}
-          >
-            <Button
-             
-              variant="contained"
-              onClick={handleGetCurrentLocation}
-              sx={{
-                marginTop: "3px",
-                backgroundColor: "#057",
-                "&:hover": {
-                  backgroundColor: "#046",
-                },
-              }}
-            >
-              Use Current Location
-            </Button>
-          </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "20px",
-          }}
-        >
-        <Button
-        variant="contained"
-        onClick={handleRandomButton}
-        sx={{
-          backgroundColor: "#057",
-          "&:hover": {
-            backgroundColor: "#046",
-          },
-          marginTop: "20px"
-        }}
-      >
-        WildCard
-      </Button>
-      </Box>
+<Box
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "5px",  
+    marginBottom: "10px",
+    marginTop: "50px"
+  }}
+>
+  <Button
+  className="currentloc"
+    variant="contained"
+    onClick={handleGetCurrentLocation}
+    sx={{
+      backgroundColor: "#057",
+      "&:hover": {
+        backgroundColor: "#046",
+      },
+    }}
+  >
+    Use Current Location
+  </Button>
+  <Button
+    className="wildcard"
+    variant="contained"
+    onClick={handleRandomButton}
+    sx={{
+      backgroundColor: "#057",
+      "&:hover": {
+        backgroundColor: "#046",
+      },
+    }}
+  >
+    WildCard
+  </Button>
+</Box>
           <Wrapper
             apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
             libraries={["places", "marker"]}
@@ -539,7 +535,7 @@ function UserLanding() {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          marginTop: '-135px', 
+          marginTop: '-140px', 
         }}
       >
         <Buttons onFilterChange={handleFilterChange} />

@@ -163,7 +163,6 @@ function BusinessLanding() {
         </InputContainer>
       </div>
 
-  
 
    
 

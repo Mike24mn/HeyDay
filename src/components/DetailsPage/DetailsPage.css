@@ -87,15 +87,14 @@
     background-color: transparent;
     border: none;
     font-size: 2em;
-    color:#DC143C;;
+    color: #DC143C;
     cursor: pointer;
 }
 
-.favorite-button:hover {
+
+.favorite-button .favorited {
     color: rgb(241, 176, 176);
 }
-
-
 .next-icon {
     background: none;
     border: none;

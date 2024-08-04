@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserNavBar from "../UserNavBar/UserNavBar";
 import { useHistory } from 'react-router-dom';
 import {useSelector} from 'react-redux';
+import './AboutPage.css'; 
 
 function AboutPage() {
   const [happyHours, setHappyHours] = useState([]);
@@ -34,95 +35,53 @@ function AboutPage() {
     fetchHappyHours();
   }, []); // empty dependency array, only run once on initial page load
 */
-  return (
-    <div>
-      <h1>About HeyDay</h1>
-      <p>
-        Welcome to Heyday, your go-to app for finding the best happy hours in
-        town!
-      </p>
+return (
+  <div className="about-page">
+    <h1 className="about-title">Welcome to Heyday</h1>
+    <p className="about-subtitle">Your go-to app for finding the best deals around!</p>
 
-      {isLoading && <p>Loading happy hour data...</p>}
+    <div className="scrollable-content">
+      <section className="about-section">
+        <h2>How to Use the App</h2>
+        <ol className="feature-list">
+          <li>
+            <strong>Search for Deals:</strong> Use the Home page to find deals by location and refine with filters.
+          </li>
+          <li>
+            <strong>Discover Events:</strong> Explore the Heystack for events and user-rated deals.
+          </li>
+          <li>
+            <strong>View Favorites:</strong> Check your saved favorite locations.
+          </li>
+          <li>
+            <strong>Browse History:</strong> Review your recently viewed places.
+          </li>
+        </ol>
+      </section>
 
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+      <section className="about-section">
+        <h2>How It Works</h2>
+        <ol className="feature-list">
+          <li>We collect data from popular food and drink sources.</li>
+          <li>Our system categorizes venues by vibe, diet, and offerings.</li>
+          <li>We use location data to find the best deals near you.</li>
+          <li>The app is regularly updated with current information.</li>
+        </ol>
+      </section>
 
-      {!isLoading && !error && happyHours.length > 0 && (
-        <div>
-          <h2>Happy Hours in Your Area:</h2>
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            {happyHours.map((hh, index) => (
-              <li
-                key={index}
-                style={{
-                  marginBottom: "20px",
-                  borderBottom: "1px solid #ccc",
-                  paddingBottom: "10px",
-                }}
-              >
-                <h3>{hh.name}</h3>
-                <p>
-                  <strong>Address:</strong> {hh.address}
-                </p>
-                <p>
-                  <strong>Deal:</strong> {hh.deal}
-                </p>
-                <p>
-                  <strong>Time:</strong> {hh.time}
-                </p>
-                <p>
-                  <strong>Vibe:</strong> {hh.vibe}
-                </p>
-                {hh.coordinates && (
-                  <p>
-                    <strong>Location:</strong> {hh.coordinates.lat.toFixed(4)},{" "}
-                    {hh.coordinates.lng.toFixed(4)}
-                  </p>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {!isLoading && !error && happyHours.length === 0 && (
-        <p>No happy hour data available at the moment. Check back later!</p>
-      )}
-
-      <h2>About Our App</h2>
-      <p>
-        Heyday is designed to help you discover and enjoy the best happy hours
-        in your area. We gather information from various sources to provide you
-        with up-to-date deals and venue information.
-      </p>
-
-      <h2>How It Works</h2>
-      <ol>
-        <li>We collect data from popular food and drink sources.</li>
-        <li>
-          Our system analyzes the information to categorize venues by vibe, diet and
-          offerings.
-        </li>
-        <li>
-          We use location data to help you find the nearest and best happy hour
-          deals.
-        </li>
-        <li>
-          The app is regularly updated to ensure you have the most current
-          information.
-        </li>
-      </ol>
-
-      <h2>Enjoy Responsibly</h2>
-      <p>
-        While we love a good deal, we encourage all our users to drink
-        responsibly and never drink and drive. Always plan for a safe ride home!
-      </p>
-
-      <center>
-        <UserNavBar />
-      </center>
+      <section className="about-section">
+        <h2>Enjoy Responsibly</h2>
+        <p>
+          While we love a good deal, we encourage all our users to drink
+          responsibly and never drink and drive. Always plan for a safe ride home!
+        </p>
+      </section>
     </div>
-  );
+<div className="navtwo">
+    <UserNavBar />
+    </div>
+  </div>
+);
 }
 
 export default AboutPage;
