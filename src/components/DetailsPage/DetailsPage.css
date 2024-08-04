@@ -13,6 +13,7 @@
     font-size: 2em;
     margin-bottom: 10px;
     color: #DC143C;
+    text-align: center;
 }
 
 .address,
@@ -21,12 +22,16 @@
 .phone-number {
     margin: 5px 0;
     font-size: 1.1em;
+    padding: 2px;
+    text-align: center;
 }
+
 
 .section-title {
     margin-top: 20px;
     font-size: 1.5em;
     color: #DC143C;
+    text-align: center;
 }
 
 .diet-list,
@@ -34,6 +39,7 @@
     list-style: none;
     padding: 0;
     margin: 10px 0;
+    text-align: center;
 }
 
 .diet-item,
@@ -86,10 +92,18 @@
 }
 
 .favorite-button:hover {
-    color: rgb(24, 1, 1);
+    color: rgb(241, 176, 176);
 }
 
-.next-button:hover {
-   color: rgb(85, 6, 6);
 
+.next-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgb(150, 144, 144);
+    font-size: 2em;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }

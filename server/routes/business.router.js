@@ -17,25 +17,21 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const businessId = req.params.id;
   const queryText = `
-    SELECT b.*, 
-      json_agg(DISTINCT jsonb_build_object('id', d.id, 'name', d.name)) AS diets, 
-      json_agg(DISTINCT jsonb_build_object('id', h.id, 'start_time', h.start_time, 'end_time', h.end_time, 'day_of_week', h.day_of_week)) AS happy_hours, 
-      json_agg(DISTINCT bi.image_url) AS images 
-    FROM "business" b 
-    LEFT JOIN "business_diet" bd ON b.id = bd.business_id 
-    LEFT JOIN "diet" d ON bd.diet_id = d.id 
-    LEFT JOIN "happy_hour" h ON b.id = h.business_id 
-    LEFT JOIN "business_image" bi ON b.id = bi.business_id 
-    WHERE b.id = $1 
-    GROUP BY b.id;
-  `;
-
-    //Select all columns from the business table
-        //combines multiple rows of data into a single JSON array.
-        //connect the business table with other related tables (business_diet, diet, happy_hour, business_image).
-        //filters the results to include only the business with the ID specified by $1
-        //groups the results by the business ID (b.id).
-
+  SELECT b.*, 
+    json_agg(DISTINCT jsonb_build_object('id', d.id, 'name', d.name)) AS diets, 
+    json_agg(DISTINCT jsonb_build_object('id', v.id, 'name', v.name)) AS vibes, 
+    json_agg(DISTINCT jsonb_build_object('id', h.id, 'start_time', h.start_time, 'end_time', h.end_time, 'day_of_week', h.day_of_week)) AS happy_hours, 
+    json_agg(DISTINCT bi.image_url) AS images 
+  FROM "business" b 
+  LEFT JOIN "business_diet" bd ON b.id = bd.business_id 
+  LEFT JOIN "diet" d ON bd.diet_id = d.id 
+  LEFT JOIN "business_vibe" bv ON b.id = bv.business_id 
+  LEFT JOIN "vibe" v ON bv.vibe_id = v.id 
+  LEFT JOIN "happy_hour" h ON b.id = h.business_id 
+  LEFT JOIN "business_image" bi ON b.id = bi.business_id 
+  WHERE b.id = $1 
+  GROUP BY b.id;
+`;
   pool.query(queryText, [businessId])
     .then(result => {
       if (result.rows.length > 0) {
@@ -50,9 +46,12 @@ router.get('/:id', (req, res) => {
     });
 });
 
-module.exports = router;
+  //Select all columns from the business table
+  //combines multiple rows of data into a single JSON array.
+   //connect the business table with other related tables (business_diet, diet, happy_hour, business_image).
+    //filters the results to include only the business with the ID specified by $1
+     //groups the results by the business ID (b.id).
 
-      
 
 router.post('/', (req,res)=>{
     const {  business_name, address, business_type, description, user_id, phone_number}= req.body

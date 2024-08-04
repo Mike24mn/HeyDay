@@ -38,6 +38,8 @@ function LoginForm(props) {
         payload: {
           username: username,
           password: password,
+          isBusiness: true,
+          
         },
       });
     } else {
@@ -45,6 +47,7 @@ function LoginForm(props) {
     }
   }; // end login
 
+  
   return (
     <form className="formPanel" onSubmit={login}>
       <center><h2>Login</h2></center> 
