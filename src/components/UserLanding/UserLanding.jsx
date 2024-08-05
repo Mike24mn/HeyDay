@@ -35,9 +35,13 @@ new keyword creates instances of a class
 global scope window object in javascript represents browser window (allows us to manipulate map elements in a more dynamic/fluid fashion)
 */
 function UserLanding() {
+
+    localStorage.removeItem('hasSeenWelcome');
     const history = useHistory()
     const [showWelcome, setShowWelcome] = useState(false)
+    const user = useSelector((store) => store.user);
 
+    const [hoverInfo, setHoverInfo] = useState(null);
   // get the dispatch function to send the action to Redux
   const dispatch = useDispatch();
   const businesses = useSelector(state => state.business);
@@ -46,24 +50,34 @@ function UserLanding() {
     console.log("Checking welcome message condition");
     const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
     console.log("hasSeenWelcome:", hasSeenWelcome);
-    if (hasSeenWelcome) {
+  
+    if (!hasSeenWelcome) {
       console.log("Setting showWelcome to true");
       setShowWelcome(true);
-    //  localStorage.setItem('hasSeenWelcome', 'true');
+      localStorage.setItem('hasSeenWelcome', 'true');
       
       const timer = setTimeout(() => {
         console.log("Timer expired, setting showWelcome to false");
         setShowWelcome(false);
-      }, 3000);
+      }, 10000);
   
       return () => clearTimeout(timer);
+    } else {
+      console.log("User has already seen welcome message");
     }
   }, []);
   
+  useEffect(() => {
+    console.log("showWelcome state changed:", showWelcome);
+  }, [showWelcome]);
 
   const handleDismissWelcome = () => {
     setShowWelcome(false);
   };
+
+  useEffect(() => {
+    console.log("User data:", user);
+  }, [user]);
 
   
   async function loadCityGeoJSON(cityName) {
@@ -209,7 +223,7 @@ function UserLanding() {
   
       const searchDatabasePlaces = async (mapInstance, searchLocation) => {
         try {
-          const response = await fetch('/api/business');
+          const response = await fetch('/api/business/all-details');
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -233,10 +247,22 @@ function UserLanding() {
               const marker = new google.maps.Marker({
                 position: coords,
                 map: mapInstance,
-                title: business.address,
+                title: business.business_name,
                 icon: icon
               });
-    
+
+              const infoWindow = new google.maps.InfoWindow({
+                 content: `<div><h3>${business.business_name}</h3><p><h3>${business.address}</h3></p><p>${business.description || 'No description available'}</p></div>`
+              });
+
+              marker.addListener('mouseover', () => {
+                infoWindow.open(mapInstance, marker);
+              });
+      
+              marker.addListener('mouseout', () => {
+                infoWindow.close();
+              });
+
               marker.addListener('click', () => {
                 dispatch({ type: 'ADD_HISTORY', payload: { search_history: business.business_name, address: business.address} });
                 history.push(`/user-details/${business.id}`);
@@ -1222,7 +1248,7 @@ function UserLanding() {
       ];
       return (
         <div>
-        {showWelcome && (
+        {showWelcome && user && (
           <div
             className="welcome-message"
             style={{
@@ -1245,7 +1271,8 @@ function UserLanding() {
           >
     <div className="welcome-message-content">
       <h2>Welcome to Heyday, {user.username}!</h2>
-      <p>Click anywhere to dismiss</p>
+      <p>Head over to the getting started page for a quick tutorial!</p>
+      <p>(Click anywhere to exit)</p>
     </div>
           </div>
         )}

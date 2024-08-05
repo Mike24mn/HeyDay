@@ -13,44 +13,31 @@ function LoginPage() {
       <LoginForm />
       
 
-      <center>
-        
-        Dont have an account? <p></p>
-        <button
-          type="button"
-          className="btn btn_asLink"
-          onClick={() => {
-            history.push('/registration');
-          }}
-        >
-          
-          Signup
-        </button>
-        <p></p>
+      <center><div className='dntacc'>
+  Don't have an account? <p></p></div>
+  <button
+    type="button"
+    className="btn btn_asLink"
+    onClick={() => {
+      history.push('/registration');
+    }}
+  >
+    Signup
+  </button>
+  <p></p>
 
-        <button
-          type="button"
-          className="btn btn_asLink"
-          onClick={() => {
-            history.push("/business-login");
-          }}
-        >
-          
-        
-          Access Business Portal
-         </button>
-         <p></p>
-         <button
-          type="button"
-          className="btn btn_asLink"
-          onClick={() => {
-            history.push('/user-landing-nonlogin');
-          }}
-        >
-          
-          Skip login
-        </button>
-          </center>
+  <button
+    type="button"
+    className="btn btn_asLink"
+    onClick={() => {
+      history.push('/business-login');
+    }}
+  >
+    Access Business Portal
+  </button>
+  <p></p>
+  
+</center>
 
       
     </div>

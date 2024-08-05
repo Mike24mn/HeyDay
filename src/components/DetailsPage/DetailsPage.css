@@ -52,6 +52,7 @@
 
 .image-gallery {
     margin-top: 20px;
+
 }
 
 .image-container {
@@ -94,4 +95,17 @@
 
 .favorite-button .favorited {
     color: #1E90FF; 
+}
+
+.next-icon {
+    border: #ffffff;
+    border-radius: 20px;
+opacity: 0.9;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+  font-size: 2em;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }

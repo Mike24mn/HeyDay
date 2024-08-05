@@ -14,7 +14,7 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5); 
     z-index: 9999; 
-    animation: fadeInOut 7s ease-in-out forwards;
+    animation: fadeInOut 15s ease-in-out forwards;
   }
   
   .welcome-message-content {

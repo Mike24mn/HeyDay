@@ -52,7 +52,7 @@ function App() {
 
   return (
     <Router history={history}>
-      <div>
+        <div className="app-container">
         <Nav />
         <Switch>
           {/* Visiting localhost:5173 will redirect to localhost:5173/home */}
@@ -104,7 +104,17 @@ function App() {
 
           <Route exact path="/business-reg" component={BusinessRegister} />
 
-          <ProtectedRoute exact path="/user-login" component={LogOutButton} />
+              <ProtectedRoute exact path="/user-login">
+              {user?.id ? (
+                user.access_level === 2 ? (
+                  <Redirect to="/business-login" />
+                ) : (
+                  <Redirect to="/user-login" />
+                )
+              ) : (
+                <LoginPage />
+              )}
+            </ProtectedRoute>
 
           <Route exact path="/random" component={RandomPlace} />
 
