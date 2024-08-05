@@ -24,41 +24,40 @@ const StyledLink = styled(Link)({
 });
 
 const StyledMenuItem = styled(MenuItem)({
-    backgroundColor: "#057",
-    color: "#fff",
-    '&:hover': {
-      backgroundColor: "#046",
-      color: "#FFFFFF"
-    },
-  });
+  backgroundColor: "#057",
+  color: "#fff",
+  '&:hover': {
+    backgroundColor: "#046",
+    color: "#FFFFFF"
+  },
+});
 
-  const StyButton = styled(Link)({
-    color: "#FFFFFF",
-    textDecoration: "underline",
-    width: "100%",
-    display: "block",
-    fontWeight: "bold",
-    padding: "6px 16px",
-    backgroundColor: "#057",
-    '&:hover': {
-      backgroundColor: "#046",
-      color: "#FFFFFF", 
-      textDecoration: "underline", 
-    },
-  });
-  
-  export default function UserHamburgerMenu() {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const user = useSelector((store) => store.user);
-  
-    const handleMenuOpen = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-  
-    const handleMenuClose = () => {
-      setAnchorEl(null);
-    };
-  
+const StyButton = styled(Link)({
+  color: "#FFFFFF",
+  textDecoration: "underline",
+  width: "100%",
+  display: "block",
+  fontWeight: "bold",
+  padding: "6px 16px",
+  backgroundColor: "#057",
+  '&:hover': {
+    backgroundColor: "#046",
+    color: "#FFFFFF", 
+    textDecoration: "underline", 
+  },
+});
+
+export default function UserHamburgerMenu() {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const user = useSelector((store) => store.user);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Box sx={{ flexGrow: 1, width: "100%", backgroundColor: "#000" }}>
@@ -96,6 +95,18 @@ const StyledMenuItem = styled(MenuItem)({
               <MenuItem component={StyButton} to="/login" onClick={handleMenuClose}>
                 Login
               </MenuItem>
+            ) : user.access_level === 2 ? (
+              <>
+                <MenuItem component={StyButton} to="/business-landing" onClick={handleMenuClose}>
+                  Business Home
+                </MenuItem>
+                <MenuItem component={StyButton} to="/edit-business-details" onClick={handleMenuClose}>
+                  Edit Business Details
+                </MenuItem>
+                <MenuItem component={StyButton} to="/view-as-user" onClick={handleMenuClose}>
+                  View As User
+                </MenuItem>
+              </>
             ) : (
               <>
                 <MenuItem component={StyButton} to="/user-landing" onClick={handleMenuClose}>
@@ -116,7 +127,7 @@ const StyledMenuItem = styled(MenuItem)({
               Getting Started
             </MenuItem>
             {user?.id && (
-              <MenuItem onClick={handleMenuClose} >
+              <MenuItem onClick={handleMenuClose}>
                 <LogOutButton Button color="inherit" />
               </MenuItem>
             )}
@@ -130,4 +141,5 @@ const StyledMenuItem = styled(MenuItem)({
         </Toolbar>
       </AppBar>
     </Box>
-  );}
+  );
+}

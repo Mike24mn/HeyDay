@@ -50,6 +50,8 @@ function App() {
     }
   }, [user]);
 
+  
+
   return (
     <Router history={history}>
         <div className="app-container">
@@ -60,6 +62,14 @@ function App() {
 
           {/* Note to self, these are old routes */}
           <Route exact path="/about" component={AboutPage} />
+
+
+          {/* These routes need access checks
+          based on access level 1 and 2,
+          we need to figure out the logic for this and for
+          each route here that effects business logout
+          from bugging out and breaking the App
+          */}
 
           <Route exact path="/login">
             {user?.id ? (

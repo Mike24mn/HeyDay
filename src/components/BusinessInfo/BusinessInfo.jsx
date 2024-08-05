@@ -74,7 +74,7 @@ const BusinessInfo = () => {
                 Fill Out Business Info
             </Button>
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle className="dialog-title">Business Fill Out Form</DialogTitle>
+                <DialogTitle className="dialog-title">Please enter your business details:</DialogTitle>
                 <DialogContent className="dialog-content">
                     <form onSubmit={handleSubmit}>
                         <TextField

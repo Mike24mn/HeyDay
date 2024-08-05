@@ -20,6 +20,7 @@ import L, { icon } from "leaflet"; // feel free to delete before client-hand off
 import "leaflet/dist/leaflet.css"; // feel free to delete before client-hand off, we are not using this anymore
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import './UserLanding.css'
+import business from "../../redux/reducers/business.reducer";
 
 /*
 General notes and reminders for Heyday friends about the UserLanding function:
@@ -434,9 +435,11 @@ function UserLanding() {
     const user = useSelector((store) => store.user);
 
     const handleRandomButton = () => {
-      if (businesses.length > 0) {
-        const randomIndex = Math.floor(Math.random() * businesses.length);
-        const randomBusiness = businesses[randomIndex];
+        const eligibleBusinesses = businesses.filter(business => business.id < 10);
+
+        if (eligibleBusinesses.length > 0) {
+          const randomIndex = Math.floor(Math.random() * eligibleBusinesses.length);
+          const randomBusiness = eligibleBusinesses[randomIndex];
         history.push(`/user-details/${randomBusiness.id}`);
       } else {
         console.log("No businesses available");
