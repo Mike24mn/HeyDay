@@ -1,0 +1,48 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+}
+.busclass {
+    color: #0980ff;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px; 
+    font-size: 1.5rem;
+}
+.business-button {
+    display: block;
+    margin: 0 auto;
+}
+@media (max-width: 768px) {
+    .business-button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+.dialog-content {
+    padding: 20px;
+}
+.text-field {
+    margin-bottom: 20px;
+}
+.dialog-actions {
+    justify-content: center;
+    padding: 20px;
+}
+.dialog-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 10px 0;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    color: aliceblue;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 10px; 
+}

@@ -9,7 +9,14 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import BusinessNavBar from '../BusinessNavBar/BusinessNavBar';
-import "./BusinessLanding.css"
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { Paper } from '@mui/material';
+import "./BusinessLanding.css";
 
 const LoginButton = styled(Button)({
   backgroundColor: "#057",
@@ -17,13 +24,21 @@ const LoginButton = styled(Button)({
     backgroundColor: "#046",
   },
 });
-
 const InputContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
   marginBottom: '20px',
 });
+
+const CustomDialogPaper = styled(Paper)(({ theme }) => ({
+  position: 'absolute',
+  top: '-10%', 
+  left: '35%',
+  transform: 'translate(-50%, 0)', 
+  width: '80%',
+  maxWidth: '600px',
+}));
 
 function BusinessLanding() {
   const [getHappy, setHappy] = useState('');
@@ -33,32 +48,29 @@ function BusinessLanding() {
   const [happyEndTime, setHappyEndTime] = useState('');
   const [happyHourDate, setHappyHourDate] = useState('');
   const [selectedBusinessId, setSelectedBusinessId] = useState('');
-
+  const [openModal, setOpenModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  
   const business = useSelector(store => store.business);
   const user = useSelector(store => store.user);
   const happy = useSelector(store => store.happy);
-
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
   }, [dispatch]);
-
-
+  
   const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
   const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
-
+  
   const handleHappy = (event) => {
     event.preventDefault();
-
     if (!selectedBusinessId) {
       console.error('No business selected');
       return;
     }
-
     console.log("Selected Business ID: ", selectedBusinessId);
-
     dispatch({
       type: 'ADD_HAPPY',
       payload: {
@@ -72,9 +84,8 @@ function BusinessLanding() {
         name: getName,
       },
     });
-
     dispatch({ type: 'SET_HAPPY' });
-
+    
     setHappy('');
     setName('');
     setAddress('');
@@ -82,38 +93,46 @@ function BusinessLanding() {
     setHappyHourDate('');
     setHappyEndTime('');
     setSelectedBusinessId('');
+    
+    setModalMessage('Business registered successfully!');
+    setOpenModal(true);
   };
-
+  
   const handleDel = (id) => {
     dispatch({ type: "DELETE_HAPPY", payload: { id } });
     dispatch({ type: 'SET_HAPPY' });
   };
-
+  
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleDateString();
   };
-
+  
   const formatTime = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleTimeString();
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
 
   return (
     <>
       <div>
         <center>
-          <h1>Welcome {user.username}</h1>
+          <h1 className='busland'>Welcome {user.username}</h1>
         </center>
-        <h2>
+        <h2 className='buslandtwo'>
           {busFilter.map((bus) => (
             <p key={bus.id}>
-              <center>{bus.business_name}</center>
+              <center>Business Name:<p></p>{bus.business_name}</center>
             </p>
           ))}
         </h2>
         <InputContainer>
           <select
+            className="select-input"
             value={selectedBusinessId}
             onChange={(event) => setSelectedBusinessId(event.target.value)}
           >
@@ -125,48 +144,47 @@ function BusinessLanding() {
             ))}
           </select>
           <input
+            className="text-input"
             type="text"
             value={getName}
             onChange={(event) => setName(event.target.value)}
             placeholder='Happy Hour Name'
           />
           <input
+            className="text-input"
             type="text"
             value={getAddress}
             onChange={(event) => setAddress(event.target.value)}
             placeholder='Address of Happy Hour'
           />
           <input
+            className="text-input"
             type="text"
             value={getHappy}
             onChange={(event) => setHappy(event.target.value)}
             placeholder="Enter description"
           />
           <input
+            className="date-input"
             type="date"
             value={happyHourDate}
             onChange={(event) => setHappyHourDate(event.target.value)}
-            placeholder="Enter date"
           />
           <input
+            className="time-input"
             type="time"
             value={happyHourTime}
             onChange={(event) => setHappyHourTime(event.target.value)}
-            placeholder="start time"
           />
           <input
+            className="time-input"
             type="time"
             value={happyEndTime}
             onChange={(event) => setHappyEndTime(event.target.value)}
-            placeholder="End time"
           />
           <LoginButton onClick={handleHappy}>SUBMIT</LoginButton>
         </InputContainer>
       </div>
-
-
-   
-
       <Grid container spacing={4} justifyContent="center">
         {happyFilter.map((hap) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={hap.id}>
@@ -211,11 +229,36 @@ function BusinessLanding() {
       </Grid>
       <footer>
         <div className="buslandingbar">
-        <BusinessNavBar />
+          <BusinessNavBar />
         </div>
       </footer>
-    </>
 
+      {/* Confirmation Modal */}
+      <Dialog open={openModal} onClose={handleCloseModal} PaperComponent={CustomDialogPaper}>
+        <DialogTitle>
+          Confirmation
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={handleCloseModal}
+            aria-label="close"
+            sx={{ position: 'absolute', right: 8, top: 8, color: (theme) => theme.palette.grey[500] }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            {modalMessage}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 

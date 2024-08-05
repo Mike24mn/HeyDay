@@ -19,8 +19,8 @@ const formatDate = (isoDateString) => {
 };
 
 const getColor = (value) => {
-    const lightBlue = { r: 173, g: 216, b: 230 };
-    const dodgerBlue = { r: 30, g: 144, b: 255 };
+    const lightBlue = { r: 3, g: 216, b: 230 };
+    const dodgerBlue = { r: 0, g: 144, b: 255 };
   
     const interpolate = (start, end, factor) => {
       return Math.round(start + (end - start) * factor);
