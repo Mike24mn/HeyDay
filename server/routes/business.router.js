@@ -100,26 +100,106 @@ router.get('/:id', (req, res) => {
     //filters the results to include only the business with the ID specified by $1
      //groups the results by the business ID (b.id).
 
-router.post('/', (req,res)=>{
-    const {  business_name, address, business_type, description, user_id, phone_number}= req.body
-    const queryText = `
-    INSERT INTO "business" ("business_name", "address","description", "business_type", "user_id","phone_number")
-    VALUES($1,$2,$3,$4,$5,$6)
-    `
-    const queryValues = [  business_name, address, business_type, description, user_id,  phone_number];
-
-    pool.query(queryText, queryValues)
-    .then((response)=>{
-        console.log("checking response in POST bus router");
-        res.status(200).json(response.rows[0])
-    })
-    .catch((error)=>{
-        console.log("error in POST bus route", error);
-    })
-})
-
-
-
+     router.post('/', (req, res) => {
+      const { business_name, address, business_type, description, user_id, phone_number, vibe, diet, image_url } = req.body;
+      pool.connect()
+          .then(client => {
+              client.query('BEGIN')
+                  .then(() => {
+                      // Insert into business table
+                      const businessQuery = `
+                          INSERT INTO "business" ("business_name", "address", "description", "business_type", "user_id", "phone_number")
+                          VALUES ($1, $2, $3, $4, $5, $6)
+                          RETURNING id
+                      `;
+                      const businessValues = [business_name, address, description, business_type, user_id, phone_number];
+                      return client.query(businessQuery, businessValues)
+                          .then(businessResult => {
+                              const businessId = businessResult.rows[0].id;
+  
+                              // Insert vibe
+                              if (vibe) {
+                                  const vibeQuery = `
+                                      INSERT INTO "vibe" ("name")
+                                      VALUES ($1)
+                                      ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+                                      RETURNING id
+                                  `;
+                                  return client.query(vibeQuery, [vibe])
+                                      .then(vibeResult => {
+                                          const vibeId = vibeResult.rows[0].id;
+                                          return client.query(
+                                              'INSERT INTO "business_vibe" ("business_id", "vibe_id") VALUES ($1, $2)',
+                                              [businessId, vibeId]
+                                          ).then(() => businessId);
+                                      });
+                              } else {
+                                  return Promise.resolve(businessId);
+                              }
+                          })
+                          .then(businessId => {
+                              // Insert diet
+                              if (diet) {
+                                  const dietQuery = `
+                                      INSERT INTO "diet" ("name")
+                                      VALUES ($1)
+                                      ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+                                      RETURNING id
+                                  `;
+                                  return client.query(dietQuery, [diet])
+                                      .then(dietResult => {
+                                          const dietId = dietResult.rows[0].id;
+                                          return client.query(
+                                              'INSERT INTO "business_diet" ("business_id", "diet_id") VALUES ($1, $2)',
+                                              [businessId, dietId]
+                                          ).then(() => businessId);
+                                      });
+                              } else {
+                                  return Promise.resolve(businessId);
+                              }
+                          })
+                          .then(businessId => {
+                              // Insert image URL
+                              if (image_url) {
+                                  return client.query(
+                                      'INSERT INTO "business_image" ("business_id", "image_url") VALUES ($1, $2)',
+                                      [businessId, image_url]
+                                  ).then(() => businessId);
+                              } else {
+                                  return Promise.resolve(businessId);
+                              }
+                          })
+                          .then(businessId => {
+                              return client.query('COMMIT')
+                                  .then(() => {
+                                      client.release();
+                                      res.status(200).json({ id: businessId, business_name, address, description, business_type, user_id, phone_number, vibe, diet, image_url });
+                                  });
+                          })
+                          .catch(error => {
+                              return client.query('ROLLBACK')
+                                  .then(() => {
+                                      client.release();
+                                      console.log("error in POST bus route", error);
+                                      res.status(500).json({ error: "An error occurred while adding the business" });
+                                  });
+                          });
+                  })
+                  .catch(error => {
+                      client.query('ROLLBACK')
+                          .then(() => {
+                              client.release();
+                              console.log("error in POST bus route", error);
+                              res.status(500).json({ error: "An error occurred while adding the business" });
+                          });
+                  });
+          })
+          .catch(error => {
+              console.log("error in connecting to the pool", error);
+              res.status(500).json({ error: "An error occurred while connecting to the database" });
+          });
+  });
+  
 
 router.get('/:id', (req, res) => {
     const queryText = 'SELECT * FROM "business" WHERE id = $1;'

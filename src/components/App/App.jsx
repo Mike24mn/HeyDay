@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HashRouter as Router,
   Redirect,
@@ -21,7 +21,7 @@ import AboutPage from "../AboutPage/AboutPage";
 import BusinessRegister from "../BusinessRegister/BusinessRegister";
 
 import BusinessViewAsUser from "../BusinessViewAsUser/BusinessViewAsUser";
-import UserLanding from "../UserLanding/UserLanding"; 
+import UserLanding from "../UserLanding/UserLanding";
 import DetailsPage from "../DetailsPage/DetailsPage";
 import UserFavoriteLocations from "../UserFavoriteLocations/UserFavoriteLocations";
 import BusinessLogin from "../BusinessLogin/BusinessLogin";
@@ -30,23 +30,28 @@ import BusinessEditPage from "../BusinessEditPage/BusinessEditPage";
 import BusinessInfo from "../BusinessInfo/BusinessInfo";
 
 import UserSearchHistory from "../UserSearchHistory/UserSearchHistory";
-
+import history from '../../history';
 import "./App.css";
 import { Logout } from "@mui/icons-material";
 import LogOutButton from "../LogOutButton/LogOutButton";
 
-
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     dispatch({ type: "FETCH_USER" });
-   
-}, [dispatch]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user !== null) {
+      setLoading(false);
+    }
+  }, [user]);
 
   return (
-    <Router>
+    <Router history={history}>
       <div>
         <Nav />
         <Switch>
@@ -54,88 +59,56 @@ function App() {
           <Redirect exact from="/" to="/home" />
 
           {/* Note to self, these are old routes */}
-          <Route exact path="/about">
-            <AboutPage />
-          </Route>
+          <Route exact path="/about" component={AboutPage} />
 
           <Route exact path="/login">
-            {user.id ? <Redirect to="/user-landing" /> : <LoginPage />}
+            {user?.id ? (
+              user.access_level === 2 ? (
+                <Redirect to="/business-landing" />
+              ) : (
+                <Redirect to="/user-landing" />
+              )
+            ) : (
+              <LoginPage />
+            )}
           </Route>
 
           <Route exact path="/registration">
-            {user.id ? <Redirect to="/user-landing" /> : <RegisterPage />}
+            {user?.id ? <Redirect to="/user-landing" /> : <RegisterPage />}
           </Route>
 
           {/* new Heyday routes */}
-          <Route exact path="/business-login">
-            <BusinessLogin />
-          </Route>
+          <Route exact path="/business-login" component={BusinessLogin} />
 
-          <Route exact path="/user-landing-nonlogin">
-            <UserLanding />
-          </Route>
-          
+          <Route exact path="/user-landing-nonlogin" component={UserLanding} />
 
-          <ProtectedRoute exact path="/business-landing">
-            <BusinessLanding />
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/business-landing" component={BusinessLanding} />
 
-          <ProtectedRoute exact path="/edit-business-details">
-            <BusinessEditPage />
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/edit-business-details" component={BusinessEditPage} />
 
-          <ProtectedRoute exact path="/view-as-user">
-            <BusinessViewAsUser />
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/view-as-user" component={BusinessViewAsUser} />
 
-          <Route exact path="/user-login">
-            <LoginPage />
-          </Route>
+          <Route exact path="/user-login" component={LoginPage} />
 
-          <ProtectedRoute exact path="/user-landing">
-            <UserLanding />
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/user-landing" component={UserLanding} />
 
-          <ProtectedRoute exact path="/user-details/:id">
-            <DetailsPage />
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/user-details/:id" component={DetailsPage} />
 
-      
+          <ProtectedRoute exact path="/favorite-locations" component={UserFavoriteLocations} />
 
-          <ProtectedRoute exact path="/favorite-locations">
-            <UserFavoriteLocations />
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/user-search-history" component={UserSearchHistory} />
 
-          <ProtectedRoute exact path="/user-search-history">
-            <UserSearchHistory />
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/getting-started" component={AboutPage} />
 
-          <ProtectedRoute exact path="/getting-started">
-            <AboutPage />
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/businessinfo" component={BusinessInfo} />
 
+          <Route exact path="/business-reg" component={BusinessRegister} />
 
-          <ProtectedRoute exact path="/businessinfo">
-            <BusinessInfo/>
-          </ProtectedRoute>
+          <ProtectedRoute exact path="/user-login" component={LogOutButton} />
 
-          <Route exact path="/business-reg">
-            <BusinessRegister/>
-          </Route>
+          <Route exact path="/random" component={RandomPlace} />
 
-          <ProtectedRoute exact path="/user-login">
-            <LogOutButton />
-          </ProtectedRoute>
-
-            <Route exact path="/random" >
-            <RandomPlace/>
-
-            </Route>
-
-            <Route exact path="/happy">
-              <HappyMapping/>
-            </Route>
-
+          <Route exact path="/happy" component={HappyMapping} />
         </Switch>
         <Footer />
       </div>

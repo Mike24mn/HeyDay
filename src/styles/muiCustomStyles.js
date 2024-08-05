@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme();
 
-const muiCustomStyles = {
+const ourStyles = {
     box: {
         width: {
             xs: '100vw',

@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import BusinessNavBar from '../BusinessNavBar/BusinessNavBar';
+import "./BusinessLanding.css";
 
 const LoginButton = styled(Button)({
   backgroundColor: "#057",
@@ -43,7 +44,6 @@ function BusinessLanding() {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
   }, [dispatch]);
-
 
   const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
   const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
@@ -113,6 +113,7 @@ function BusinessLanding() {
         </h2>
         <InputContainer>
           <select
+            className="select-input"
             value={selectedBusinessId}
             onChange={(event) => setSelectedBusinessId(event.target.value)}
           >
@@ -124,47 +125,47 @@ function BusinessLanding() {
             ))}
           </select>
           <input
+            className="text-input"
             type="text"
             value={getName}
             onChange={(event) => setName(event.target.value)}
             placeholder='Happy Hour Name'
           />
           <input
+            className="text-input"
             type="text"
             value={getAddress}
             onChange={(event) => setAddress(event.target.value)}
             placeholder='Address of Happy Hour'
           />
           <input
+            className="text-input"
             type="text"
             value={getHappy}
             onChange={(event) => setHappy(event.target.value)}
             placeholder="Enter description"
           />
           <input
+            className="date-input"
             type="date"
             value={happyHourDate}
             onChange={(event) => setHappyHourDate(event.target.value)}
-            placeholder="Enter date"
           />
           <input
+            className="time-input"
             type="time"
             value={happyHourTime}
             onChange={(event) => setHappyHourTime(event.target.value)}
-            placeholder="start time"
           />
           <input
+            className="time-input"
             type="time"
             value={happyEndTime}
             onChange={(event) => setHappyEndTime(event.target.value)}
-            placeholder="End time"
           />
           <LoginButton onClick={handleHappy}>SUBMIT</LoginButton>
         </InputContainer>
       </div>
-
-
-   
 
       <Grid container spacing={4} justifyContent="center">
         {happyFilter.map((hap) => (
@@ -209,10 +210,11 @@ function BusinessLanding() {
         ))}
       </Grid>
       <footer>
-        <BusinessNavBar />
+        <div className="buslandingbar">
+          <BusinessNavBar />
+        </div>
       </footer>
     </>
-
   );
 }
 

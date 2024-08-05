@@ -10,16 +10,16 @@ function* getbus(){
         console.log("error in bus get gen saga", error);
     }
 }
-
-    function* addBus(action){
-        try{
-            const response = yield axios.post(`/api/business`, action.payload)
-            yield put({type:'ADD_BUS_SUCCESS', payload: response.data})
-        } catch (error){
-            console.log("error in saga bus add gen ", error );
-        }
+function* addBus(action) {
+    try {
+        const response = yield axios.post(`/api/business`, action.payload);
+        yield put({type: 'ADD_BUS_SUCCESS', payload: response.data});
+        yield put({type: 'SET_BUS'}); 
+    } catch (error) {
+        console.log("error in saga bus add gen ", error);
+        yield put({type: 'ADD_BUS_FAILURE', payload: error.message});
     }
-  
+}
     function* fetchAllBusinesses() {
         try {
           const response = yield axios.get('/api/business');

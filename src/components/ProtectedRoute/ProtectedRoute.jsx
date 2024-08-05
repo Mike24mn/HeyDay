@@ -27,7 +27,7 @@ function ProtectedRoute({ component, children, ...props }) {
       // are now passed along to the 'Route' Component
       {...props}
     >
-      {user.id ?
+      {user?.id ?
         // If the user is logged in, show the protected component
         <ProtectedComponent />
         :
