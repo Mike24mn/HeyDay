@@ -19,10 +19,21 @@ const formatDate = (isoDateString) => {
 };
 
 const getColor = (value) => {
-    const red = Math.min(255, Math.floor((255 * value) / 100));
-    const green = Math.min(255, Math.floor((255 * (100 - value)) / 100));
-    return `rgb(${red},${green},0)`;
-};
+    const lightBlue = { r: 173, g: 216, b: 230 };
+    const dodgerBlue = { r: 30, g: 144, b: 255 };
+  
+    const interpolate = (start, end, factor) => {
+      return Math.round(start + (end - start) * factor);
+    };
+  
+    const factor = value / 100;
+    const red = interpolate(dodgerBlue.r, lightBlue.r, factor);
+    const green = interpolate(dodgerBlue.g, lightBlue.g, factor);
+    const blue = interpolate(dodgerBlue.b, lightBlue.b, factor);
+  
+    return `rgb(${red},${green},${blue})`;
+  };
+  
 
 const HappyMapping = () => {
     const happy = useSelector(store => store.happy);
@@ -82,7 +93,7 @@ const HappyMapping = () => {
                                     {formatDate(item.date)}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                   Location: Minneapolis {item.address}
+                                   Location:  {item.address}
                                 </Typography>
                                 <Typography variant="h5" component="div">
                                   Start Time:  {new Date(`1970-01-01T${item.start_time}`).toLocaleTimeString('en-US', 
