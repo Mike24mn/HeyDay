@@ -1,5 +1,5 @@
 import axios from "axios";
-import { takeLatest, put } from "redux-saga/effects";
+import { takeLatest, put, select } from "redux-saga/effects";
 
 function* getHappy() {
     try {
@@ -42,12 +42,18 @@ function* updateLike(action) {
         console.log('Server response for updateLike:', response.data);
         let likes;
         if (response.data && response.data.rows && response.data.rows.length > 0) {
-            likes = Number(response.data.rows[0].likes);
+            likes = parseInt(response.data.rows[0].likes, 10);
         } else if (response.data && response.data.likes) {
-            likes = Number(response.data.likes);
+            likes = parseInt(response.data.likes, 10);
         } else {
-            console.error('Unexpected response structure:', response.data);
-            throw new Error('Unexpected response structure');
+            // If we can't get the updated likes from the response, 
+            // we'll fetch the current state and update it
+            const currentState = yield select(state => state.happy);
+            const currentItem = currentState.find(item => item.id === id);
+            likes = parseInt(currentItem.likes, 10) + 1;
+        }
+        if (isNaN(likes)) {
+            throw new Error('Invalid likes value');
         }
         yield put({ 
             type: 'UPDATE_LIKE_SUCCESS', 
@@ -70,12 +76,18 @@ function* updateInterest(action) {
         console.log('Server response for updateInterest:', response.data);
         let interested;
         if (response.data && response.data.rows && response.data.rows.length > 0) {
-            interested = Number(response.data.rows[0].interested);
+            interested = parseInt(response.data.rows[0].interested, 10);
         } else if (response.data && response.data.interested) {
-            interested = Number(response.data.interested);
+            interested = parseInt(response.data.interested, 10);
         } else {
-            console.error('Unexpected response structure:', response.data);
-            throw new Error('Unexpected response structure');
+            // If we can't get the updated interested count from the response, 
+            // we'll fetch the current state and update it
+            const currentState = yield select(state => state.happy);
+            const currentItem = currentState.find(item => item.id === id);
+            interested = increment ? (parseInt(currentItem.interested, 10) + 1) : (parseInt(currentItem.interested, 10) - 1);
+        }
+        if (isNaN(interested)) {
+            throw new Error('Invalid interested value');
         }
         yield put({ 
             type: 'UPDATE_INT_SUCCESS', 
@@ -90,7 +102,6 @@ function* updateInterest(action) {
         yield put({ type: 'UPDATE_INT_FAILURE', error });
     }
 }
-
 
 function* happySaga() {
     yield takeLatest('SET_HAPPY', getHappy);

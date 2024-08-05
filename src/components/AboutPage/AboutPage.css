@@ -4,11 +4,12 @@
   padding: 20px;
   font-family: Arial, sans-serif;
   color: #333;
+  background-color: rgb(11,11,11);;
 }
 
 .about-title {
   font-size: 2.5em;
-  color: #1a1a1a;
+  color: #fbfbfb;
   text-align: center;
   margin-bottom: 10px;
   margin-top: 20px;
@@ -16,7 +17,7 @@
 
 .about-subtitle {
   font-size: 1.2em;
-  color: #555;
+  color: #8c8c8c;
   text-align: center;
   margin-bottom: 30px;
 }
@@ -36,7 +37,7 @@
 
 .about-section h2 {
   font-size: 1.8em;
-  color: #2c3e50;
+  color: #075078;
   border-bottom: 2px solid #3498db;
   padding-bottom: 10px;
   margin-bottom: 20px;

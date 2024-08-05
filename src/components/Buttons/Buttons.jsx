@@ -169,14 +169,19 @@ export default function Buttons({ onFilterChange }) {
       </Box>
 
       <FormControl fullWidth sx={{ backgroundColor: "#FFFFFF" }}>
-        <InputLabel id="weekday-select-label">Weekday</InputLabel>
-        <Select
-          labelId="weekday-select-label"
-          id="weekday-select"
-          value={weekday}
-          label="Weekday"
-          onChange={handleWeekdayChange}
-        >
+      <InputLabel 
+    id="weekday-select-label" 
+    sx={{ marginTop: '10px' }} // Adjust the value as needed
+  >
+    Weekday
+  </InputLabel>
+  <Select
+    labelId="weekday-select-label"
+    id="weekday-select"
+    value={weekday}
+    label="Weekday"
+    onChange={handleWeekdayChange}
+  >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
@@ -198,7 +203,12 @@ export default function Buttons({ onFilterChange }) {
       <Button onClick={resetWeekday}>Reset Weekday</Button>
 
       <FormControl fullWidth sx={{ backgroundColor: "#FFFFFF" }}>
-        <InputLabel id="time-select-label">Start Time</InputLabel>
+      <InputLabel 
+    id="time-select-label" 
+    sx={{ marginTop: '10px' }} // Adjust the value as needed
+  >
+    Start Time
+  </InputLabel>
         <Select
           labelId="time-select-label"
           id="time-select"
