@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import "./RegisterForm.css"
 
 const RegisterButton = styled(Button)({
   backgroundColor: "#057",
@@ -34,7 +35,7 @@ function RegisterForm() {
 
   return (
     <form className="formPanel" onSubmit={registerUser}>
-      <center><h2>Register User</h2></center>
+      <div className='reguse'><center><h2>Register User</h2></center></div>
       {errors.registrationMessage && (
         <h3 className="alert" role="alert">
           {errors.registrationMessage}

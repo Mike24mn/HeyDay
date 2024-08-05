@@ -51,7 +51,7 @@ function BusinessLoginForm(props) {
   return (
     <form className="formPanel" onSubmit={login}>
       <center>
-        <h2>Login</h2>
+        <h2 className="buslog">Login</h2>
       </center>
       {errors.loginMessage && (
         <h3 className="alert" role="alert">

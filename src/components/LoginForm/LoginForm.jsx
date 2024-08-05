@@ -47,7 +47,7 @@ function LoginForm(props) {
 
   return (
     <form className="formPanel" onSubmit={login}>
-      <center><h2>Login</h2></center> 
+      <center><h2 className='logone'>Login</h2></center> 
       {errors.loginMessage && (
         <h3 className="alert" role="alert">
           {errors.loginMessage}

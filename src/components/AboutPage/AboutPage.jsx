@@ -37,8 +37,8 @@ function AboutPage() {
 */
 return (
   <div className="about-page">
-    <h1 className="about-title">Welcome to Heyday</h1>
-    <p className="about-subtitle">Your go-to app for finding the best deals around!</p>
+    <h1 className="about-title">Welcome to Heyday!</h1>
+    <p className="about-subtitle">Your go-to app for finding the best deals around</p>
 
     <div className="scrollable-content">
       <section className="about-section">

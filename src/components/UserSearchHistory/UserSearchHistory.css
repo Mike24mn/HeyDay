@@ -43,7 +43,7 @@
   }
   
   .btn_asLink {
-    color: rgb(17, 83, 137) !important;
+    color: rgb(116, 74, 255) !important;
     background: none;
     border: none;
     padding: 0;
@@ -54,7 +54,7 @@
   }
   
   .btn_asLink:hover {
-    color: #0056b3; 
+    color: #0056b3 !important;
   }
   
   .delete-button {

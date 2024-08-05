@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
-import TheRippleEffect from '../TheRippleEffect/TheRippleEffect'; // Assuming you want to keep this
 import TheRippleBusiness from '../TheRippleBusiness/TheRippleBusiness';
-import Buttons from '../Buttons/Buttons';
-
-
-
+import './BusinessRegister.css'; // Import the CSS file
 
 function BusinessRegister() {
   const [username, setUsername] = useState('');
@@ -26,13 +22,13 @@ function BusinessRegister() {
       },
     });
     history.push("/businessinfo");
-  }; 
+  };
 
   return (
     <div>
       <TheRippleBusiness />
       <form className="formPanel" onSubmit={registerUser}>
-        <center><h2>Register Business</h2></center>
+        <center><h2 className='regbus'>Register Business</h2></center>
         {errors.registrationMessage && (
           <h3 className="alert" role="alert">
             {errors.registrationMessage}
@@ -63,21 +59,20 @@ function BusinessRegister() {
           </label></center>
         </div>
         <div>
-          <center><input className="btn" type="submit" name="submit" value="Register" /></center>
+          <center><input className="register-button" type="submit" value="Register" /></center> {/* Apply the CSS class here */}
         </div>
       </form>
       
       <div style={{ marginTop: '20px', textAlign: 'center' }}>
         <p>
-          <Link to="/business-login" >Back to Business Login</Link>
+          <Link to="/business-login">Back to Business Login</Link>
         </p>
         <p>
-          <Link to="/login" >Back to User Portal</Link>
+          <Link to="/login">Back to User Portal</Link>
         </p>
       </div>
     </div>
   );
 }
-
 
 export default BusinessRegister;
