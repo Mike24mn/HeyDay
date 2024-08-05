@@ -87,6 +87,9 @@ const HappyMapping = () => {
                         <Card key={item.id} variant="outlined" sx={{ mb: 2 }}>
                             <CardContent >
                             <Typography variant="h5" component="div">
+                                    {findBusinessName(item.business_id)}
+                                </Typography>
+                            <Typography variant="h5" component="div">
                                     {item.name}
                                 </Typography>
                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -106,7 +109,7 @@ const HappyMapping = () => {
 )}
                                 </Typography>
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                    Description: {item.description}
+                                    Description: <b>{item.description}</b>
                                 </Typography>
                                 <Box sx={{ mt: 1 }}>
                                     <Button
