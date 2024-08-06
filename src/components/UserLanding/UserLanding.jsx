@@ -36,45 +36,37 @@ new keyword creates instances of a class
 global scope window object in javascript represents browser window (allows us to manipulate map elements in a more dynamic/fluid fashion)
 */
 function UserLanding() {
-
-    localStorage.removeItem('hasSeenWelcome');
-    const history = useHistory()
-    const [showWelcome, setShowWelcome] = useState(false)
+    const history = useHistory();
+    const [showWelcome, setShowWelcome] = useState(false);
+    const [hasShownWelcome, setHasShownWelcome] = useState(() => {
+      return localStorage.getItem('hasShownWelcome') === 'true';
+    });
     const user = useSelector((store) => store.user);
-
-    const [hoverInfo, setHoverInfo] = useState(null);
-  // get the dispatch function to send the action to Redux
-  const dispatch = useDispatch();
-  const businesses = useSelector(state => state.business);
-
-  useEffect(() => {
-    console.log("Checking welcome message condition");
-    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
-    console.log("hasSeenWelcome:", hasSeenWelcome);
+    const dispatch = useDispatch();
+    const businesses = useSelector(state => state.business);
   
-    if (!hasSeenWelcome) {
-      console.log("Setting showWelcome to true");
-      setShowWelcome(true);
-      localStorage.setItem('hasSeenWelcome', 'true');
-      
-      const timer = setTimeout(() => {
-        console.log("Timer expired, setting showWelcome to false");
-        setShowWelcome(false);
-      }, 10000);
+    useEffect(() => {
+      console.log("Checking welcome message condition");
+      console.log("User data:", user);
   
-      return () => clearTimeout(timer);
-    } else {
-      console.log("User has already seen welcome message");
-    }
-  }, []);
+      if (user && user.id && !hasShownWelcome) {
+        console.log("Setting showWelcome to true");
+        setShowWelcome(true);
+        setHasShownWelcome(true);
+        localStorage.setItem('hasShownWelcome', 'true');
   
-  useEffect(() => {
-    console.log("showWelcome state changed:", showWelcome);
-  }, [showWelcome]);
-
-  const handleDismissWelcome = () => {
-    setShowWelcome(false);
-  };
+        const timer = setTimeout(() => {
+          console.log("Timer expired, setting showWelcome to false");
+          setShowWelcome(false);
+        }, 10000);
+  
+        return () => clearTimeout(timer);
+      }
+    }, [user, hasShownWelcome]);
+  
+    const handleDismissWelcome = () => {
+      setShowWelcome(false);
+    };
 
   useEffect(() => {
     console.log("User data:", user);

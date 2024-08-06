@@ -15,15 +15,42 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { Paper } from '@mui/material';
+import { Paper, Box } from '@mui/material';
 import "./BusinessLanding.css";
 
-const LoginButton = styled(Button)({
+const SubmitButton = styled(Button)({
   backgroundColor: "#057",
+  color: "#fff",
   '&:hover': {
     backgroundColor: "#046",
   },
+  padding: "10px 20px",
+  borderRadius: "5px",
+  fontSize: "1em",
+  cursor: "pointer",
+  width: "100%",
+  marginTop: "10px",
 });
+
+const ScrollableContent = styled(Box)({
+  height: 'calc(100vh - 100px)', // Adjust based on your navbar height
+  overflowY: 'auto',
+  padding: '20px',
+  '&::-webkit-scrollbar': {
+    width: '10px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: '#f1f1f1',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: '#888',
+    borderRadius: '5px',
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    background: '#555',
+  },
+});
+
 const InputContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
@@ -39,6 +66,16 @@ const CustomDialogPaper = styled(Paper)(({ theme }) => ({
   width: '80%',
   maxWidth: '600px',
 }));
+
+const presetInfo = {
+  businessId: '1', // Assuming '1' is a valid business ID
+  name: 'The Loon Cafe',
+  address: '500 N 5th St, Minneapolis, MN 55401',
+  description: 'Join us for our legendary happy hour with $4 craft beers and half-price appetizers!',
+  date: '2024-08-15',
+  startTime: '16:00',
+  endTime: '18:00',
+};
 
 function BusinessLanding() {
   const [getHappy, setHappy] = useState('');
@@ -64,6 +101,16 @@ function BusinessLanding() {
   const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
   const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
   
+  const handlePresetInfo = () => {
+    setSelectedBusinessId(presetInfo.businessId);
+    setName(presetInfo.name);
+    setAddress(presetInfo.address);
+    setHappy(presetInfo.description);
+    setHappyHourDate(presetInfo.date);
+    setHappyHourTime(presetInfo.startTime);
+    setHappyEndTime(presetInfo.endTime);
+  };
+
   const handleHappy = (event) => {
     event.preventDefault();
     if (!selectedBusinessId) {
@@ -94,7 +141,7 @@ function BusinessLanding() {
     setHappyEndTime('');
     setSelectedBusinessId('');
     
-    setModalMessage('Business registered successfully!');
+    setModalMessage('Happy Hour added successfully!');
     setOpenModal(true);
   };
   
@@ -119,114 +166,119 @@ function BusinessLanding() {
 
   return (
     <>
-      <div>
-        <center>
-          <h1 className='busland'>Welcome {user.username}</h1>
-        </center>
-        <h2 className='buslandtwo'>
-          {busFilter.map((bus) => (
-            <p key={bus.id}>
-              <center>Business Name:<p></p>{bus.business_name}</center>
-            </p>
-          ))}
-        </h2>
-        <InputContainer>
-          <select
-            className="select-input"
-            value={selectedBusinessId}
-            onChange={(event) => setSelectedBusinessId(event.target.value)}
-          >
-            <option value="" disabled>Select Business</option>
+      <ScrollableContent>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '10px', height: '10px', opacity: 0 }}>
+          <button onClick={handlePresetInfo}>Hidden</button>
+        </div>
+        <div>
+          <center>
+            <h1 className='busland'>Welcome {user.username}</h1>
+          </center>
+          <h2 className='buslandtwo'>
             {busFilter.map((bus) => (
-              <option key={bus.id} value={bus.id}>
-                {bus.business_name}
-              </option>
+              <p key={bus.id}>
+                <center>Business Name:<p></p>{bus.business_name}</center>
+              </p>
             ))}
-          </select>
-          <input
-            className="text-input"
-            type="text"
-            value={getName}
-            onChange={(event) => setName(event.target.value)}
-            placeholder='Happy Hour Name'
-          />
-          <input
-            className="text-input"
-            type="text"
-            value={getAddress}
-            onChange={(event) => setAddress(event.target.value)}
-            placeholder='Address of Happy Hour'
-          />
-          <input
-            className="text-input"
-            type="text"
-            value={getHappy}
-            onChange={(event) => setHappy(event.target.value)}
-            placeholder="Enter description"
-          />
-          <input
-            className="date-input"
-            type="date"
-            value={happyHourDate}
-            onChange={(event) => setHappyHourDate(event.target.value)}
-          />
-          <input
-            className="time-input"
-            type="time"
-            value={happyHourTime}
-            onChange={(event) => setHappyHourTime(event.target.value)}
-          />
-          <input
-            className="time-input"
-            type="time"
-            value={happyEndTime}
-            onChange={(event) => setHappyEndTime(event.target.value)}
-          />
-          <LoginButton onClick={handleHappy}>SUBMIT</LoginButton>
-        </InputContainer>
-      </div>
-      <Grid container spacing={4} justifyContent="center">
-        {happyFilter.map((hap) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={hap.id}>
-            <Card sx={{ height: '100%' }}>
-              <CardMedia
-                sx={{ height: 200 }}
-                image="public/image.png"
-                title={hap.name}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {hap.address}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Description: {hap.description}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Date: {formatDate(hap.date)}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Start Time: {hap.start_time}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  End Time: {hap.end_time}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Address: {hap.address}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Likes: {hap.likes}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  People Interested: {hap.interested}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={() => handleDel(hap.id)}>Delete</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+          </h2>
+          <InputContainer>
+            <select
+              className="select-input"
+              value={selectedBusinessId}
+              onChange={(event) => setSelectedBusinessId(event.target.value)}
+            >
+              <option value="" disabled>Select Business</option>
+              {busFilter.map((bus) => (
+                <option key={bus.id} value={bus.id}>
+                  {bus.business_name}
+                </option>
+              ))}
+            </select>
+            <input
+              className="text-input"
+              type="text"
+              value={getName}
+              onChange={(event) => setName(event.target.value)}
+              placeholder='Happy Hour Name'
+            />
+            <input
+              className="text-input"
+              type="text"
+              value={getAddress}
+              onChange={(event) => setAddress(event.target.value)}
+              placeholder='Address of Happy Hour'
+            />
+            <input
+              className="text-input"
+              type="text"
+              value={getHappy}
+              onChange={(event) => setHappy(event.target.value)}
+              placeholder="Enter description"
+            />
+            <input
+              className="date-input"
+              type="date"
+              value={happyHourDate}
+              onChange={(event) => setHappyHourDate(event.target.value)}
+            />
+            <input
+              className="time-input"
+              type="time"
+              value={happyHourTime}
+              onChange={(event) => setHappyHourTime(event.target.value)}
+            />
+            <input
+              className="time-input"
+              type="time"
+              value={happyEndTime}
+              onChange={(event) => setHappyEndTime(event.target.value)}
+            />
+            <SubmitButton onClick={handleHappy}>SUBMIT</SubmitButton>
+          </InputContainer>
+        </div>
+        <Grid container spacing={4} justifyContent="center">
+          {happyFilter.map((hap) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={hap.id}>
+              <Card sx={{ height: '100%' }}>
+                <CardMedia
+                  sx={{ height: 200 }}
+                  image="/image.png"
+                  title={hap.name}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {hap.address}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Description: {hap.description}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Date: {formatDate(hap.date)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Start Time: {hap.start_time}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    End Time: {hap.end_time}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Address: {hap.address}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Likes: {hap.likes}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    People Interested: {hap.interested}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={() => handleDel(hap.id)}>Delete</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </ScrollableContent>
       <footer>
         <div className="buslandingbar">
           <BusinessNavBar />

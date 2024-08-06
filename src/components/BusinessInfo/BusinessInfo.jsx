@@ -43,6 +43,16 @@ const BusinessInfo = () => {
         setOpen(false);
         history.push("/business-landing");
     };
+
+    const handleDemoClick = () => {
+        setName('Demo Bar');
+        setAddress('1234 Nicollet Ave, Minneapolis, MN 55403');
+        setType('Bar');
+        setDes('A great place to enjoy drinks and music.');
+        setNumber('612-555-1234');
+        setOpen(true);
+    };
+
     return (
         <>
             <h2 className="busclass">Business Form</h2>
@@ -122,30 +132,17 @@ const BusinessInfo = () => {
                             value={getNumber}
                             onChange={(e) => setNumber(e.target.value)}
                         />
-                        <TextField
-                            className="text-field"
-                            margin="dense"
-                            label="Vibe"
-                            type="text"
-                            fullWidth
-                        />
-                            <TextField
-                            className="text-field"
-                            margin="dense"
-                            label="Diet"
-                            type="text"
-                            fullWidth
-                        />
-                            <TextField
-                            className="text-field"
-                            margin="dense"
-                            label="Image URL"
-                            type="text"
-                            fullWidth
-                        />
+
                         
                         
                         <DialogActions className="dialog-actions">
+                        <Button
+                                className="demo-button"
+                                onClick={handleDemoClick}
+                                style={{ position: 'absolute', top: 10, right: 10 }}
+                            >
+                                Demo
+                            </Button>
                             <Button onClick={() => setOpen(false)} color="primary">
                                 Cancel
                             </Button>
@@ -156,7 +153,8 @@ const BusinessInfo = () => {
                     </form>
                 </DialogContent>
             </Dialog>
+
         </>
     );
-}
+};
 export default BusinessInfo;
