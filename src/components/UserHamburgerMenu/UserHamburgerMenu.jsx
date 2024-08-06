@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import LogOutButton from "../LogOutButton/LogOutButton";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+import "./UserHamburgerMenu.css"
 
 // Styled link for menu items
 const StyledLink = styled(Link)({
@@ -79,6 +80,7 @@ export default function UserHamburgerMenu() {
             onClose={handleMenuClose}
             sx={{
               "& .MuiPaper-root": {
+                
                 backgroundColor: "#0E0E0E",
                 color: "#FFFFFF",
                 textDecoration: "underline"
