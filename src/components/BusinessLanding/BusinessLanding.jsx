@@ -88,6 +88,7 @@ function BusinessLanding() {
   useEffect(() => {
     dispatch({ type: "SET_BUS" });
     dispatch({ type: "SET_HAPPY" });
+    console.log("Current user from Redux store:", user);
   }, [dispatch]);
   
   const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));

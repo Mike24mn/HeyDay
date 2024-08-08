@@ -64,25 +64,30 @@ function* logoutUser(action) {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true,
     };
-
     yield call(axios.post, '/api/user/logout', config);
     yield put({ type: 'UNSET_USER' });
     yield call(history.push, '/login');
-    yield put({ type: 'RESET_STATE' });
+   
   } catch (error) {
     console.log('Error with user logout:', error);
   }
 }
-
 function* setUserSaga(action) {
   yield put({ type: 'SET_USER_SUCCESS' });
 }
-
 function* loginSaga() {
   yield takeLatest('LOGIN', loginUser);
   yield takeLatest('LOGIN_BUSINESS', loginBusiness);
-  yield takeLatest('LOGOUT', logoutUser);
+  yield takeLatest('RESET_STATE' , logoutUser);
   yield takeLatest('SET_USER', setUserSaga);
 }
-
 export default loginSaga;
+
+
+
+
+
+
+
+
+

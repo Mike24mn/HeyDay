@@ -21,7 +21,7 @@ const BusinessInfo = () => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log("Current user from Redux store:", user); // Add this line
+        console.log("Current user from Redux store:", user);
         if (!user) {
             dispatch({ type: 'FETCH_USER' });
         }
