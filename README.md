@@ -1,5 +1,6 @@
 
-Heyday
+Heyday ReadME:
+
 Heyday is an interactive app designed to connect users with happy hour offers near them. The app has two interfaces: a user side and a business side, both of which are included in this repository.
 Getting Started
 To run this project locally, follow these steps:
