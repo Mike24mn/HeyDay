@@ -97,7 +97,7 @@ export default function UserHamburgerMenu() {
               <MenuItem component={StyButton} to="/login" onClick={handleMenuClose}>
                 Login
               </MenuItem>
-            ) : user.access_level === 2 ? (
+            ) : user.access_level == 2 ? (
               <>
                 <MenuItem component={StyButton} to="/business-landing" onClick={handleMenuClose}>
                   Business Home

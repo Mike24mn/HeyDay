@@ -33,7 +33,7 @@ const SubmitButton = styled(Button)({
 });
 
 const ScrollableContent = styled(Box)({
-  height: 'calc(100vh - 100px)', // Adjust based on your navbar height
+  height: 'calc(100vh - 100px)', 
   overflowY: 'auto',
   padding: '20px',
   '&::-webkit-scrollbar': {
@@ -67,15 +67,7 @@ const CustomDialogPaper = styled(Paper)(({ theme }) => ({
   maxWidth: '600px',
 }));
 
-const presetInfo = {
-  businessId: '1', // Assuming '1' is a valid business ID
-  name: 'The Loon Cafe',
-  address: '500 N 5th St, Minneapolis, MN 55401',
-  description: 'Join us for our legendary happy hour with $4 craft beers and half-price appetizers!',
-  date: '2024-08-15',
-  startTime: '16:00',
-  endTime: '18:00',
-};
+
 
 function BusinessLanding() {
   const [getHappy, setHappy] = useState('');
@@ -101,16 +93,6 @@ function BusinessLanding() {
   const busFilter = (business || []).filter(bus => bus && bus.user_id && Number(bus.user_id) === Number(user.id));
   const happyFilter = (happy || []).filter(hap => hap && hap.user_id && Number(hap.user_id) === Number(user.id));
   
-  const handlePresetInfo = () => {
-    setSelectedBusinessId(presetInfo.businessId);
-    setName(presetInfo.name);
-    setAddress(presetInfo.address);
-    setHappy(presetInfo.description);
-    setHappyHourDate(presetInfo.date);
-    setHappyHourTime(presetInfo.startTime);
-    setHappyEndTime(presetInfo.endTime);
-  };
-
   const handleHappy = (event) => {
     event.preventDefault();
     if (!selectedBusinessId) {
@@ -168,7 +150,7 @@ function BusinessLanding() {
     <>
       <ScrollableContent>
         <div style={{ position: 'absolute', top: 0, left: 0, width: '10px', height: '10px', opacity: 0 }}>
-          <button onClick={handlePresetInfo}>Hidden</button>
+
         </div>
         <div>
           <center>

@@ -20,7 +20,7 @@
   .welcome-message-content {
     position: absolute;
     top: 30%;
-    left: 43%;
+    left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgb(6, 40, 108);
     padding: 20px;

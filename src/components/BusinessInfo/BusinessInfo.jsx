@@ -136,13 +136,6 @@ const BusinessInfo = () => {
                         
                         
                         <DialogActions className="dialog-actions">
-                        <Button
-                                className="demo-button"
-                                onClick={handleDemoClick}
-                                style={{ position: 'absolute', top: 10, right: 10 }}
-                            >
-                                Demo
-                            </Button>
                             <Button onClick={() => setOpen(false)} color="primary">
                                 Cancel
                             </Button>

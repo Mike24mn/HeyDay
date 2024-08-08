@@ -3,7 +3,9 @@ import React from 'react';
 function BusinessViewAsUser() {
   return (
     <div>
-      BusinessViewAsUser
+             <p></p>
+        This page is currently being developed!
+        <p></p>
     </div>
   );
 }

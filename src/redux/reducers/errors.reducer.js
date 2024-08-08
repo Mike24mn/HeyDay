@@ -8,13 +8,15 @@ const loginMessage = (state = '', action) => {
       return '';
     case 'LOGIN_INPUT_ERROR':
       return 'Enter your username and password!';
-
+    case 'LOGIN_FAILED':
+      return action.payload || 'Login failed. Please try again.';
     case 'LOGIN_FAILED_NO_CODE':
       return 'Oops! Something went wrong! Is the server running?';
     default:
       return state;
   }
 };
+
 
 // registrationMessage holds the string that will display
 // on the registration screen if there's an error

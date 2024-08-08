@@ -10,8 +10,11 @@ const router = express.Router();
 
 // Handles Ajax request for user information if user is authenticated
 router.get('/', rejectUnauthenticated, (req, res) => {
-  // Send back user object from the session (previously queried from the database)
-  res.send(req.user);
+  res.json({
+    id: req.user.id,
+    username: req.user.username,
+    access_level: req.user.access_level
+  });
 });
 
 // Handles POST request with new user data
@@ -39,13 +42,15 @@ router.post('/register/business', (req, res, next) => {
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
-  const queryText = `INSERT INTO "user" (username, password)
-    VALUES ($1, $2) RETURNING id`;
+  const queryText = `INSERT INTO "user" (username, password, access_level)
+    VALUES ($1, $2, 2) RETURNING id, username, access_level`;
   pool
     .query(queryText, [username, password])
-    .then(() => res.sendStatus(201))
+    .then((result) => {
+      res.status(201).json(result.rows[0]);
+    })
     .catch((err) => {
-      console.log('User registration failed: ', err);
+      console.log('Business user registration failed: ', err);
       res.sendStatus(500);
     });
 });
@@ -55,7 +60,11 @@ router.post('/register/business', (req, res, next) => {
 // this middleware will run our POST if successful
 // this middleware will send a 404 if not successful
 router.post('/login', userStrategy.authenticate('local'), (req, res) => {
-  res.sendStatus(200);
+  res.json({
+    id: req.user.id,
+    username: req.user.username,
+    access_level: req.user.access_level
+  });
 });
 
 // clear all server session information about this user
@@ -68,7 +77,7 @@ router.post('/logout', (req, res, next) => {
 });
 
 router.put('/access_level', (req, res) => {
-  const userId = req.user.id; // Assuming you have user information in the session
+  const userId = req.user.id; // get user information in the session
   const { access_level } = req.body;
   const queryText = `UPDATE "user" SET "access_level" = $1 WHERE "id" = $2 RETURNING *;`;
 

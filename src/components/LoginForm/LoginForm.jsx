@@ -22,28 +22,32 @@ function LoginForm(props) {
 
 
   useEffect(() => {
-    // Redirect to user-landing page if user is logged in
-    if (user) {
+    if (user && user.access_level === 1) {
       history.push('/user-landing');
+    } else if (user && user.access_level !== 1) {
+      dispatch({ type: 'LOGIN_FAILED', payload: 'Invalid access level for user login' });
     }
-}, [user]); // redirect only if user is changed/updated
+  }, [user, history, dispatch]);
 
-  const login = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    dispatch({ type: 'CLEAR_LOGIN_ERROR' });
+  }, [dispatch]);
 
+const login = (event) => {
+  event.preventDefault();
 
-    if (username && password) {
-      dispatch({
-        type: 'LOGIN',
-        payload: {
-          username: username,
-          password: password,
-        },
-      });
-    } else {
-      dispatch({ type: 'LOGIN_INPUT_ERROR' });
-    }
-  }; // end login
+  if (username && password) {
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        username: username,
+        password: password,
+      },
+    });
+  } else {
+    dispatch({ type: 'LOGIN_INPUT_ERROR' });
+  }
+};
 
   return (
     <form className="formPanel" onSubmit={login}>
