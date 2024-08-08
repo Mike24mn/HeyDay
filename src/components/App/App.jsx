@@ -40,9 +40,7 @@ function App() {
   const user = useSelector((store) => store.user);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    dispatch({ type: "FETCH_USER" });
-  }, [dispatch]);
+
 
   useEffect(() => {
     if (user !== null) {
@@ -145,8 +143,8 @@ function App() {
           <ProtectedRoute exact path="/getting-started" component={AboutPage}
                       allowedLevels={["1"]} />
 
-          <ProtectedRoute exact path="/businessinfo" component={BusinessInfo}
-                      allowedLevels={["2"]}
+          <Route exact path="/businessinfo" component={BusinessInfo}
+       
                        />
 
           <Route exact path="/business-reg" component={BusinessRegister} />

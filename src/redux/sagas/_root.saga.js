@@ -9,7 +9,7 @@ import favsSaga from './favorites.saga';
 import happysaga from './happyHour.saga';
 
 import busSaga from './business.saga.js';
-
+import businessRegistrationSaga from './businessreg.saga.js';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -24,6 +24,7 @@ export default function* rootSaga() {
   yield all([
     loginSaga(), // login saga is now registered
     registrationSaga(),
+    businessRegistrationSaga(),
     userSaga(),
     fetchHistory(),
     favsSaga(),

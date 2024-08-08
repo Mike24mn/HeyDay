@@ -15,12 +15,21 @@ function BusinessRegister() {
     event.preventDefault();
 
     dispatch({
-      type: 'REGISTER',
+      type: 'REGISTER_BUSINESS',
       payload: {
         username: username,
         password: password,
       },
     });
+
+    dispatch({
+      type: 'LOGIN_BUSINESS',
+      payload: {
+        username: username,
+        password: password,
+      },
+    });
+  
     history.push("/businessinfo");
   };
 
