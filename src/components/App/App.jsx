@@ -30,7 +30,7 @@ import BusinessEditPage from "../BusinessEditPage/BusinessEditPage";
 import BusinessInfo from "../BusinessInfo/BusinessInfo";
 
 import UserSearchHistory from "../UserSearchHistory/UserSearchHistory";
-import history from '../../history';
+import history from "../../history";
 import "./App.css";
 import { Logout } from "@mui/icons-material";
 import LogOutButton from "../LogOutButton/LogOutButton";
@@ -40,9 +40,7 @@ function App() {
   const user = useSelector((store) => store.user);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    dispatch({ type: "FETCH_USER" });
-  }, [dispatch]);
+
 
   useEffect(() => {
     if (user !== null) {
@@ -54,7 +52,7 @@ function App() {
 
   return (
     <Router history={history}>
-        <div className="app-container">
+      <div className="app-container">
         <Nav />
         <Switch>
           {/* Visiting localhost:5173 will redirect to localhost:5173/home */}
@@ -62,7 +60,6 @@ function App() {
 
           {/* Note to self, these are old routes */}
           <Route exact path="/about" component={AboutPage} />
-
 
           {/* These routes need access checks
           based on access level 1 and 2,
@@ -92,43 +89,83 @@ function App() {
 
           <Route exact path="/user-landing-nonlogin" component={UserLanding} />
 
-          <ProtectedRoute exact path="/business-landing" component={BusinessLanding} />
+          <ProtectedRoute
+            exact
+            path="/business-landing"
+            component={BusinessLanding}
+            allowedLevels={["2"]}
+          />
 
-          <ProtectedRoute exact path="/edit-business-details" component={BusinessEditPage} />
+          <ProtectedRoute
+            exact
+            path="/edit-business-details"
+            component={BusinessEditPage}
+            allowedLevels={["2"]}
+          />
 
-          <ProtectedRoute exact path="/view-as-user" component={BusinessViewAsUser} />
+          <ProtectedRoute
+            exact
+            path="/view-as-user"
+            component={BusinessViewAsUser}
+            allowedLevels={["2"]}
+          />
 
           <Route exact path="/user-login" component={LoginPage} />
 
-          <ProtectedRoute exact path="/user-landing" component={UserLanding} />
+          <ProtectedRoute
+            exact
+            path="/user-landing"
+            component={UserLanding}
+            allowedLevels={["1"]}
+          />
 
-          <ProtectedRoute exact path="/user-details/:id" component={DetailsPage} />
+          <ProtectedRoute
+            exact
+            path="/user-details/:id"
+            component={DetailsPage}
+            allowedLevels={["1"]}
+          />
 
-          <ProtectedRoute exact path="/favorite-locations" component={UserFavoriteLocations} />
+          <ProtectedRoute
+            exact
+            path="/favorite-locations"
+            component={UserFavoriteLocations}
+            allowedLevels={["1"]}
+          />
 
-          <ProtectedRoute exact path="/user-search-history" component={UserSearchHistory} />
+          <ProtectedRoute
+            exact
+            path="/user-search-history"
+            component={UserSearchHistory}
+            allowedLevels={["1"]}
+          />
 
-          <ProtectedRoute exact path="/getting-started" component={AboutPage} />
+          <ProtectedRoute exact path="/getting-started" component={AboutPage}
+                      allowedLevels={["1"]} />
 
-          <ProtectedRoute exact path="/businessinfo" component={BusinessInfo} />
+          <Route exact path="/businessinfo" component={BusinessInfo}
+       
+                       />
 
           <Route exact path="/business-reg" component={BusinessRegister} />
 
-              <ProtectedRoute exact path="/user-login">
-              {user?.id ? (
-                user.access_level === 2 ? (
-                  <Redirect to="/business-login" />
-                ) : (
-                  <Redirect to="/user-login" />
-                )
+          <ProtectedRoute exact path="/user-login">
+            {user?.id ? (
+              user.access_level === 2 ? (
+                <Redirect to="/business-login" />
               ) : (
-                <LoginPage />
-              )}
-            </ProtectedRoute>
+                <Redirect to="/user-login" />
+              )
+            ) : (
+              <LoginPage />
+            )}
+          </ProtectedRoute>
 
-          <Route exact path="/random" component={RandomPlace} />
+          <ProtectedRoute exact path="/random" component={RandomPlace} 
+                      allowedLevels={["1"]}/>
 
-          <Route exact path="/happy" component={HappyMapping} />
+          <ProtectedRoute exact path="/happy" component={HappyMapping} 
+                      allowedLevels={["1"]}/>
         </Switch>
         <Footer />
       </div>

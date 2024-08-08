@@ -1,8 +1,7 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
+import { put, takeLatest, call, take } from 'redux-saga/effects';
 import axios from 'axios';
 import history from '../../history';
 
-// worker Saga: will be fired ON FRICKEN "LOGIN" actions
 function* loginUser(action) {
   try {
     yield put({ type: 'CLEAR_LOGIN_ERROR' });
@@ -12,36 +11,53 @@ function* loginUser(action) {
       withCredentials: true,
     };
 
-    // Send the login request
     const response = yield call(axios.post, '/api/user/login', action.payload, config);
+    console.log("Full server response:", response.data);
 
-    // Check the user's access level
-    if (action.payload.isBusiness && response.data.access_level !== 2) {
-      throw new Error('Invalid access level for business login');
+    if (!response.data || typeof response.data.access_level === 'undefined') {
+      throw new Error('Invalid server response format');
     }
 
-    // If everything is okay, fetch the user
-    yield put({ type: 'FETCH_USER' });
+    yield put({ type: 'SET_USER', payload: response.data });
+    yield take('SET_USER_SUCCESS');
 
-    // Redirect based on access level so get 2 different results, expand later to include admin maybe
-    if (response.data.access_level === 2) {
-      yield call(history.push, '/business-landing');
-    } else {
+    console.log("User after login:", response.data);
+
+    if (response.data.access_level == 1) {
       yield call(history.push, '/user-landing');
+    } else {
+      throw new Error('Invalid access level for regular login');
     }
   } catch (error) {
     console.log('Error with user login:', error);
-    if (error.message === 'Invalid access level for business login') {
-      yield put({ type: 'LOGIN_FAILED', payload: 'Invalid access level for business login' });
-    } else if (error.response && error.response.status === 401) {
-      yield put({ type: 'LOGIN_FAILED' });
-    } else {
-      yield put({ type: 'LOGIN_FAILED_NO_CODE' });
-    }
+    yield put({ type: 'LOGIN_FAILED', payload: error.message });
   }
 }
 
-// worker Saga: will be fired on "LOGOUT" actions
+function* loginBusiness(action) {
+  try {
+    yield put({ type: 'CLEAR_LOGIN_ERROR' });
+
+    const config = {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true,
+    };
+
+    const response = yield call(axios.post, '/api/user/login', action.payload, config);
+    console.log("Server response:", response.data);
+
+    if (response.data.access_level !== '2') {  // Note: comparing with string '2'
+      throw new Error('Invalid access level for business login');
+    }
+
+    yield put({ type: 'SET_USER', payload: response.data });
+
+  } catch (error) {
+    console.log('Login error:', error);
+    yield put({ type: 'LOGIN_FAILED', payload: error.message });
+  }
+}
+
 function* logoutUser(action) {
   try {
     const config = {
@@ -50,24 +66,23 @@ function* logoutUser(action) {
     };
 
     yield call(axios.post, '/api/user/logout', config);
-
     yield put({ type: 'UNSET_USER' });
-    
-    // Redirect after logout
     yield call(history.push, '/login');
-
-    // clear parts of state (this is why we wrapped things in the reducer fyi)
     yield put({ type: 'RESET_STATE' });
-
   } catch (error) {
     console.log('Error with user logout:', error);
   }
 }
 
+function* setUserSaga(action) {
+  yield put({ type: 'SET_USER_SUCCESS' });
+}
+
 function* loginSaga() {
   yield takeLatest('LOGIN', loginUser);
-  yield takeLatest('LOGIN_BUSINESS', loginUser);
+  yield takeLatest('LOGIN_BUSINESS', loginBusiness);
   yield takeLatest('LOGOUT', logoutUser);
+  yield takeLatest('SET_USER', setUserSaga);
 }
 
 export default loginSaga;

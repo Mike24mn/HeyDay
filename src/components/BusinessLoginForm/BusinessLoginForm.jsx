@@ -21,32 +21,27 @@ function BusinessLoginForm(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  // I feel like an access_level check may be necesarry here or put in the
-  // dependency array
-
   useEffect(() => {
-    // Redirect to business-landing page if user is logged in
-    if (user) {
-      history.push("/business-landing");
+    if (user?.id && user.access_level === '2') {
+      console.log('Redirecting to business landing');
+      history.push('/business-landing');
     }
-  }, [user]); // redirect only if user is changed/updated
+  }, [user, history]);
 
   const login = (event) => {
     event.preventDefault();
-
     if (username && password) {
       dispatch({
-        type: "LOGIN_BUSINESS",
+        type: 'LOGIN_BUSINESS',
         payload: {
           username: username,
           password: password,
-          isBusiness: true,
         },
       });
     } else {
-      dispatch({ type: "LOGIN_INPUT_ERROR" });
+      dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }
-  }; // end login
+  };
 
   return (
     <form className="formPanel" onSubmit={login}>

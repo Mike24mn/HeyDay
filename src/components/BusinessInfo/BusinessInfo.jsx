@@ -1,6 +1,6 @@
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import './BusinessInfo.css';
+
 const BusinessInfo = () => {
     const user = useSelector(store => store.user);
     const [getAddress, setAddress] = useState('');
@@ -18,40 +19,47 @@ const BusinessInfo = () => {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
-    const id = user.id;
+
+    useEffect(() => {
+        console.log("Current user from Redux store:", user); // Add this line
+        if (!user) {
+            dispatch({ type: 'FETCH_USER' });
+        }
+    }, [dispatch, user]);
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        dispatch({
-            type: 'ADD_BUS',
-            payload: {
-                user_id: id,
-                business_name: getName,
-                business_type: getType,
-                address: getAddress,
-                description: getDes,
-                phone_number: getNumber,
-              
-            },
-        });
-    
-        dispatch({ type: "UPDATE_USER" });
-        setDes('');
-        setAddress('');
-        setName('');
-        setType('');
-        setNumber('');
-        setOpen(false);
-        history.push("/business-landing");
+        if (user && user.id) {
+            console.log("Submitting business for user:", user.id);
+            dispatch({
+                type: 'ADD_BUS',
+                payload: {
+                    user_id: user.id,
+                    business_name: getName,
+                    business_type: getType,
+                    address: getAddress,
+                    description: getDes,
+                    phone_number: getNumber,
+                },
+            });
+
+            dispatch({ type: "UPDATE_USER" });
+            setDes('');
+            setAddress('');
+            setName('');
+            setType('');
+            setNumber('');
+            setOpen(false);
+            history.push("/business-landing");
+        } else {
+            console.error('User not logged in');
+            history.push('/login');
+        }
     };
 
-    const handleDemoClick = () => {
-        setName('Demo Bar');
-        setAddress('1234 Nicollet Ave, Minneapolis, MN 55403');
-        setType('Bar');
-        setDes('A great place to enjoy drinks and music.');
-        setNumber('612-555-1234');
-        setOpen(true);
-    };
+    if (!user) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
@@ -132,17 +140,8 @@ const BusinessInfo = () => {
                             value={getNumber}
                             onChange={(e) => setNumber(e.target.value)}
                         />
-
-                        
                         
                         <DialogActions className="dialog-actions">
-                        <Button
-                                className="demo-button"
-                                onClick={handleDemoClick}
-                                style={{ position: 'absolute', top: 10, right: 10 }}
-                            >
-                                Demo
-                            </Button>
                             <Button onClick={() => setOpen(false)} color="primary">
                                 Cancel
                             </Button>
@@ -153,8 +152,8 @@ const BusinessInfo = () => {
                     </form>
                 </DialogContent>
             </Dialog>
-
         </>
     );
 };
+
 export default BusinessInfo;

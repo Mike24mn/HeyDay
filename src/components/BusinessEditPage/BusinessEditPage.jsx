@@ -4,7 +4,9 @@ import React from 'react';
 function BusinessEditPage() {
     return (
       <div>
-        BusinessEditPage
+        <p></p>
+        This page is currently being developed!
+        <p></p>
       </div>
     );
   }

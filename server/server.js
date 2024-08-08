@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const yelp = require('yelp-fusion');
+
 const cors = require('cors');
 const favoritesRouter = require('./routes/favorites.router.js')
 const addressRouter = require('./routes/address.router.js')
@@ -22,6 +22,7 @@ const userRouter = require('./routes/user.router');
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("build"));
@@ -40,26 +41,8 @@ app.use("/api/favorites", favoritesRouter);
 app.use("/api/scraper", scraperRouter);
 app.use("/api/business", busRouter)
 app.use('/api/happy_hour', happyHourRouter);
-const apiKey ="6ONLrF40aWp2jP__Bxi14hEEFXPj8161PsM3hAErgO03eXQWYIaw4aDAS-i1aGq3u9-dirq6NW9HD_xfglFTK1LANGuFzgOeEBsVWdQqoen9jM1SHOrkfydI1HeZZnYx"
-app.get("/api/search", (req, res) => {
-  const client = yelp.client(apiKey);
-  const term = req.query.term;
-  const location = req.query.location;
-  const searchRequest = {
-    term: term,
-    location: location,
-    limit: 1,
-  };
-  client
-    .search(searchRequest)
-    .then((response) => {
-      res.json(response.jsonBody.businesses);
-    })
-    .catch((e) => {
-      console.error("Error during Yelp API request:", e);
-      res.status(500).send(e);
-    });
-});
+
+
 // Listen Server & Port
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
