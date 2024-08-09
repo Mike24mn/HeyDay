@@ -99,4 +99,4 @@ APIs: Google Maps API, Font Awesome for icons
 Other: Geolocation, GeoJSON, Puppeteer, Natural.js, Node-Geocoder, dotenv
 
 Dimensions: 
-Heyday, in its current versioning, is intended to run on mobile devices and is optimized to run on Samsung Galaxy 20 sized screens (412 x 915).![image](https://github.com/user-attachments/assets/c5f42229-298e-4957-a703-befd2c41c9d6)
+Heyday, in its current versioning, is intended to run on mobile devices and is optimized to run on Samsung Galaxy 20 sized screens (412 x 915)
