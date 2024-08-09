@@ -1,4 +1,16 @@
-Heyday:
+  ```                                                                                                             
+ _ _ _       _                          _           _____            ____            
+| | | | ___ | | ___  ___  _____  ___   | |_  ___   |  |  | ___  _ _ |    \  ___  _ _ 
+| | | || -_|| ||  _|| . ||     || -_|  |  _|| . |  |     || -_|| | ||  |  || .'|| | |
+|_____||___||_||___||___||_|_|_||___|  |_|  |___|  |__|__||___||_  ||____/ |__,||_  |
+                                                               |___|            |___|          
+```
+![3561A378-C110-4115-9212-D138366E11AB](https://github.com/user-attachments/assets/321cfced-a510-4418-aeda-dc28a3abba98)
+
+![4A6BCF45-F271-42FB-A88C-484230351293](https://github.com/user-attachments/assets/275c115f-a0e0-4481-a03d-3a25b03bccf4)
+
+![742EA9FF-C69A-4A92-919A-9032DCECEA38](https://github.com/user-attachments/assets/f29b8365-584f-4a7c-a5a6-fa22b46d947c)
+
 
 Heyday is an interactive app designed to connect users with happy hour offers near them. The app features two interfaces: a user side and a business side, both included in this repository.
 
@@ -86,3 +98,5 @@ Database: PostgreSQL (SQL script provided)
 APIs: Google Maps API, Font Awesome for icons
 Other: Geolocation, GeoJSON, Puppeteer, Natural.js, Node-Geocoder, dotenv
 
+Dimensions: 
+Heyday, in its current versioning, is intended to run on mobile devices and is optimized to run on Samsung Galaxy 20 sized screens (412 x 915).![image](https://github.com/user-attachments/assets/c5f42229-298e-4957-a703-befd2c41c9d6)
