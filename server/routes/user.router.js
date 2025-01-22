@@ -69,7 +69,7 @@ router.post('/login', userStrategy.authenticate('local'), (req, res) => {
 
 // clear all server session information about this user
 router.post('/logout', (req, res, next) => {
-  // Use passport's built-in method to log out the user
+  // Use passport's built-in method to log out current user
   req.logout((err) => {
     if (err) { return next(err); }
     res.sendStatus(200);

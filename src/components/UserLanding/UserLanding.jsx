@@ -30,10 +30,12 @@ pillar of clean code and modular, reusable engineering standards that this Dev t
 Cheers,
 Team Heyday
 */
+
 /*
 Team Notes:
 new keyword creates instances of a class
 global scope window object in javascript represents browser window (allows us to manipulate map elements in a more dynamic/fluid fashion)
+-Michael
 */
 function UserLanding() {
     const history = useHistory();
@@ -67,6 +69,8 @@ function UserLanding() {
     const handleDismissWelcome = () => {
       setShowWelcome(false);
     };
+
+    
 
   useEffect(() => {
     console.log("User data:", user);
